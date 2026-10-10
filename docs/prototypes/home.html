@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home · Intake prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
+<style>
+.tile { display: flex; flex-direction: column; gap: 10px; min-height: 92px; padding: 14px; color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 600; line-height: 1.3; }
+.tile svg { color: var(--ink); }
+a.tile:hover { border-color: var(--navy); }
+.care { display: flex; gap: 12px; padding: 14px; background: var(--rose-card); border-radius: 6px; }
+.care p { margin: 2px 0 0; color: var(--ink-2); font-size: 13.5px; }
+</style>
+</head>
+<body class="phone-page">
+<div class="phone">
+  <header class="bar" style="justify-content: space-between;">
+    <img class="wordmark" src="assets/rezilient-logo.svg" alt="Rezilient">
+    <span class="icon-btn" role="img" aria-label="Messages, 1 unread">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"></rect><path d="M3.5 6.5l8.5 6.5 8.5-6.5"></path></svg>
+      <span class="dot"></span>
+    </span>
+  </header>
+
+  <main class="scroll" style="display: flex; flex-direction: column; gap: 18px; padding: 26px 18px 22px;">
+    <h1 class="title">Hi Walter</h1>
+
+    <section aria-labelledby="next" style="display: flex; flex-direction: column; gap: 8px;">
+      <h2 id="next" style="margin: 0; font-size: 15px; font-weight: 600;">Your next visit</h2>
+      <article class="card">
+        <div style="display: flex; align-items: center; gap: 14px; padding: 16px; background: var(--blue-card); border-bottom: 1px solid var(--line);">
+          <span class="avatar" aria-hidden="true" style="background: var(--white);">DR</span>
+          <div style="display: flex; flex-direction: column;">
+            <span style="font-size: 16px; font-weight: 600;">Dana Ruiz, NP</span>
+            <span style="font-size: 15px;"><b>Oct 14 2026, 10:30 am</b></span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 16px;">
+          <div style="display: flex; align-items: center; gap: 10px; color: var(--ink-2);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-6.5-6-6.5-11a6.5 6.5 0 0 1 13 0c0 5-6.5 11-6.5 11z"></path><circle cx="12" cy="10" r="2.3"></circle></svg>
+            <span>Clayton Clinic</span>
+          </div>
+          <div id="status"><span class="chip-grey">Intake form not filled</span></div>
+          <div id="action"><a class="pill-primary" href="intake.html">Start intake</a></div>
+        </div>
+      </article>
+    </section>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+      <span class="card tile">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="1.5"></rect><path d="M3.5 6.5l8.5 6.5 8.5-6.5"></path></svg>
+        Message us
+      </span>
+      <span class="card tile">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="6" y="3.5" width="12" height="15" rx="1"></rect><path d="M9 8h6M9 11h6M9 14h4M4 20.5h16"></path></svg>
+        Appointment summaries
+      </span>
+      <span class="card tile">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="8.5" width="17" height="7" rx="3.5" transform="rotate(-45 12 12)"></rect><path d="M9.5 9.5l5 5"></path></svg>
+        Manage prescriptions
+      </span>
+      <a class="card tile" href="vitals.html">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path><path d="M6 12h3l1.5-2.5 2 4.5 1.5-2H18"></path></svg>
+        Vitals
+        <span style="margin-top: -6px; font-size: 12px; font-weight: 400; color: var(--ink-2);">Apple Health and Whoop connected</span>
+      </a>
+    </div>
+
+    <section aria-labelledby="book" style="display: flex; flex-direction: column; gap: 10px;">
+      <h2 id="book" style="margin: 0; font-size: 15px; font-weight: 600;">Book care</h2>
+      <div class="care">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--navy)" stroke-width="1.6" aria-hidden="true" style="flex: none; margin-top: 2px;"><path d="M12 3v7M12 14v7M3 12h7M14 12h7"></path></svg>
+        <div><b style="font-size: 15px;">Primary Care</b><p>Schedule a telehealth or CloudClinic appointment for issues that are important but not urgent.</p></div>
+      </div>
+      <div class="care">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="1.6" aria-hidden="true" style="flex: none; margin-top: 2px;"><path d="M12 3v7M12 14v7M3 12h7M14 12h7"></path></svg>
+        <div><b style="font-size: 15px;">Urgent Care</b><p>Schedule a telehealth or CloudClinic appointment if you're not feeling well or have new symptoms.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Main">
+    <span class="tab on" aria-current="page"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V20h-5.5v-6h-5v6H4z"></path></svg>Home</span>
+    <span class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3.5" y="5" width="15" height="14" rx="1.5"></rect><path d="M3.5 9.5h15M7.5 3v4M14.5 3v4"></path><circle cx="18" cy="17" r="3.5" fill="#fff"></circle><path d="M18 15.5v1.7l1.1.7"></path></svg>Appointments</span>
+    <span class="tab"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="6" y="3.5" width="12" height="15" rx="1"></rect><path d="M9 8h6M9 11h6M9 14h4M4 20.5h16"></path></svg>Lab results</span>
+    <span class="tab"><span aria-hidden="true" style="width: 26px; height: 26px; border-radius: 999px; background: var(--blue-card); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center;">W</span>Profile</span>
+  </nav>
+</div>
+<p class="caption">Concept prototype styled after Rezilient's member app. Not Rezilient's product. Synthetic patient.</p>
+<nav class="walk" aria-label="Walkthrough"><a href="index.html">Overview</a><span>Step 1 of 4</span><a href="intake.html">Next: intake</a></nav>
+
+<script>
+// After the intake, the flow comes back here with ?intake=done and the visit card flips.
+if (new URLSearchParams(location.search).get('intake') === 'done') {
+  document.getElementById('status').innerHTML = '<span class="chip-green">Intake form completed</span>';
+  document.getElementById('action').innerHTML = '<a class="pill-outline" href="intake.html">View answers</a>';
+}
+</script>
+</body>
+</html>

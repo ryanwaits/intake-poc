@@ -1,0 +1,20 @@
+[
+  {
+    "key": "run",
+    "cases_total": 224,
+    "synthetic_cases": 179,
+    "synthetic_dropped": 21,
+    "semigran_cases": 45,
+    "labeled_fields": 892,
+    "red_flag_cases": 38,
+    "test_cases": 114,
+    "recommendation_amended_arm": "jev",
+    "leader_preregistered_arm": "clef",
+    "recommendation_amended": "Jev decision API",
+    "leader_preregistered": "Clef 27B (Cloudflare)",
+    "recommendation_preregistered": "GPT-6 Luna, typed + logprobs",
+    "tied_amended": 5,
+    "arena_spend_usd": 2.24,
+    "generated_at": "2026-10-09T04:06:12.708Z"
+  }
+]

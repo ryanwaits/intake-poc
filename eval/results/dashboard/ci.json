@@ -1,0 +1,146 @@
+[
+  {
+    "view": "amended",
+    "arm": "rules",
+    "name": "Rules only",
+    "leader": "jev",
+    "diff": -0.0443,
+    "lo": -0.0638,
+    "hi": -0.0266
+  },
+  {
+    "view": "amended",
+    "arm": "clef",
+    "name": "Clef 27B (Cloudflare)",
+    "leader": "jev",
+    "diff": -0.0073,
+    "lo": -0.0165,
+    "hi": 0
+  },
+  {
+    "view": "amended",
+    "arm": "clef-flash",
+    "name": "Clef-flash 9B (Cloudflare)",
+    "leader": "jev",
+    "diff": -0.0313,
+    "lo": -0.053,
+    "hi": -0.013
+  },
+  {
+    "view": "amended",
+    "arm": "kev-4b",
+    "name": "Kev-4B local (MLX)",
+    "leader": "jev",
+    "diff": -0.0543,
+    "lo": -0.0782,
+    "hi": -0.0334
+  },
+  {
+    "view": "amended",
+    "arm": "haiku-typed",
+    "name": "Haiku 5.5, typed",
+    "leader": "jev",
+    "diff": -0.0073,
+    "lo": -0.0217,
+    "hi": 0.0038
+  },
+  {
+    "view": "amended",
+    "arm": "luna-typed",
+    "name": "GPT-6 Luna, typed + logprobs",
+    "leader": "jev",
+    "diff": -0.0068,
+    "lo": -0.0177,
+    "hi": 0.0032
+  },
+  {
+    "view": "amended",
+    "arm": "haiku-e2e",
+    "name": "Haiku 5.5, one prompt",
+    "leader": "jev",
+    "diff": -0.0076,
+    "lo": -0.0244,
+    "hi": 0.0053
+  },
+  {
+    "view": "amended",
+    "arm": "opus-e2e",
+    "name": "Opus 5.5, one prompt",
+    "leader": "jev",
+    "diff": -0.0162,
+    "lo": -0.0347,
+    "hi": 0.0015
+  },
+  {
+    "view": "preregistered",
+    "arm": "rules",
+    "name": "Rules only",
+    "leader": "clef",
+    "diff": -0.037,
+    "lo": -0.0584,
+    "hi": -0.0168
+  },
+  {
+    "view": "preregistered",
+    "arm": "jev",
+    "name": "Jev decision API",
+    "leader": "clef",
+    "diff": 0.0073,
+    "lo": 0,
+    "hi": 0.0165
+  },
+  {
+    "view": "preregistered",
+    "arm": "clef-flash",
+    "name": "Clef-flash 9B (Cloudflare)",
+    "leader": "clef",
+    "diff": -0.0239,
+    "lo": -0.0432,
+    "hi": -0.0077
+  },
+  {
+    "view": "preregistered",
+    "arm": "kev-4b",
+    "name": "Kev-4B local (MLX)",
+    "leader": "clef",
+    "diff": -0.047,
+    "lo": -0.0683,
+    "hi": -0.0284
+  },
+  {
+    "view": "preregistered",
+    "arm": "haiku-typed",
+    "name": "Haiku 5.5, typed",
+    "leader": "clef",
+    "diff": 0,
+    "lo": -0.0161,
+    "hi": 0.0141
+  },
+  {
+    "view": "preregistered",
+    "arm": "luna-typed",
+    "name": "GPT-6 Luna, typed + logprobs",
+    "leader": "clef",
+    "diff": 0.0005,
+    "lo": -0.0097,
+    "hi": 0.0104
+  },
+  {
+    "view": "preregistered",
+    "arm": "haiku-e2e",
+    "name": "Haiku 5.5, one prompt",
+    "leader": "clef",
+    "diff": -0.0003,
+    "lo": -0.0188,
+    "hi": 0.0157
+  },
+  {
+    "view": "preregistered",
+    "arm": "opus-e2e",
+    "name": "Opus 5.5, one prompt",
+    "leader": "clef",
+    "diff": -0.0089,
+    "lo": -0.0283,
+    "hi": 0.01
+  }
+]

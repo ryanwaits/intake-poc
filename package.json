@@ -1,0 +1,37 @@
+{
+  "name": "intake-poc",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "scripts": {
+    "dev": "bun --watch src/api/server.ts",
+    "start": "bun src/api/server.ts",
+    "demo": "bun scripts/demo.ts",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "eval:generate": "bun eval/generate.ts",
+    "eval:review": "bun eval/review.ts",
+    "eval:arena": "bun eval/arena.ts",
+    "eval:score": "bun eval/score.ts",
+    "ops:slo": "docker run --rm -v \"$PWD/ops:/ops\" ghcr.io/slok/sloth:v0.16.0 generate -i /ops/slo/intake.sloth.yaml -o /ops/prometheus/rules/intake-slo.yml",
+    "ops:up": "docker compose up -d --build",
+    "ops:down": "docker compose down",
+    "ops:traffic": "bun ops/traffic.ts"
+  },
+  "dependencies": {
+    "@typesafe-ai/sdk": "0.6.0",
+    "hono": "4.13.13",
+    "prom-client": "15.1.3"
+  },
+  "devDependencies": {
+    "@anthropic-ai/sdk": "0.132.1",
+    "@biomejs/biome": "2.5.15",
+    "@types/bun": "1.4.2",
+    "@types/fhir": "0.0.44",
+    "ollama": "0.6.4",
+    "openai": "7.30.1",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intake prototypes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
+<style>
+body { background: var(--bg); }
+.top { display: flex; align-items: center; gap: 16px; height: 64px; padding: 0 max(16px, calc((100% - 1120px) / 2)); background: var(--white); border-bottom: 1px solid var(--line); }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 36px 16px 56px; display: flex; flex-direction: column; gap: 28px; }
+.lede { margin: 0; max-width: 68ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-2); }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 16px; }
+.step { display: flex; flex-direction: column; overflow: hidden; color: inherit; text-decoration: none; }
+a.step:hover { border-color: var(--navy); }
+.shot { display: flex; align-items: flex-start; justify-content: center; height: 300px; overflow: hidden; background: var(--page); padding-top: 16px; }
+.shot img { width: 78%; height: auto; border-radius: 16px; box-shadow: 0 8px 20px rgba(13, 34, 64, 0.14); }
+.shot.wide img { width: 96%; border-radius: 6px; }
+.step-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 18px; }
+.num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 999px; background: var(--navy); color: var(--white); font-size: 13px; font-weight: 700; }
+.step h2 { margin: 0; font-family: var(--title); font-weight: 400; font-size: 20px; }
+.step p { margin: 0; font-size: 14px; color: var(--ink-2); line-height: 1.5; }
+.footnote { margin: 0; font-size: 13px; color: var(--muted); max-width: 80ch; }
+</style>
+</head>
+<body>
+<header class="top">
+  <img class="wordmark" src="assets/rezilient-logo.svg" alt="Rezilient">
+  <span style="width: 1px; height: 22px; background: var(--line);"></span>
+  <span style="font-size: 14px; font-weight: 600; color: var(--ink-2);">Intake · concept prototypes</span>
+</header>
+<main class="wrap">
+  <div style="display: flex; flex-direction: column; gap: 10px;">
+    <h1 class="title" style="font-size: 36px;">From the phone to the provider</h1>
+    <p class="lede">One flow in four screens, styled after Rezilient's member app so the idea reads in context. A member answers their intake in their own words, shares readings from Apple Health and their wearables, and the clinician sees what the intake assistant decided and where every number came from. Each screen is one HTML file; open it and click through.</p>
+  </div>
+
+  <ol class="steps">
+    <li>
+      <a class="card step" href="home.html">
+        <div class="shot"><img src="img/home.png" alt="Home screen: Hi Walter, an upcoming visit with Intake form not filled, and a Vitals tile"></div>
+        <div class="step-body">
+          <span class="num" aria-hidden="true">1</span>
+          <h2>Home</h2>
+          <p>The visit card already says "Intake form not filled", the same step members see today. Vitals shows which devices are connected.</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="card step" href="intake.html">
+        <div class="shot"><img src="img/intake-played.png" alt="Intake as a short conversation, with an Apple Health blood pressure reading to confirm"></div>
+        <div class="step-body">
+          <span class="num" aria-hidden="true">2</span>
+          <h2>Intake</h2>
+          <p>Brain dump first, by voice or text, then two quick follow-ups at a time. A recent Apple Health reading is offered for one-tap confirmation. Press Play sample.</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="card step" href="vitals.html">
+        <div class="shot"><img src="img/vitals.png" alt="Vitals screen: each reading shows its device, how it got here and how old it is"></div>
+        <div class="step-body">
+          <span class="num" aria-hidden="true">3</span>
+          <h2>Vitals</h2>
+          <p>Every reading carries its source and age, measured versus typed, with stale values flagged. Connect a device shows on-phone data and connected accounts separately.</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a class="card step" href="clinic.html">
+        <div class="shot wide"><img src="img/clinic.png" alt="Clinician view: today's visit queue, the prep card with red flag and home vitals, and the assistant's decisions with probabilities and rules"></div>
+        <div class="step-body">
+          <span class="num" aria-hidden="true">4</span>
+          <h2>Clinic view</h2>
+          <p>Today's visit queue, with red flags pinned to the top. The prep card shows the red flag routed to the provider and home vitals with their sources, next to every decision the assistant made as question, probability and rule.</p>
+        </div>
+      </a>
+    </li>
+  </ol>
+
+  <p class="footnote">Concept prototypes styled after Rezilient's member app from its App Store screenshots. Not Rezilient's product. Synthetic patients only. Model outputs on the clinic view are real runs recorded 9 Oct 2026; the intake screen matches keywords in the browser to show the interaction, and home vitals are illustrative.</p>
+</main>
+</body>
+</html>

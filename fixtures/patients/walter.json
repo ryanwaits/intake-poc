@@ -1,0 +1,101 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "walter",
+        "name": [{ "family": "Synthetic", "given": ["Walter"] }],
+        "gender": "male",
+        "birthDate": "1953-11-02",
+        "telecom": [{ "system": "phone", "value": "555-0187" }],
+        "address": [
+          { "line": ["400 Oak Ave"], "city": "Stillwater", "state": "OK", "postalCode": "74074" }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "walter-copd",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            {
+              "system": "http://snomed.info/sct",
+              "code": "13645005",
+              "display": "Chronic obstructive lung disease"
+            }
+          ],
+          "text": "COPD"
+        },
+        "subject": { "reference": "Patient/walter" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "walter-cad",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": { "text": "Coronary artery disease" },
+        "subject": { "reference": "Patient/walter" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "walter-albuterol",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": { "text": "albuterol inhaler" },
+        "subject": { "reference": "Patient/walter" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "walter-atorvastatin",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": { "text": "atorvastatin 40 MG Oral Tablet" },
+        "subject": { "reference": "Patient/walter" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "walter-cabg",
+        "status": "completed",
+        "code": { "text": "Coronary artery bypass graft" },
+        "performedDateTime": "2019-05-08",
+        "subject": { "reference": "Patient/walter" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "walter-tobacco",
+        "status": "final",
+        "code": { "coding": [{ "system": "http://loinc.org", "code": "72166-2" }] },
+        "valueCodeableConcept": { "text": "Former smoker, quit 2019" },
+        "effectiveDateTime": "2026-05-20",
+        "subject": { "reference": "Patient/walter" }
+      }
+    }
+  ]
+}

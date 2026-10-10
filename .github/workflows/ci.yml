@@ -1,0 +1,50 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: oven-sh/setup-bun@v2
+        with: { bun-version: 1.4.2 }
+      - run: bun install --frozen-lockfile
+      - run: bun run typecheck
+      - run: bun run lint
+      - run: bun test
+
+  platform:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: SLO rules are generated from the spec and valid
+        run: |
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD/ops:/ops" ghcr.io/slok/sloth:v0.16.0 generate -i /ops/slo/intake.sloth.yaml -o /ops/prometheus/rules/intake-slo.yml
+          git diff --exit-code ops/prometheus/rules
+          docker run --rm -v "$PWD/ops:/ops" --entrypoint promtool prom/prometheus:v3.14.0 check rules /ops/prometheus/rules/intake-slo.yml /ops/prometheus/rules/intake-guards.yml
+          docker run --rm -v "$PWD/ops:/ops" -w /ops/prometheus/tests --entrypoint promtool prom/prometheus:v3.14.0 test rules intake-guards.test.yml
+          docker run --rm -v "$PWD/ops:/ops" --entrypoint promtool prom/prometheus:v3.14.0 check config /ops/prometheus/prometheus.yml
+      - name: No high or critical misconfigurations
+        run: |
+          docker run --rm -v "$PWD:/src:ro" aquasec/trivy:0.74.0 config --exit-code 1 \
+            --severity HIGH,CRITICAL \
+            --skip-dirs /src/node_modules /src
+
+  image:
+    needs: [check, platform]
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build
+        run: docker build -t intake:${{ github.sha }} .
+      - name: No high or critical vulnerabilities in the image
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:0.74.0 image \
+            --exit-code 1 --severity HIGH,CRITICAL --ignore-unfixed intake:${{ github.sha }}

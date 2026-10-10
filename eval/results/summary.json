@@ -1,0 +1,1484 @@
+{
+  "generatedAt": "2026-10-09T04:06:12.708Z",
+  "cases": {
+    "total": 224,
+    "dev": 110,
+    "test": 114
+  },
+  "decisions": {
+    "preregistered": {
+      "passing": [
+        "clef",
+        "luna-typed",
+        "opus-e2e"
+      ],
+      "leader": "clef",
+      "tiedWithLeader": [
+        "clef",
+        "luna-typed",
+        "opus-e2e"
+      ],
+      "recommendation": "luna-typed",
+      "comparisons": [
+        {
+          "arm": "rules",
+          "vsLeader": [
+            -0.03699633699633699,
+            -0.058424908424908426,
+            -0.01682365253793825
+          ]
+        },
+        {
+          "arm": "jev",
+          "vsLeader": [
+            0.007326007326007326,
+            0,
+            0.016483516483516484
+          ]
+        },
+        {
+          "arm": "clef",
+          "vsLeader": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "clef-flash",
+          "vsLeader": [
+            -0.0239403453689168,
+            -0.043171114599686033,
+            -0.007718472004186292
+          ]
+        },
+        {
+          "arm": "kev-4b",
+          "vsLeader": [
+            -0.04695185766614338,
+            -0.06826268969126112,
+            -0.02838827838827839
+          ]
+        },
+        {
+          "arm": "haiku-typed",
+          "vsLeader": [
+            0,
+            -0.01609105180533752,
+            0.0141287284144427
+          ]
+        },
+        {
+          "arm": "luna-typed",
+          "vsLeader": [
+            0.00054945054945055,
+            -0.009733124018838303,
+            0.01043956043956044
+          ]
+        },
+        {
+          "arm": "local-typed",
+          "vsLeader": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "haiku-e2e",
+          "vsLeader": [
+            -0.0002616431187859762,
+            -0.018759811616954475,
+            0.015672422815279956
+          ]
+        },
+        {
+          "arm": "opus-e2e",
+          "vsLeader": [
+            -0.008922030350601778,
+            -0.028283621140763996,
+            0.009968602825745684
+          ]
+        }
+      ]
+    },
+    "amended": {
+      "passing": [
+        "jev",
+        "clef",
+        "clef-flash",
+        "kev-4b",
+        "haiku-typed",
+        "luna-typed",
+        "opus-e2e"
+      ],
+      "leader": "jev",
+      "tiedWithLeader": [
+        "jev",
+        "clef",
+        "haiku-typed",
+        "luna-typed",
+        "opus-e2e"
+      ],
+      "recommendation": "jev",
+      "comparisons": [
+        {
+          "arm": "rules",
+          "vsLeader": [
+            -0.04432234432234431,
+            -0.06376242804814235,
+            -0.026635269492412343
+          ]
+        },
+        {
+          "arm": "jev",
+          "vsLeader": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "clef",
+          "vsLeader": [
+            -0.007326007326007326,
+            -0.016483516483516484,
+            0
+          ]
+        },
+        {
+          "arm": "clef-flash",
+          "vsLeader": [
+            -0.03126635269492412,
+            -0.05298273155416013,
+            -0.012951334379905812
+          ]
+        },
+        {
+          "arm": "kev-4b",
+          "vsLeader": [
+            -0.054277864992150704,
+            -0.07816588173731033,
+            -0.03341182626896912
+          ]
+        },
+        {
+          "arm": "haiku-typed",
+          "vsLeader": [
+            -0.007326007326007326,
+            -0.021716378859236003,
+            0.0038199895342752458
+          ]
+        },
+        {
+          "arm": "luna-typed",
+          "vsLeader": [
+            -0.006776556776556776,
+            -0.01768707482993197,
+            0.0032182103610675036
+          ]
+        },
+        {
+          "arm": "local-typed",
+          "vsLeader": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "arm": "haiku-e2e",
+          "vsLeader": [
+            -0.007587650444793302,
+            -0.024437467294610153,
+            0.0053375196232339096
+          ]
+        },
+        {
+          "arm": "opus-e2e",
+          "vsLeader": [
+            -0.016248037676609105,
+            -0.0346938775510204,
+            0.0014913657770800636
+          ]
+        }
+      ]
+    }
+  },
+  "arms": [
+    {
+      "arm": "rules",
+      "label": "Rules only",
+      "model": "none",
+      "approach": "rules",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9466666666666667,
+        "missedFieldRate": 0.0653061224489796,
+        "overAskRate": 0.03902439024390244,
+        "extraAsksPerCase": 0.07692307692307693,
+        "redFlagRecall": 0.8333333333333334,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.945054945054945,
+        "semigranEmergentRecall": 0,
+        "semigranSelfCareEscalated": 0.125,
+        "injectionMissedRate": 0.0967741935483871,
+        "otherMissedRate": 0.06074766355140187,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": null,
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 1,
+        "p95": 2
+      },
+      "costPerIntakeUsd": 0,
+      "costPer100kUsd": 0,
+      "inputTokensPerIntake": 0,
+      "armCodeLines": 84,
+      "baa": "n/a, no vendor",
+      "selfHost": true,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9466666666666667,
+            "missedFieldRate": 0.0653061224489796,
+            "overAskRate": 0.03902439024390244,
+            "extraAsksPerCase": 0.07692307692307693,
+            "redFlagRecall": 0.8333333333333334,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.945054945054945,
+            "semigranEmergentRecall": 0,
+            "semigranSelfCareEscalated": 0.125,
+            "injectionMissedRate": 0.0967741935483871,
+            "otherMissedRate": 0.06074766355140187,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9466666666666667,
+            "missedFieldRate": 0.0653061224489796,
+            "overAskRate": 0.03902439024390244,
+            "extraAsksPerCase": 0.07692307692307693,
+            "redFlagRecall": 0.8333333333333334,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.945054945054945,
+            "semigranEmergentRecall": 0,
+            "semigranSelfCareEscalated": 0.125,
+            "injectionMissedRate": 0.0967741935483871,
+            "otherMissedRate": 0.06074766355140187,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        }
+      }
+    },
+    {
+      "arm": "jev",
+      "label": "Jev decision API",
+      "model": "jev-1.13.0",
+      "approach": "decision-api",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9866666666666667,
+        "missedFieldRate": 0.004081632653061225,
+        "overAskRate": 0.024390243902439025,
+        "extraAsksPerCase": 0.8461538461538461,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0.0273972602739726,
+        "complaintExact": 0.6373626373626373,
+        "semigranEmergentRecall": 0.875,
+        "semigranSelfCareEscalated": 0.25,
+        "injectionMissedRate": 0,
+        "otherMissedRate": 0.004672897196261682,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.026316472114137516,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.011706454465074994,
+            "accuracy": 0,
+            "n": 1131
+          },
+          {
+            "bin": 1,
+            "confidence": 0.1185714285714286,
+            "accuracy": 0,
+            "n": 21
+          },
+          {
+            "bin": 2,
+            "confidence": 0.22142857142857145,
+            "accuracy": 0,
+            "n": 7
+          },
+          {
+            "bin": 3,
+            "confidence": 0.36,
+            "accuracy": 0,
+            "n": 4
+          },
+          {
+            "bin": 4,
+            "confidence": 0.4442857142857143,
+            "accuracy": 0.42857142857142855,
+            "n": 7
+          },
+          {
+            "bin": 5,
+            "confidence": 0.54,
+            "accuracy": 0,
+            "n": 2
+          },
+          {
+            "bin": 6,
+            "confidence": 0.6625,
+            "accuracy": 0.5,
+            "n": 8
+          },
+          {
+            "bin": 7,
+            "confidence": 0.7666666666666666,
+            "accuracy": 0.5555555555555556,
+            "n": 9
+          },
+          {
+            "bin": 8,
+            "confidence": 0.8607692307692306,
+            "accuracy": 0.4230769230769231,
+            "n": 26
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9849847094801231,
+            "accuracy": 0.9663608562691132,
+            "n": 327
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 141,
+        "p95": 181
+      },
+      "costPerIntakeUsd": 0.00009281437500000003,
+      "costPer100kUsd": 9.281437500000003,
+      "inputTokensPerIntake": 2209.8660714285716,
+      "armCodeLines": 142,
+      "baa": "Not offered publicly",
+      "selfHost": false,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.98,
+            "answeredAt": 0.39
+          },
+          "test": {
+            "paperworkAccuracy": 0.9933333333333333,
+            "missedFieldRate": 0.012244897959183673,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.8351648351648352,
+            "redFlagRecall": 0.9444444444444444,
+            "falseEscalationRate": 0.0273972602739726,
+            "complaintExact": 0.6373626373626373,
+            "semigranEmergentRecall": 0.875,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0.014018691588785047,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.014285714285714285
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.39
+          },
+          "test": {
+            "paperworkAccuracy": 0.9933333333333333,
+            "missedFieldRate": 0.012244897959183673,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.8351648351648352,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0.0273972602739726,
+            "complaintExact": 0.6373626373626373,
+            "semigranEmergentRecall": 0.875,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0.014018691588785047,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.014285714285714285
+        }
+      }
+    },
+    {
+      "arm": "clef",
+      "label": "Clef 27B (Cloudflare)",
+      "model": "@cf/cloudflare/clef",
+      "approach": "decision-api",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9866666666666667,
+        "missedFieldRate": 0.02040816326530612,
+        "overAskRate": 0.004878048780487805,
+        "extraAsksPerCase": 0.7362637362637363,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.6813186813186813,
+        "semigranEmergentRecall": 0.375,
+        "semigranSelfCareEscalated": 0.125,
+        "injectionMissedRate": 0.03225806451612903,
+        "otherMissedRate": 0.018691588785046728,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.03707042801556425,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.01606833184656558,
+            "accuracy": 0,
+            "n": 1121
+          },
+          {
+            "bin": 1,
+            "confidence": 0.1297838709677419,
+            "accuracy": 0.03225806451612903,
+            "n": 31
+          },
+          {
+            "bin": 2,
+            "confidence": 0.24756666666666668,
+            "accuracy": 0,
+            "n": 6
+          },
+          {
+            "bin": 3,
+            "confidence": 0.34390000000000004,
+            "accuracy": 0,
+            "n": 6
+          },
+          {
+            "bin": 4,
+            "confidence": 0.4445666666666666,
+            "accuracy": 0,
+            "n": 3
+          },
+          {
+            "bin": 5,
+            "confidence": 0.5535400000000001,
+            "accuracy": 0,
+            "n": 5
+          },
+          {
+            "bin": 6,
+            "confidence": 0.6485333333333334,
+            "accuracy": 0,
+            "n": 9
+          },
+          {
+            "bin": 7,
+            "confidence": 0.7496909090909092,
+            "accuracy": 0,
+            "n": 11
+          },
+          {
+            "bin": 8,
+            "confidence": 0.8603230769230771,
+            "accuracy": 0.6153846153846154,
+            "n": 26
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9690595679012344,
+            "accuracy": 0.9938271604938271,
+            "n": 324
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 756,
+        "p95": 1309
+      },
+      "costPerIntakeUsd": 0.0007530825000000004,
+      "costPer100kUsd": 75.30825000000003,
+      "inputTokensPerIntake": 3137.84375,
+      "armCodeLines": 158,
+      "baa": "Not stated for Workers AI",
+      "selfHost": true,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.95,
+            "answeredAt": 0.73
+          },
+          "test": {
+            "paperworkAccuracy": 0.9866666666666667,
+            "missedFieldRate": 0.02040816326530612,
+            "overAskRate": 0.004878048780487805,
+            "extraAsksPerCase": 0.7362637362637363,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.6813186813186813,
+            "semigranEmergentRecall": 0.375,
+            "semigranSelfCareEscalated": 0,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.018691588785046728,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.73
+          },
+          "test": {
+            "paperworkAccuracy": 0.9866666666666667,
+            "missedFieldRate": 0.02040816326530612,
+            "overAskRate": 0.004878048780487805,
+            "extraAsksPerCase": 0.7362637362637363,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.6813186813186813,
+            "semigranEmergentRecall": 0.375,
+            "semigranSelfCareEscalated": 0.125,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.018691588785046728,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        }
+      }
+    },
+    {
+      "arm": "clef-flash",
+      "label": "Clef-flash 9B (Cloudflare)",
+      "model": "@cf/cloudflare/clef-flash",
+      "approach": "decision-api",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9688888888888889,
+        "missedFieldRate": 0.0326530612244898,
+        "overAskRate": 0.02926829268292683,
+        "extraAsksPerCase": 0.7582417582417582,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0.1095890410958904,
+        "complaintExact": 0.6593406593406593,
+        "semigranEmergentRecall": 0.75,
+        "semigranSelfCareEscalated": 0.25,
+        "injectionMissedRate": 0.03225806451612903,
+        "otherMissedRate": 0.03271028037383177,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.028771076523994705,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.01371741472172352,
+            "accuracy": 0.0008976660682226212,
+            "n": 1114
+          },
+          {
+            "bin": 1,
+            "confidence": 0.1481758620689655,
+            "accuracy": 0.034482758620689655,
+            "n": 29
+          },
+          {
+            "bin": 2,
+            "confidence": 0.24009090909090913,
+            "accuracy": 0,
+            "n": 11
+          },
+          {
+            "bin": 3,
+            "confidence": 0.3433285714285715,
+            "accuracy": 0.14285714285714285,
+            "n": 7
+          },
+          {
+            "bin": 4,
+            "confidence": 0.4283,
+            "accuracy": 0.25,
+            "n": 4
+          },
+          {
+            "bin": 5,
+            "confidence": 0.5698,
+            "accuracy": 0.16666666666666666,
+            "n": 6
+          },
+          {
+            "bin": 6,
+            "confidence": 0.65794,
+            "accuracy": 0.2,
+            "n": 5
+          },
+          {
+            "bin": 7,
+            "confidence": 0.7636666666666668,
+            "accuracy": 0.13333333333333333,
+            "n": 15
+          },
+          {
+            "bin": 8,
+            "confidence": 0.8505333333333334,
+            "accuracy": 0.5555555555555556,
+            "n": 18
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9716399399399395,
+            "accuracy": 0.963963963963964,
+            "n": 333
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 383,
+        "p95": 765
+      },
+      "costPerIntakeUsd": 0.0002824059375,
+      "costPer100kUsd": 28.24059375,
+      "inputTokensPerIntake": 3137.84375,
+      "armCodeLines": 158,
+      "baa": "Not stated for Workers AI",
+      "selfHost": true,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.99,
+            "answeredAt": 0.63
+          },
+          "test": {
+            "paperworkAccuracy": 0.9688888888888889,
+            "missedFieldRate": 0.0326530612244898,
+            "overAskRate": 0.02926829268292683,
+            "extraAsksPerCase": 0.7582417582417582,
+            "redFlagRecall": 0.8333333333333334,
+            "falseEscalationRate": 0.0684931506849315,
+            "complaintExact": 0.6593406593406593,
+            "semigranEmergentRecall": 0.625,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.03271028037383177,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.63
+          },
+          "test": {
+            "paperworkAccuracy": 0.9688888888888889,
+            "missedFieldRate": 0.0326530612244898,
+            "overAskRate": 0.02926829268292683,
+            "extraAsksPerCase": 0.7582417582417582,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0.1095890410958904,
+            "complaintExact": 0.6593406593406593,
+            "semigranEmergentRecall": 0.75,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.03271028037383177,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        }
+      }
+    },
+    {
+      "arm": "kev-4b",
+      "label": "Kev-4B local (MLX)",
+      "model": "jaredpalmer/kev-4b@v1.0",
+      "approach": "decision-api",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9222222222222223,
+        "missedFieldRate": 0.036734693877551024,
+        "overAskRate": 0.12682926829268293,
+        "extraAsksPerCase": 0.7692307692307693,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0.0958904109589041,
+        "complaintExact": 0.6263736263736264,
+        "semigranEmergentRecall": 0.625,
+        "semigranSelfCareEscalated": 0.375,
+        "injectionMissedRate": 0,
+        "otherMissedRate": 0.04205607476635514,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.036291893644617344,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.02673082259663033,
+            "accuracy": 0.004955401387512388,
+            "n": 1009
+          },
+          {
+            "bin": 1,
+            "confidence": 0.14167870370370372,
+            "accuracy": 0.037037037037037035,
+            "n": 108
+          },
+          {
+            "bin": 2,
+            "confidence": 0.25115813953488375,
+            "accuracy": 0.13953488372093023,
+            "n": 43
+          },
+          {
+            "bin": 3,
+            "confidence": 0.3508266666666667,
+            "accuracy": 0.3333333333333333,
+            "n": 15
+          },
+          {
+            "bin": 4,
+            "confidence": 0.454595238095238,
+            "accuracy": 0.42857142857142855,
+            "n": 21
+          },
+          {
+            "bin": 5,
+            "confidence": 0.5523,
+            "accuracy": 0.3333333333333333,
+            "n": 15
+          },
+          {
+            "bin": 6,
+            "confidence": 0.6597714285714286,
+            "accuracy": 0.42857142857142855,
+            "n": 14
+          },
+          {
+            "bin": 7,
+            "confidence": 0.7546275862068963,
+            "accuracy": 0.7241379310344828,
+            "n": 29
+          },
+          {
+            "bin": 8,
+            "confidence": 0.859232786885246,
+            "accuracy": 0.8688524590163934,
+            "n": 61
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9511524229074892,
+            "accuracy": 0.9911894273127754,
+            "n": 227
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 5102,
+        "p95": 5483
+      },
+      "costPerIntakeUsd": 0,
+      "costPer100kUsd": 0,
+      "inputTokensPerIntake": 1346.2232142857142,
+      "armCodeLines": 158,
+      "baa": "Not needed, data never leaves",
+      "selfHost": true,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.73,
+            "answeredAt": 0.41
+          },
+          "test": {
+            "paperworkAccuracy": 0.9377777777777778,
+            "missedFieldRate": 0.04897959183673469,
+            "overAskRate": 0.07804878048780488,
+            "extraAsksPerCase": 0.7692307692307693,
+            "redFlagRecall": 0.8888888888888888,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.6263736263736264,
+            "semigranEmergentRecall": 0.375,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.0514018691588785,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.41
+          },
+          "test": {
+            "paperworkAccuracy": 0.9377777777777778,
+            "missedFieldRate": 0.04897959183673469,
+            "overAskRate": 0.07804878048780488,
+            "extraAsksPerCase": 0.7692307692307693,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0.0958904109589041,
+            "complaintExact": 0.6263736263736264,
+            "semigranEmergentRecall": 0.625,
+            "semigranSelfCareEscalated": 0.375,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.0514018691588785,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0
+        }
+      }
+    },
+    {
+      "arm": "haiku-typed",
+      "label": "Haiku 5.5, typed",
+      "model": "claude-haiku-5-5",
+      "approach": "typed",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9888888888888889,
+        "missedFieldRate": 0.012244897959183673,
+        "overAskRate": 0.00975609756097561,
+        "extraAsksPerCase": 0.45054945054945056,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0.0136986301369863,
+        "complaintExact": 0.8131868131868132,
+        "semigranEmergentRecall": 0.75,
+        "semigranSelfCareEscalated": 0.25,
+        "injectionMissedRate": 0.03225806451612903,
+        "otherMissedRate": 0.009345794392523364,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.05401426718547369,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.037917466410748744,
+            "accuracy": 0,
+            "n": 1042
+          },
+          {
+            "bin": 1,
+            "confidence": 0.14410256410256406,
+            "accuracy": 0,
+            "n": 117
+          },
+          {
+            "bin": 2,
+            "confidence": 0.25,
+            "accuracy": 0,
+            "n": 7
+          },
+          {
+            "bin": 3,
+            "confidence": 0.30000000000000004,
+            "accuracy": 0,
+            "n": 6
+          },
+          {
+            "bin": 4,
+            "confidence": 0.39999999999999997,
+            "accuracy": 0,
+            "n": 11
+          },
+          {
+            "bin": 5,
+            "confidence": 0.55,
+            "accuracy": 0,
+            "n": 1
+          },
+          {
+            "bin": 6,
+            "confidence": 0.6,
+            "accuracy": 0.4,
+            "n": 5
+          },
+          {
+            "bin": 7,
+            "confidence": 0.7300000000000001,
+            "accuracy": 0.7,
+            "n": 10
+          },
+          {
+            "bin": 8,
+            "confidence": 0.8503409090909091,
+            "accuracy": 0.875,
+            "n": 88
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9335294117647049,
+            "accuracy": 0.9921568627450981,
+            "n": 255
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 3224,
+        "p95": 4099
+      },
+      "costPerIntakeUsd": 0.0008936334821428568,
+      "costPer100kUsd": 89.36334821428568,
+      "inputTokensPerIntake": 5288.276785714285,
+      "armCodeLines": 275,
+      "baa": "Yes, via Anthropic sales",
+      "selfHost": false,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.99,
+            "answeredAt": 0.61
+          },
+          "test": {
+            "paperworkAccuracy": 0.9888888888888889,
+            "missedFieldRate": 0.012244897959183673,
+            "overAskRate": 0.00975609756097561,
+            "extraAsksPerCase": 0.43956043956043955,
+            "redFlagRecall": 0.8888888888888888,
+            "falseEscalationRate": 0.0136986301369863,
+            "complaintExact": 0.8131868131868132,
+            "semigranEmergentRecall": 0.75,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.009345794392523364,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.04285714285714286
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.61
+          },
+          "test": {
+            "paperworkAccuracy": 0.9888888888888889,
+            "missedFieldRate": 0.012244897959183673,
+            "overAskRate": 0.00975609756097561,
+            "extraAsksPerCase": 0.43956043956043955,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0.0136986301369863,
+            "complaintExact": 0.8131868131868132,
+            "semigranEmergentRecall": 0.75,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.009345794392523364,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.04642857142857143
+        }
+      }
+    },
+    {
+      "arm": "luna-typed",
+      "label": "GPT-6 Luna, typed + logprobs",
+      "model": "gpt-6-luna",
+      "approach": "typed",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9866666666666667,
+        "missedFieldRate": 0.024489795918367346,
+        "overAskRate": 0,
+        "extraAsksPerCase": 0.7692307692307693,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.6813186813186813,
+        "semigranEmergentRecall": 0.75,
+        "semigranSelfCareEscalated": 0.25,
+        "injectionMissedRate": 0.03225806451612903,
+        "otherMissedRate": 0.02336448598130841,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": {
+        "ece": 0.02502407812984993,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.00009969408335715383,
+            "accuracy": 0,
+            "n": 1163
+          },
+          {
+            "bin": 1,
+            "confidence": 0.10918602842725811,
+            "accuracy": 0,
+            "n": 1
+          },
+          {
+            "bin": 4,
+            "confidence": 0.4074338301436139,
+            "accuracy": 0,
+            "n": 1
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9998794811636958,
+            "accuracy": 0.8992042440318302,
+            "n": 377
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 2021,
+        "p95": 2655
+      },
+      "costPerIntakeUsd": 0.00032284598214285716,
+      "costPer100kUsd": 32.284598214285715,
+      "inputTokensPerIntake": 2020.8035714285713,
+      "armCodeLines": 294,
+      "baa": "Yes, via OpenAI sales",
+      "selfHost": false,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.99,
+            "answeredAt": 0.49
+          },
+          "test": {
+            "paperworkAccuracy": 0.9866666666666667,
+            "missedFieldRate": 0.024489795918367346,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.7692307692307693,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.6813186813186813,
+            "semigranEmergentRecall": 0.75,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.02336448598130841,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.02857142857142857
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.49
+          },
+          "test": {
+            "paperworkAccuracy": 0.9866666666666667,
+            "missedFieldRate": 0.024489795918367346,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.7692307692307693,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.6813186813186813,
+            "semigranEmergentRecall": 0.75,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0.03225806451612903,
+            "otherMissedRate": 0.02336448598130841,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.02857142857142857
+        }
+      }
+    },
+    {
+      "arm": "local-typed",
+      "label": "Qwen 3.8 27B local, typed",
+      "model": "qwen3.8:27b",
+      "approach": "typed",
+      "defaultGates": {
+        "paperworkAccuracy": 1,
+        "missedFieldRate": 0,
+        "overAskRate": 0,
+        "extraAsksPerCase": 0.7272727272727273,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.7272727272727273,
+        "semigranEmergentRecall": null,
+        "semigranSelfCareEscalated": null,
+        "injectionMissedRate": 0,
+        "otherMissedRate": 0,
+        "cases": {
+          "synthetic": 11,
+          "flagged": 2,
+          "semigran": 0
+        }
+      },
+      "calibration": {
+        "ece": 0.020572916666666663,
+        "bins": [
+          {
+            "bin": 0,
+            "confidence": 0.0017985611510791374,
+            "accuracy": 0,
+            "n": 139
+          },
+          {
+            "bin": 9,
+            "confidence": 0.9943396226415094,
+            "accuracy": 0.9245283018867925,
+            "n": 53
+          }
+        ]
+      },
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 77483,
+        "p95": 87942
+      },
+      "costPerIntakeUsd": 0,
+      "costPer100kUsd": 0,
+      "inputTokensPerIntake": 1623.85,
+      "armCodeLines": 251,
+      "baa": "Not needed, data never leaves",
+      "selfHost": true,
+      "records": 20,
+      "complete": false,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.99,
+            "answeredAt": 0.91
+          },
+          "test": {
+            "paperworkAccuracy": 1,
+            "missedFieldRate": 0,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.7272727272727273,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.7272727272727273,
+            "semigranEmergentRecall": null,
+            "semigranSelfCareEscalated": null,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0,
+            "cases": {
+              "synthetic": 11,
+              "flagged": 2,
+              "semigran": 0
+            }
+          },
+          "flipRate": null
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.2,
+            "answeredAt": 0.91
+          },
+          "test": {
+            "paperworkAccuracy": 1,
+            "missedFieldRate": 0,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.7272727272727273,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.7272727272727273,
+            "semigranEmergentRecall": null,
+            "semigranSelfCareEscalated": null,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0,
+            "cases": {
+              "synthetic": 11,
+              "flagged": 2,
+              "semigran": 0
+            }
+          },
+          "flipRate": null
+        }
+      }
+    },
+    {
+      "arm": "haiku-e2e",
+      "label": "Haiku 5.5, one prompt",
+      "model": "claude-haiku-5-5",
+      "approach": "end-to-end",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9911111111111112,
+        "missedFieldRate": 0.004081632653061225,
+        "overAskRate": 0.014634146341463415,
+        "extraAsksPerCase": 0.46153846153846156,
+        "redFlagRecall": 0.9444444444444444,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.7912087912087912,
+        "semigranEmergentRecall": 0.375,
+        "semigranSelfCareEscalated": 0.25,
+        "injectionMissedRate": 0,
+        "otherMissedRate": 0.004672897196261682,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": null,
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 2140,
+        "p95": 3641
+      },
+      "costPerIntakeUsd": 0.00028185044642857146,
+      "costPer100kUsd": 28.185044642857147,
+      "inputTokensPerIntake": 1559.7098214285713,
+      "armCodeLines": 127,
+      "baa": "Yes, via Anthropic sales",
+      "selfHost": false,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9911111111111112,
+            "missedFieldRate": 0.004081632653061225,
+            "overAskRate": 0.014634146341463415,
+            "extraAsksPerCase": 0.46153846153846156,
+            "redFlagRecall": 0.9444444444444444,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.7912087912087912,
+            "semigranEmergentRecall": 0.375,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0.004672897196261682,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.05
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9911111111111112,
+            "missedFieldRate": 0.004081632653061225,
+            "overAskRate": 0.014634146341463415,
+            "extraAsksPerCase": 0.46153846153846156,
+            "redFlagRecall": 0.9444444444444444,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.7912087912087912,
+            "semigranEmergentRecall": 0.375,
+            "semigranSelfCareEscalated": 0.25,
+            "injectionMissedRate": 0,
+            "otherMissedRate": 0.004672897196261682,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.05
+        }
+      }
+    },
+    {
+      "arm": "opus-e2e",
+      "label": "Opus 5.5, one prompt",
+      "model": "claude-opus-5-5",
+      "approach": "end-to-end",
+      "defaultGates": {
+        "paperworkAccuracy": 0.9733333333333334,
+        "missedFieldRate": 0.04897959183673469,
+        "overAskRate": 0,
+        "extraAsksPerCase": 0.3956043956043956,
+        "redFlagRecall": 1,
+        "falseEscalationRate": 0,
+        "complaintExact": 0.8241758241758241,
+        "semigranEmergentRecall": 0.5,
+        "semigranSelfCareEscalated": 0.125,
+        "injectionMissedRate": 0.06451612903225806,
+        "otherMissedRate": 0.04672897196261682,
+        "cases": {
+          "synthetic": 91,
+          "flagged": 18,
+          "semigran": 16
+        }
+      },
+      "calibration": null,
+      "errorRate": 0,
+      "errors": [],
+      "latencyMs": {
+        "p50": 2059,
+        "p95": 3835
+      },
+      "costPerIntakeUsd": 0.007363392857142855,
+      "costPer100kUsd": 736.3392857142854,
+      "inputTokensPerIntake": 1559.7098214285713,
+      "armCodeLines": 127,
+      "baa": "Yes, via Anthropic sales",
+      "selfHost": false,
+      "records": 224,
+      "complete": true,
+      "views": {
+        "preregistered": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9733333333333334,
+            "missedFieldRate": 0.04897959183673469,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.3956043956043956,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.8241758241758241,
+            "semigranEmergentRecall": 0.5,
+            "semigranSelfCareEscalated": 0.125,
+            "injectionMissedRate": 0.06451612903225806,
+            "otherMissedRate": 0.04672897196261682,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.0035714285714285713
+        },
+        "amended": {
+          "gates": {
+            "escalateAt": 0.5,
+            "answeredAt": 0.5
+          },
+          "test": {
+            "paperworkAccuracy": 0.9733333333333334,
+            "missedFieldRate": 0.04897959183673469,
+            "overAskRate": 0,
+            "extraAsksPerCase": 0.3956043956043956,
+            "redFlagRecall": 1,
+            "falseEscalationRate": 0,
+            "complaintExact": 0.8241758241758241,
+            "semigranEmergentRecall": 0.5,
+            "semigranSelfCareEscalated": 0.125,
+            "injectionMissedRate": 0.06451612903225806,
+            "otherMissedRate": 0.04672897196261682,
+            "cases": {
+              "synthetic": 91,
+              "flagged": 18,
+              "semigran": 16
+            }
+          },
+          "flipRate": 0.0035714285714285713
+        }
+      }
+    }
+  ]
+}

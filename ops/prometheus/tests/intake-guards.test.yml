@@ -1,0 +1,45 @@
+# promtool test rules ops/prometheus/tests/intake-guards.test.yml
+rule_files:
+  - ../rules/intake-guards.yml
+
+evaluation_interval: 1m
+
+tests:
+  - name: a dead process pages from the probe, and a silent SLI files a ticket
+    interval: 1m
+    input_series:
+      - series: probe_success{job="intake-probe", instance="http://intake:8080/readyz"}
+        values: 1x5 0x10
+      - series: slo:sli_error:ratio_rate5m{sloth_service="intake", sloth_slo="intake-availability"}
+        values: 0x20
+      - series: slo:sli_error:ratio_rate5m{sloth_service="intake", sloth_slo="intake-latency"}
+        values: 0x20
+    alert_rule_test:
+      - eval_time: 6m
+        alertname: IntakeProbeFailing
+        exp_alerts: []
+      - eval_time: 9m
+        alertname: IntakeProbeFailing
+        exp_alerts:
+          - exp_labels:
+              severity: page
+              category: availability
+              job: intake-probe
+              instance: http://intake:8080/readyz
+            exp_annotations:
+              summary: The service is not answering its readiness probe from outside.
+              runbook: ops/runbooks/blind-or-down.md
+      - eval_time: 16m
+        alertname: IntakeSLINoData
+        exp_alerts:
+          - exp_labels:
+              severity: ticket
+              category: no-data
+              sloth_service: intake
+              sloth_slo: intake-live
+            exp_annotations:
+              summary: An SLI has had no data for 15 minutes, so its alerts cannot fire.
+              runbook: ops/runbooks/blind-or-down.md
+      - eval_time: 16m
+        alertname: IntakeProbeNoData
+        exp_alerts: []

@@ -1,0 +1,184 @@
+{
+  "rules": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 20892.84256916671,
+      "p50Ms": 0,
+      "p95Ms": 0,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 36223.84525173304,
+      "p50Ms": 1,
+      "p95Ms": 1,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "jev": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 7.247361917796909,
+      "p50Ms": 133,
+      "p95Ms": 180,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 149.8270697131894,
+      "p50Ms": 172,
+      "p95Ms": 267,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "luna-typed": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 0.46048974774713464,
+      "p50Ms": 2049,
+      "p95Ms": 2811,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 8.427896693607742,
+      "p50Ms": 2327,
+      "p95Ms": 3076,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "haiku-typed": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 0.3001672820537601,
+      "p50Ms": 3328,
+      "p95Ms": 3990,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 8.385837767877339,
+      "p50Ms": 3307,
+      "p95Ms": 3566,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "haiku-e2e": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 0.4931253168426474,
+      "p50Ms": 2073,
+      "p95Ms": 3468,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 11.486548844428095,
+      "p50Ms": 1952,
+      "p95Ms": 3001,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "opus-e2e": [
+    {
+      "concurrency": 1,
+      "requests": 24,
+      "throughputPerSec": 0.45643195314326357,
+      "p50Ms": 2089,
+      "p95Ms": 3149,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 12,
+      "requests": 24,
+      "throughputPerSec": 4.281265401127587,
+      "p50Ms": 2150,
+      "p95Ms": 3112,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "clef": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 1.4083990890022948,
+      "p50Ms": 681,
+      "p95Ms": 869,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 24.411266524210376,
+      "p50Ms": 840,
+      "p95Ms": 1335,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ],
+  "clef-flash": [
+    {
+      "concurrency": 1,
+      "requests": 64,
+      "throughputPerSec": 2.6994992749705724,
+      "p50Ms": 355,
+      "p95Ms": 526,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 32,
+      "requests": 64,
+      "throughputPerSec": 36.07578763361024,
+      "p50Ms": 451,
+      "p95Ms": 1035,
+      "errors": 3,
+      "errorTypes": [
+        "Error"
+      ]
+    }
+  ],
+  "kev-4b": [
+    {
+      "concurrency": 1,
+      "requests": 8,
+      "throughputPerSec": 0.19743684708656561,
+      "p50Ms": 5067,
+      "p95Ms": 5523,
+      "errors": 0,
+      "errorTypes": []
+    },
+    {
+      "concurrency": 4,
+      "requests": 8,
+      "throughputPerSec": 0.197793470642401,
+      "p50Ms": 20146,
+      "p95Ms": 20300,
+      "errors": 0,
+      "errorTypes": []
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "maria",
+        "name": [{ "family": "Synthetic", "given": ["Maria"] }],
+        "gender": "female",
+        "birthDate": "1974-03-12",
+        "telecom": [
+          { "system": "phone", "value": "555-0142" },
+          { "system": "email", "value": "maria@example.com" }
+        ],
+        "address": [
+          { "line": ["12 Elm St"], "city": "Clayton", "state": "NC", "postalCode": "27520" }
+        ],
+        "communication": [{ "language": { "text": "English" } }],
+        "contact": [
+          {
+            "relationship": [{ "text": "Spouse" }],
+            "name": { "family": "Synthetic", "given": ["Luis"] },
+            "telecom": [{ "system": "phone", "value": "555-0143" }]
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Coverage",
+        "id": "maria-coverage",
+        "status": "active",
+        "subscriberId": "RZ-100234",
+        "beneficiary": { "reference": "Patient/maria" },
+        "payor": [{ "display": "Example Employer Health Plan" }],
+        "class": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/coverage-class",
+                  "code": "group"
+                }
+              ]
+            },
+            "value": "EXAMPLE-01",
+            "name": "Example Manufacturing Co"
+          }
+        ]
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "maria-htn",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": {
+          "coding": [
+            { "system": "http://snomed.info/sct", "code": "38341003", "display": "Hypertension" }
+          ],
+          "text": "Hypertension"
+        },
+        "recordedDate": "2021-06-01",
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "maria-ankle",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "resolved"
+            }
+          ]
+        },
+        "code": { "text": "Sprain of ankle" },
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "maria-lisinopril",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "coding": [
+            {
+              "system": "http://www.nlm.nih.gov/research/umls/rxnorm",
+              "code": "314076",
+              "display": "lisinopril 10 MG Oral Tablet"
+            }
+          ],
+          "text": "lisinopril 10 MG Oral Tablet"
+        },
+        "authoredOn": "2026-04-02",
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "AllergyIntolerance",
+        "id": "maria-pcn",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+              "code": "active"
+            }
+          ]
+        },
+        "code": { "text": "Penicillin" },
+        "recordedDate": "2019-09-10",
+        "patient": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "maria-appendectomy",
+        "status": "completed",
+        "code": { "text": "Appendectomy" },
+        "performedDateTime": "1998-07-21",
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "maria-fh-mother",
+        "status": "completed",
+        "patient": { "reference": "Patient/maria" },
+        "relationship": { "text": "Mother" },
+        "condition": [{ "code": { "text": "Type 2 diabetes" } }],
+        "date": "2024-02-14"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "maria-tobacco",
+        "status": "final",
+        "code": { "coding": [{ "system": "http://loinc.org", "code": "72166-2" }] },
+        "valueCodeableConcept": { "text": "Never smoker" },
+        "effectiveDateTime": "2024-02-14",
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "maria-alcohol",
+        "status": "final",
+        "code": { "coding": [{ "system": "http://loinc.org", "code": "11331-6" }] },
+        "valueCodeableConcept": { "text": "Occasional, 1-2 drinks per week" },
+        "effectiveDateTime": "2026-04-02",
+        "subject": { "reference": "Patient/maria" }
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Observation",
+        "id": "maria-phq2",
+        "status": "final",
+        "code": { "coding": [{ "system": "http://loinc.org", "code": "55757-9" }] },
+        "valueQuantity": { "value": 0 },
+        "effectiveDateTime": "2026-04-02",
+        "subject": { "reference": "Patient/maria" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Intake · Intake prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&amp;family=Poppins:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="prototype.css">
+<style>
+.from-us { align-self: flex-start; max-width: 88%; padding: 10px 12px; background: var(--white); border: 1px solid var(--line); border-radius: 6px; }
+.from-us .who { display: block; font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.from-us .fine { display: block; margin-top: 6px; font-size: 11.5px; color: var(--muted); }
+.me { align-self: flex-end; max-width: 84%; padding: 10px 14px; background: var(--navy); color: var(--white); border-radius: 6px; white-space: pre-wrap; }
+.health { align-self: stretch; display: flex; flex-direction: column; gap: 8px; padding: 12px 14px; background: var(--blue-card); border: 1px solid var(--line); border-radius: 6px; }
+.source { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.listening { display: flex; align-items: center; gap: 8px; height: 40px; font-size: 14px; font-weight: 600; color: var(--navy); }
+.listening i { width: 8px; height: 8px; border-radius: 999px; background: var(--pink); }
+@media (prefers-reduced-motion: no-preference) { .listening i { animation: pulse 1s ease-in-out infinite; } }
+@keyframes pulse { 50% { opacity: 0.3; } }
+</style>
+</head>
+<body class="phone-page">
+<div class="phone">
+  <header class="bar pushed">
+    <a class="icon-btn" href="home.html"><span class="sr">Back to home</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12H5M11 6l-6 6 6 6"></path></svg>
+    </a>
+    <img class="wordmark" src="assets/rezilient-logo.svg" alt="Rezilient">
+    <button type="button" id="play" style="justify-self: end; min-height: 36px; padding: 0 6px; border: 0; background: transparent; color: var(--navy); font-size: 12px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px;">Play sample</button>
+  </header>
+  <div style="padding: 18px 18px 6px; display: flex; flex-direction: column; gap: 2px; border-top: 1px solid var(--line-2);">
+    <h1 class="title" style="font-size: 27px;">Intake form</h1>
+    <span id="progress" style="font-size: 13px; color: var(--muted);"></span>
+  </div>
+
+  <div id="thread" aria-live="polite" class="scroll" style="display: flex; flex-direction: column; gap: 12px; padding: 12px 18px 16px;"></div>
+
+  <div style="flex: none; display: flex; flex-direction: column; gap: 10px; padding: 12px 14px 22px; background: var(--white); border-top: 1px solid var(--line);">
+    <div id="chips" style="display: flex; gap: 6px; overflow-x: auto;"></div>
+    <p class="notice">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="flex: none; margin-top: 1px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+      <span>If you are having an emergency, call 911 or go to the nearest emergency department. If you are having a mental health crisis and need to talk to someone, call 988.</span>
+    </p>
+    <form id="composer" style="display: flex; align-items: center; gap: 6px; margin: 0; padding: 6px 6px 6px 14px; border: 1px solid var(--field); border-radius: 6px; background: var(--white);">
+      <label for="draft" id="draftWrap" style="flex: 1; display: flex; min-width: 0;">
+        <span class="sr">Your answer</span>
+        <input type="text" id="draft" placeholder="Type or talk…" autocomplete="off" style="flex: 1; min-width: 0; height: 40px; border: 0; font: inherit; font-size: 15px; background: transparent;">
+      </label>
+      <span id="listening" class="listening" hidden style="flex: 1;"><i aria-hidden="true"></i>Listening… (on-device)</span>
+      <button type="button" id="mic" aria-label="Dictate (on-device)" class="icon-btn" style="width: 40px; height: 40px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"></rect><path d="M5 11a7 7 0 0 0 14 0"></path><path d="M12 18v3"></path></svg>
+      </button>
+      <button type="submit" aria-label="Send" class="icon-btn" style="width: 40px; height: 40px;">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 4.5l17 7.5-17 7.5 3-7.5z"></path><path d="M6.5 12h14"></path></svg>
+      </button>
+    </form>
+    <a id="done" class="pill-primary" href="home.html?intake=done" hidden>Done</a>
+  </div>
+</div>
+<p class="caption">Concept prototype styled after Rezilient's member app. Not Rezilient's product. Synthetic patient. Answers are matched by keyword here; in the POC each item is one typed question in a single model call.</p>
+<nav class="walk" aria-label="Walkthrough"><a href="home.html">Previous: home</a><span>Step 2 of 4</span><a href="vitals.html">Next: vitals</a></nav>
+
+<script>
+// Walter's 14 open fields, each with a stand-in matcher for the model's "did they already say X?"
+// question. In the POC these are typed questions to one model call.
+const NEEDS = [
+  { id: 'onset', label: 'When it started', hint: 'Roughly when did the tightness and cough start?', re: /(since|started|began|ago|yesterday|last (week|night|month)|for (a|an|\d+|one|two|three|four|five|few|couple)\b[^.]*\b(day|days|week|weeks|month|months))/ },
+  { id: 'fever', label: 'Fever', hint: 'Have you had a fever or chills, or not?', re: /(fever|temperature|chills)/ },
+  { id: 'cough', label: 'Cough: dry or wet', hint: 'Is the cough dry, or are you bringing anything up?', re: /(dry cough|cough is dry|phlegm|mucus|coughing up|bringing up|productive)/ },
+  { id: 'breath', label: 'Short of breath', hint: 'Do you get short of breath? When?', re: /(short of breath|breathless|winded|out of breath|can't catch|hard to breathe)/ },
+  { id: 'allergies', label: 'Allergies', hint: 'Any allergies to medicines, foods or anything else? "None" counts.', re: /(allerg)/ },
+  { id: 'family', label: 'Family history', hint: 'Any conditions that run in your family, like heart disease or diabetes?', re: /(family|mother|father|\bmom\b|\bdad\b|brother|sister)[^.]*\b(had|has|died|heart|diabetes|cancer|stroke|pressure)/ },
+  { id: 'alcohol', label: 'Alcohol', hint: 'About how often do you drink alcohol? "Never" counts.', re: /(drink|alcohol|beer|wine|whiskey|sober)/ },
+  { id: 'mood', label: 'Mood lately', hint: 'Over the last two weeks, how has your mood been?', re: /(mood|depress|feeling down|been down|low lately|spirits|anxious|feeling (fine|good|ok|okay))/ },
+  { id: 'contact', label: 'Emergency contact', hint: 'Who should we call in an emergency, and their number?', re: /(emergency|wife|husband|spouse|partner|daughter|\bson\b|sister|brother)[^.]*\d{3}[-. ]?\d{4}/ },
+  { id: 'email', label: 'Email', hint: 'What email should we use?', re: /[a-z0-9._+-]+@[a-z0-9-]+\.[a-z]{2,}/ },
+  { id: 'language', label: 'Language', hint: 'Which language do you prefer for your visit?', re: /(english|spanish|español|french|vietnamese|mandarin|cantonese|tagalog|language)/ },
+  { id: 'employer', label: 'Employer', hint: 'Where do you work, or are you retired?', re: /(work (at|for)|employed|employer|retired|self-employed|i'm a |i am a )/ },
+  { id: 'member', label: 'Member ID', hint: 'Your member ID is on your insurance card, e.g. RZ-123456.', re: /\b[a-z]{2}-?\d{5,}\b|member id/ },
+  { id: 'pharmacy', label: 'Pharmacy', hint: 'Which pharmacy should we send prescriptions to?', re: /(pharmacy|cvs|walgreens|walmart|rite aid|kroger)/ },
+];
+// The 15th item comes from the phone, not the conversation: a recent reading shared from Apple Health.
+const BP = { id: 'bp', label: 'Recent blood pressure', re: /(blood pressure|\bbp\b|\b\d{2,3}\/\d{2,3}\b)/ };
+const TOTAL = NEEDS.length + 1;
+
+// One-tap answers per field. `send` is what goes into the thread; it must satisfy that field's matcher.
+const CHIPS = {
+  onset: [{ label: 'A few days ago', send: 'It started a few days ago' }, { label: 'About a week', send: 'Started about a week ago' }],
+  fever: [{ label: 'No fever', send: 'No fever' }, { label: 'Yes, a fever', send: 'Yes, I have had a fever' }],
+  cough: [{ label: 'Dry cough', send: "It's a dry cough" }, { label: 'Bringing up phlegm', send: "I'm bringing up phlegm" }],
+  breath: [{ label: 'Winded on stairs', send: 'I get winded on the stairs' }, { label: 'Short of breath at rest', send: "I'm short of breath even at rest" }],
+  allergies: [{ label: 'No allergies', send: 'No allergies' }, { label: 'Yes, some', send: 'Yes, I have allergies: ' }],
+  family: [{ label: 'Dad had heart disease', send: 'My dad had heart disease' }, { label: 'None I know of', send: 'My family has nothing I know of' }],
+  alcohol: [{ label: "I don't drink", send: "I don't drink" }, { label: 'A few a week', send: 'I drink a few beers a week' }],
+  mood: [{ label: "Mood's been fine", send: "My mood's been fine" }, { label: 'Not great', send: "I've been feeling down" }],
+  contact: [{ label: 'My wife, Joan', send: 'My wife Joan, 555-0188' }],
+  email: [{ label: 'walter@example.com', send: 'walter@example.com' }],
+  language: [{ label: 'English', send: 'English' }, { label: 'Spanish', send: 'Spanish' }],
+  employer: [{ label: "I'm retired", send: "I'm retired" }],
+  member: [{ label: 'Scan insurance card', send: 'Member ID RZ-200871 (scanned from card)' }],
+  pharmacy: [{ label: 'CVS on Main', send: 'CVS on Main' }],
+};
+// What on-device dictation "hears" for the next open item in this demo.
+const SPOKEN = {
+  allergies: 'No allergies that I know of',
+  mood: "My mood's been pretty good lately",
+  email: 'My email is walter@example.com',
+  language: 'English is fine',
+  member: 'My member ID is RZ-200871',
+  pharmacy: 'Send prescriptions to the CVS on Main',
+};
+
+// A first brain dump that covers about half, so the demo shows the follow-ups and one-tap answers.
+const SAMPLE = "Started about 4 days ago, bringing up yellow phlegm and I get winded on the stairs. No fever. Dad had a heart attack at 60. Beer or two on weekends. My wife Joan is my emergency contact, 555-0188. I'm retired.";
+const GREETING = "Hi Walter. Before you see Dana on the 14th, tell us what's going on, plus anything about you we might be missing. Any order is fine.";
+
+const quoteFor = (text, re) => {
+  const sentences = text.split(/(?<=[.!?\n])\s+|,\s+(?=(?:and |my |i |i'm |email |english |member |pharmacy ))/i).filter(Boolean);
+  const hit = sentences.find((s) => re.test(s.toLowerCase()));
+  return (hit || text).replace(/^and /i, '').replace(/[.,]\s*$/, '').trim();
+};
+
+// One patient message → newly covered fields with the words they came from.
+const cover = (text, covered) =>
+  [...NEEDS, BP].filter((n) => !covered[n.id] && n.re.test(text.toLowerCase())).map((n) => ({ id: n.id, label: n.label, quote: quoteFor(text, n.re) }));
+
+const askFor = (open) => {
+  const two = open.slice(0, 2);
+  if (two.length === 0) return null;
+  return `${open.length === 1 ? 'Last one. ' : 'Two quick ones. '}${two.map((n) => n.hint).join(' ')}`;
+};
+
+const h = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+const $ = (id) => document.getElementById(id);
+const fresh = () => ({ thread: [{ kind: 'bot', text: GREETING, first: true }], covered: {}, expanded: {}, health: null, listening: false });
+let state = fresh();
+let micTimer = null;
+
+const openNeeds = (covered) => NEEDS.filter((n) => !covered[n.id]);
+const coveredCount = (covered) => Object.keys(covered).length;
+
+function closing(covered) {
+  const open = openNeeds(covered);
+  if (open.length) return askFor(open);
+  if (!covered.bp) return 'Last thing: is the blood pressure reading above still right?';
+  return "That's everything. Dana and your medic will see this before you arrive.";
+}
+
+function send(text) {
+  const body = text.trim();
+  if (!body) return;
+  const covered = { ...state.covered };
+  const got = cover(body, covered);
+  for (const f of got) covered[f.id] = f.quote;
+  const thread = [...state.thread, { kind: 'me', text: body }];
+  thread.push({
+    kind: 'summary',
+    id: `s${thread.length}`,
+    title: got.length === 0 ? "Thanks. I didn't catch anything new there." : `Got it. That covers ${got.length}${got.length === 1 ? ' thing.' : ' things.'}`,
+    items: got,
+  });
+  let health = state.health;
+  if (!health && !covered.bp) {
+    health = 'asking';
+    thread.push({ kind: 'health' });
+  }
+  thread.push({ kind: 'bot', text: closing(covered) });
+  state = { ...state, thread, covered, health };
+  $('draft').value = '';
+  render();
+}
+
+function answerHealth(yes) {
+  if (yes) {
+    const covered = { ...state.covered, bp: 'From Apple Health: 128/82, Omron cuff, 2 days ago' };
+    // The pending follow-up still stands while form questions remain; only a wrap-up needs a new message.
+    const thread = openNeeds(covered).length ? state.thread : [...state.thread, { kind: 'bot', text: closing(covered) }];
+    state = { ...state, covered, thread, health: 'yes' };
+    render();
+    return;
+  }
+  state = { ...state, health: 'update' };
+  render();
+  $('draft').value = 'My blood pressure lately is ';
+  $('draft').focus();
+}
+
+function bubble(m) {
+  if (m.kind === 'me') return `<div class="me">${h(m.text)}</div>`;
+  if (m.kind === 'bot') {
+    return `<div class="from-us"><span class="who">Intake assistant</span>${h(m.text)}${m.first ? '<span class="fine">Automated questions. Your care team reads your answers before the visit.</span>' : ''}</div>`;
+  }
+  if (m.kind === 'health') {
+    const s = state.health;
+    const actions =
+      s === 'asking'
+        ? `<div style="display: flex; gap: 8px;"><button type="button" class="pill-primary" data-health="yes" style="min-height: 38px; padding: 0 18px; font-size: 14px;">Yes</button><button type="button" class="pill-outline" data-health="update" style="min-height: 38px;">Update</button></div>`
+        : s === 'yes'
+          ? '<span class="chip-green" style="align-self: flex-start;">Added to your intake</span>'
+          : '<span style="font-size: 13px; color: var(--ink-2);">Type your latest reading below.</span>';
+    return `<div class="health">
+      <span class="source"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"></path></svg>From Apple Health · Omron cuff · 2 days ago</span>
+      <span style="font-size: 15px;">Blood pressure <b style="font-size: 18px;">128/82</b>. Still right?</span>
+      ${actions}
+      <span style="font-size: 11.5px; color: var(--muted);">Shared with your permission. Only this reading leaves your phone.</span>
+    </div>`;
+  }
+  const isOpen = !!state.expanded[m.id];
+  const has = m.items.length > 0;
+  return `<div class="from-us" style="display: flex; flex-direction: column; gap: 6px;">
+    <span style="font-weight: 700; color: var(--navy);">${h(m.title)}</span>
+    ${has ? `<span style="font-size: 13px; color: var(--ink-2);">${h(m.items.map((i) => i.label).join(' · '))}</span>
+    <button type="button" class="link" data-toggle="${m.id}" aria-expanded="${isOpen}">${isOpen ? 'Hide what we heard' : 'Check what we heard'}</button>` : ''}
+    ${has && isOpen ? `<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 8px; border-top: 1px solid var(--line-2);">
+      ${m.items.map((it) => `<div style="display: flex; flex-direction: column;"><span style="font-size: 12px; font-weight: 700; color: var(--muted);">${h(it.label)}</span><span style="font-size: 13px; color: var(--ink);">“${h(it.quote)}”</span></div>`).join('')}
+    </div>` : ''}
+  </div>`;
+}
+
+function render() {
+  const { thread, covered, listening } = state;
+  const open = openNeeds(covered);
+  const started = thread.length > 1;
+  const finished = coveredCount(covered) === TOTAL;
+  const asking = open.slice(0, 2);
+  const after = open.length - asking.length + (covered.bp ? 0 : 1);
+
+  $('progress').textContent = started ? `${coveredCount(covered)} of ${TOTAL} covered` : 'Usually 2 minutes. Your provider reads this before the visit.';
+  const bubbles = thread.map(bubble);
+  if (started && !finished && asking.length && after > 0) bubbles.push(`<span style="align-self: center; font-size: 12px; color: var(--muted);">${after} more after this</span>`);
+  $('thread').innerHTML = bubbles.join('');
+  $('thread').scrollTop = $('thread').scrollHeight;
+
+  const chips = started && !finished ? asking.flatMap((n) => CHIPS[n.id] || []) : [];
+  $('chips').innerHTML = chips.map((c, i) => `<button type="button" class="quick" data-chip="${i}">${h(c.label)}</button>`).join('');
+  $('chips').hidden = chips.length === 0;
+  $('chips').dataset.sends = JSON.stringify(chips.map((c) => c.send));
+  $('composer').hidden = finished;
+  $('done').hidden = !finished;
+  $('draftWrap').hidden = listening;
+  $('listening').hidden = !listening;
+  $('mic').setAttribute('aria-pressed', String(listening));
+}
+
+$('composer').addEventListener('submit', (e) => {
+  e.preventDefault();
+  send($('draft').value);
+});
+$('chips').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-chip]');
+  if (b) send(JSON.parse($('chips').dataset.sends)[Number(b.dataset.chip)]);
+});
+$('thread').addEventListener('click', (e) => {
+  const hb = e.target.closest('[data-health]');
+  if (hb) {
+    answerHealth(hb.dataset.health === 'yes');
+    return;
+  }
+  const b = e.target.closest('[data-toggle]');
+  if (!b) return;
+  const id = b.dataset.toggle;
+  state = { ...state, expanded: { ...state.expanded, [id]: !state.expanded[id] } };
+  const top = $('thread').scrollTop;
+  render();
+  $('thread').scrollTop = top;
+  $('thread').querySelector(`[data-toggle="${id}"]`)?.focus();
+});
+// On-device dictation, simulated: listen for two seconds, then put what was heard in the draft.
+$('mic').addEventListener('click', () => {
+  if (state.listening) return;
+  state = { ...state, listening: true };
+  render();
+  clearTimeout(micTimer);
+  micTimer = setTimeout(() => {
+    const next = openNeeds(state.covered)[0];
+    const heard = next ? SPOKEN[next.id] || CHIPS[next.id]?.[0]?.send || '' : '';
+    state = { ...state, listening: false };
+    render();
+    $('draft').value = heard;
+    $('draft').focus();
+  }, 2000);
+});
+$('play').addEventListener('click', () => {
+  clearTimeout(micTimer);
+  state = fresh();
+  send(SAMPLE);
+});
+
+render();
+</script>
+</body>
+</html>
