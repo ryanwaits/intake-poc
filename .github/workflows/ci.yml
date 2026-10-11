@@ -19,6 +19,9 @@ jobs:
       - run: bun run typecheck
       - run: bun run lint
       - run: bun test
+        env:
+          # e2e and integration call the real pinned model; synthetic patients only.
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
 
   platform:
     runs-on: ubuntu-24.04
