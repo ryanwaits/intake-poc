@@ -101,7 +101,7 @@ What I'm after: small changes, shipped often, with the store rollout and flags d
 
 | Piece | How |
 |---|---|
-| Every PR | Unit tests (XCTest, JUnit), UI tests on the critical flows (Maestro across both platforms, XCUITest / Espresso where needed), lint, a size check, and a look at what any new SDK collects. |
+| Every PR | End-to-end flows on the critical journeys (Maestro on both platforms, nothing mocked), integration and contract checks at every API boundary, golden tests, lint, a size check, and a look at what any new SDK collects. More on testing below. |
 | Signing and builds | Fastlane, with certs and keys held by CI, not on laptops. Every build traces back to a commit. |
 | Store rollout | App Store phased release (seven days, 1% to 100%) and Play staged rollout, paused when a gate fails. |
 | Gates | Crash-free sessions and ANR vs the last release, with Google Play's bad-behavior thresholds (1.09% user-perceived crash rate, 0.47% ANR) as hard limits. |
@@ -116,6 +116,45 @@ Over-the-air updates need a written policy, since they're the easiest way to shi
 
 The POC does the server-side version of this. Every alert is tied to an error budget ([`ops/slo`](../ops/slo)), and a deliberate model outage turned up a real timeout bug, written up in [`ops/postmortems`](../ops/postmortems).
 
+### Testing: end to end first
+
+Coding agents changed which tests pay for themselves. An agent gets a single function right on the first try most of the time, so unit tests around it mostly add code to maintain. Where agents (and people) still slip is at the boundaries: a schema that drifts between the app and the backend, a React Native screen inside the native shell, a token handed from old storage to Keychain. So the suite is weighted toward the tests that see those, in this order:
+
+| Priority | Kind | What it covers |
+|---|---|---|
+| 1 | Full end to end, nothing mocked | The real app on real devices, against the real backend and the pinned model. Runs on every PR, and also on a schedule in production with synthetic test accounts. |
+| 2 | Integration at every boundary | Each place data crosses a line: app ↔ API, HealthKit / Health Connect ↔ backend, vendor webhooks ↔ backend, FHIR in and out, React Native ↔ native shell, analytics events ↔ the allowlist. Contract checks fail the build when a schema drifts on either side. |
+| 3 | Golden tests | Real-shaped examples checked in with their expected output: FHIR charts, HealthKit and Health Connect exports, vendor payloads, transcripts with medical words. Every edge case found in the wild becomes a new golden file. |
+| Rarely | Unit tests | Only when a bug would be silent and no test above can reach it. The bar is high. |
+
+The end-to-end journeys that gate a release:
+
+| Journey | What the flow proves |
+|---|---|
+| Upgrade from the last store build | Install the previous release, sign in, upgrade. Still signed in, same data. This is the "zero forced sign-outs" gate as a test. |
+| Sign in, lock, biometric unlock | Session survives a timeout and comes back only through the OS prompt. |
+| Every old deep link | Each link from past emails and pushes still opens the right screen, native or not. |
+| Intake, start to finish | Type or dictate, answer what's missing, sign, and the appointment flips to "Intake form completed." Again with the model down. |
+| Vitals and devices | HealthKit / Health Connect seeded with real-shaped samples show up with source and age. Denying a permission doesn't break the screen. |
+| Notifications | Lock screen shows no PHI, tapping opens the thread after unlock. |
+
+- **One flow, two implementations.** The same Maestro flow runs against the old React Native screen and the new native one before a flag flips. If it passes on both, the swap kept the behavior. That needs both builds to share accessibility IDs, which is good for VoiceOver and TalkBack anyway.
+- **Production test accounts are fenced off.** They're synthetic members, flagged so they never land in a real provider's queue, a billing run or analytics. An escalation from a test account that reaches a clinician is a sev, not a test result.
+- **Nothing mocked means nothing.** Real HealthKit with seeded data, not a stub. The only stand-in is hardware: a Bluetooth cuff on a test rig in the device lab.
+- **Small on PRs, wide at night.** A handful of devices per PR to keep it fast, the full device and OS matrix nightly on a device farm.
+- **Flaky means broken.** A flaky flow gets quarantined and fixed within the week. Once people learn to hit retry, the suite stops catching anything.
+
+The POC is tested this way, at server scale ([`test/`](../test/)):
+
+| Kind | In the POC |
+|---|---|
+| End to end | The service boots as a real process and takes HTTP calls that hit the real pinned model. The outage test is a real failure too: a rejected key, which opens the breaker. Logs and metrics are read back from the running process to check no patient data leaked. The same journeys can point at a deployed service with `INTAKE_URL`. |
+| Integration | The model boundary, against the real model. Every question still gets an answer in the shape the code expects, and the model still makes the calls the goldens recorded. |
+| Golden | Four intakes recorded from the real model (`bun run golden:record`) and replayed through today's code, including one edge case pinned exactly to the escalation gate. A changed plan shows up as a diff someone has to review. |
+| Unit | Two: birthday-aware age math, and the breaker's recovery path. Both would fail silently, and no end-to-end run reaches them cheaply. |
+
+There are no fake models left. The whole suite runs in about four seconds.
+
 ## PHI on the device
 
 | Area | Approach |
@@ -128,7 +167,7 @@ The POC does the server-side version of this. Every alert is tied to an error bu
 | Notifications | Keep PHI out of push payloads and off the lock screen. "You have a new message," then fetch after unlock. One of the store screenshots shows message text on the lock screen. Might just be marketing art, but worth a written policy either way. |
 | Analytics and crashes | Typed event schemas checked against a field allowlist at build time, scrubbed crash breadcrumbs, and every SDK either covered by a BAA or sent nothing about health. |
 
-Analytics is the row I'd expect to go wrong first, because nothing breaks when it does. In the POC, logs can only carry allowlisted fields, the type checker enforces it, and a test fails if a patient's complaint or name ends up in a log line ([`src/api/log.ts`](../src/api/log.ts), [`test/api.test.ts`](../test/api.test.ts)). Same setup works for mobile analytics.
+Analytics is the row I'd expect to go wrong first, because nothing breaks when it does. In the POC, logs can only carry allowlisted fields, the type checker enforces it, and a test fails if a patient's complaint or name ends up in a log line ([`src/api/log.ts`](../src/api/log.ts), [`test/e2e.test.ts`](../test/e2e.test.ts)). Same setup works for mobile analytics.
 
 ## Wearables, and health data clinicians can trust
 
@@ -182,7 +221,7 @@ Safe patterns matter a lot here. These are the rules the POC runs on, adapted fo
 
 What the POC has to back these up: ten model setups compared on 224 cases with labels known by construction, and a model outage under synthetic traffic where no intake failed. The red-flag number is the one I'd be careful with. The winning model caught 7 of 8 emergency vignettes, and 8 cases is way too few to call anything safe. I'd want clinicians to help set that bar, with a lot more cases, before anyone leans on it.
 
-On using AI to build the app itself: I built the POC with coding agents, and the rules that kept that manageable would carry over. Agents work inside the same gates as people (tests, lint, CI, review), the repo has its own rules for them ([`AGENTS.md`](../AGENTS.md)), anything touching sign-in, storage or analytics gets a human security review, and production data never goes into a tool without a BAA.
+On using AI to build the app itself: I built the POC with coding agents, and the rules that kept that manageable would carry over. Agents work inside the same gates as people (end-to-end and integration tests, lint, CI, review), and those tests sit at the boundaries where agents tend to slip. The repo has its own rules for them ([`AGENTS.md`](../AGENTS.md)), anything touching sign-in, storage or analytics gets a human security review, and production data never goes into a tool without a BAA.
 
 ## First slice: intake and vitals
 
@@ -208,7 +247,7 @@ I have an opinion on voice. I think speech-to-text is important to think through
 | By | What |
 |---|---|
 | Day 30 | Read the codebase and the crash, ANR and usage data, and fix everything in this doc that turns out wrong. Agree on the per-screen calls with product and design and write them down. Get the weekly release-health report going. |
-| Day 60 | Native shell at 100% with no visible change. Release pipeline with signing in CI, rollout gates and kill switches. Analytics allowlist in place. |
+| Day 60 | Native shell at 100% with no visible change. Release pipeline with signing in CI, rollout gates and kill switches. End-to-end suite on the critical journeys, running on every PR and in production on test accounts. Analytics allowlist in place. |
 | Day 90 | Native sign-in shipped with no forced sign-outs. First native screen (intake or vitals, whichever the data favors) rolling out behind a flag with an agreed success metric. Mobile engineering standards written down and actually used in review. |
 
 ## Disclosure

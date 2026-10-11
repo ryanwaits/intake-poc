@@ -23,9 +23,10 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
 | | Where |
 |---|---|
 | AI features with a safety boundary: typed questions, thresholds in code, escalations only to providers | `src/core/plan.ts`, `src/core/run.ts` |
-| A tested fallback when the model is slow or down: the patient never sees an error | `src/core/breaker.ts`, `test/core.test.ts`, `test/breaker.test.ts` |
+| A tested fallback when the model is slow or down: the patient never sees an error | `src/core/breaker.ts`, `test/e2e.test.ts` |
 | Measured model changes: pre-registered eval, shadow mode for upgrades | `eval/`, `src/core/shadow.ts` |
-| PHI-safe telemetry: logs and metrics carry only allowlisted fields, and a test fails if patient data leaks | `src/api/log.ts`, `src/api/metrics.ts`, `test/api.test.ts` |
+| PHI-safe telemetry: logs and metrics carry only allowlisted fields, and a test fails if patient data leaks | `src/api/log.ts`, `src/api/metrics.ts`, `test/e2e.test.ts` |
+| Tests weighted to what agents get wrong: end to end with nothing mocked, the model boundary against the real pinned model, golden intakes recorded from it, and two unit tests | `test/` |
 | Release discipline: error budgets with burn-rate and no-data alerts, a black-box probe, CI that scans config and images | `ops/slo`, `ops/prometheus`, `.github/workflows/ci.yml` |
 | Learning from failure: a deliberate model outage, the bug it found, and the fix | `ops/postmortems/` |
 | Built with coding agents under explicit rules, tests and CI gates | `AGENTS.md` |
@@ -90,7 +91,8 @@ bun install
 export TYPESAFE_API_KEY=...
 bun run demo walter "chest feels tight when I walk up stairs"
 bun run dev        # POST /v1/intake { reason, bundle }   GET /healthz
-bun test
+bun test           # calls the real model; without a key, e2e and integration skip
+bun run golden:record   # after an intended plan change; review the diff
 ```
 
 ## Not for clinical use

@@ -10,6 +10,7 @@ Less paperwork for a hybrid clinic (remote provider, on-site medic). FHIR chart 
 - Logs: allowlisted fields only (`src/api/log.ts`). Never log `reason` or chart data.
 - Synthetic data only. TypeSafe has no BAA.
 - Model-driven items carry a `why` (question, p, rule). Escalations go to providers, never to patients.
+- Tests, in priority order: e2e with nothing mocked, integration at boundaries, goldens. No fake models. Unit tests only for silent bugs no flow reaches. A changed golden is a changed product: re-record and review the diff.
 
 ## Commands
-`bun test` · `bun run typecheck` · `bun run lint` · `bun run demo <patient> "<reason>"` · `bun run dev`
+`bun test` (real model, needs `TYPESAFE_API_KEY`) · `bun run golden:record` · `bun run typecheck` · `bun run lint` · `bun run demo <patient> "<reason>"` · `bun run dev`

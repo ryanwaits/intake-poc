@@ -85,6 +85,7 @@ Test split, amended rule. Five arms are statistically tied on accuracy; the pre-
 | Observability | Prometheus metrics with no patient data in any label, a Grafana dashboard, and runbooks linked from every alert | [`src/api/metrics.ts`](../src/api/metrics.ts), [`ops/grafana/`](../ops/grafana/), [`ops/runbooks/`](../ops/runbooks/) |
 | Shadow mode | A candidate model sees a sample of real traffic after each response and never affects a patient. Agreement is tracked per decision, so a model upgrade is a measured change | [`src/core/shadow.ts`](../src/core/shadow.ts), `INTAKE_SHADOW_DECIDER=jev:jev-latest` |
 | Circuit breaker | After 5 straight model failures, skip the model for 30 seconds and serve the safe plan in milliseconds. One trial call closes it again | [`src/core/breaker.ts`](../src/core/breaker.ts), `intake_breaker_open` |
+| Tests | End to end with nothing mocked: the service as a process, the real pinned model, a real outage (a rejected key) that opens the breaker, and a real SIGTERM. Integration at the model boundary, golden intakes recorded from the model, and two unit tests for silent bugs no flow reaches | [`test/`](../test/) |
 | CI | Tests, lint, types, rule drift, rule unit tests, and Trivy scans of config and image on every change | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) |
 
 ## Game day
