@@ -1,0 +1,377 @@
+{
+  "name": "walter-chest",
+  "note": "Chest tightness in an older adult with heart disease escalates to a provider now. Fall screen asked, no pregnancy question.",
+  "patient": "walter",
+  "reason": "chest feels tight when I walk up stairs",
+  "model": "live",
+  "today": "2026-10-08T12:00:00Z",
+  "summary": {
+    "ageBand": "older_adult",
+    "sex": "male",
+    "problems": ["COPD", "Coronary artery disease"],
+    "medications": ["albuterol inhaler", "atorvastatin 40 MG Oral Tablet"],
+    "allergies": []
+  },
+  "decisions": {
+    "model": "jev-1.13.0",
+    "setting": {
+      "value": "clinic",
+      "confidence": 0.35
+    },
+    "flags": {
+      "chest_pain": 0.99,
+      "stroke": 0.01,
+      "breathing": 0.05,
+      "allergic_reaction": 0.01,
+      "worst_headache": 0.01,
+      "self_harm": 0.01
+    },
+    "complaints": {
+      "ent": 0.01,
+      "respiratory": 0.32,
+      "skin": 0.01,
+      "msk": 0.05,
+      "urinary": 0.01,
+      "med_refill": 0.03
+    },
+    "answered": {
+      "fall_risk": 0,
+      "onset": 0.01,
+      "fever": 0,
+      "side": 0,
+      "drainage_hearing": 0,
+      "cough_type": 0,
+      "short_of_breath": 0.04,
+      "location": 0.24,
+      "changing": 0,
+      "exposure": 0,
+      "mechanism": 0.18,
+      "function": 0.13,
+      "numbness": 0,
+      "flank_pain": 0,
+      "which_med": 0,
+      "side_effects": 0,
+      "severity": 0.2,
+      "tried": 0
+    },
+    "usage": {
+      "inputTokens": 2217,
+      "outputTokens": 943,
+      "latencyMs": 0
+    }
+  },
+  "plan": {
+    "mode": "live",
+    "model": "jev-1.13.0",
+    "fields": [
+      {
+        "id": "name",
+        "section": "registration",
+        "ask": "Full legal name",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Walter Synthetic"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "birth_date",
+        "section": "registration",
+        "ask": "Date of birth",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "1953-11-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "sex",
+        "section": "registration",
+        "ask": "Sex",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "male"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "address",
+        "section": "registration",
+        "ask": "Home address",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "400 Oak Ave, Stillwater, OK, 74074"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "phone",
+        "section": "registration",
+        "ask": "Phone number",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "555-0187"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "email",
+        "section": "registration",
+        "ask": "Email",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "language",
+        "section": "registration",
+        "ask": "Preferred language",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "emergency_contact",
+        "section": "registration",
+        "ask": "Emergency contact: name, relationship, phone",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "employer",
+        "section": "registration",
+        "ask": "Employer",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "member_id",
+        "section": "registration",
+        "ask": "Member ID",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "pharmacy",
+        "section": "registration",
+        "ask": "Preferred pharmacy",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_treatment",
+        "section": "consent",
+        "ask": "Consent to treatment",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_telehealth",
+        "section": "consent",
+        "ask": "Consent to telehealth",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "privacy_notice",
+        "section": "consent",
+        "ask": "Notice of privacy practices",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "medications",
+        "section": "history",
+        "ask": "Medications you take now",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "albuterol inhaler"
+          },
+          {
+            "value": "atorvastatin 40 MG Oral Tablet"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "allergies",
+        "section": "history",
+        "ask": "Allergies",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "conditions",
+        "section": "history",
+        "ask": "Ongoing health conditions",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "COPD"
+          },
+          {
+            "value": "Coronary artery disease"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "surgeries",
+        "section": "history",
+        "ask": "Past surgeries",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Coronary artery bypass graft",
+            "recordedAt": "2019-05-08"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "family_history",
+        "section": "history",
+        "ask": "Family medical history",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "tobacco",
+        "section": "history",
+        "ask": "Do you smoke, vape or use tobacco?",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Former smoker, quit 2019",
+            "recordedAt": "2026-05-20"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "alcohol",
+        "section": "history",
+        "ask": "How often do you drink alcohol?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "phq2",
+        "section": "screening",
+        "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "fall_risk",
+        "section": "screening",
+        "ask": "Have you fallen in the past year?",
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us whether the patient has fallen recently?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "onset",
+        "section": "visit",
+        "ask": "When did this start?",
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us when the symptoms started or how long they have lasted?",
+          "p": 0.01,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "severity",
+        "section": "visit",
+        "ask": "On a scale of 0 to 10, how bad is it?",
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us how severe the problem is?",
+          "p": 0.2,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "tried",
+        "section": "visit",
+        "ask": "What have you tried so far?",
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us treatments or medicines the patient has already tried?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      }
+    ],
+    "counts": {
+      "prefilled": 6,
+      "confirm": 3,
+      "sign": 3,
+      "answered": 0,
+      "ask": 14,
+      "total": 26
+    },
+    "card": {
+      "escalations": [
+        {
+          "id": "chest_pain",
+          "label": "Chest pain or pressure",
+          "why": {
+            "question": "Does `reason` mention chest pain, chest pressure or chest tightness?",
+            "p": 0.99,
+            "rule": "p ≥ 0.2 → escalate"
+          }
+        }
+      ],
+      "setting": {
+        "value": "provider_now",
+        "why": {
+          "question": "Does `reason` mention chest pain, chest pressure or chest tightness?",
+          "p": 0.99,
+          "rule": "p ≥ 0.2 → escalate"
+        }
+      },
+      "complaints": [],
+      "medicPrep": {
+        "devices": [],
+        "vitals": ["blood_pressure", "heart_rate", "temperature", "spo2", "respiratory_rate"],
+        "tests": []
+      }
+    },
+    "usage": {
+      "inputTokens": 2217,
+      "outputTokens": 943,
+      "latencyMs": 0
+    }
+  }
+}

@@ -8,6 +8,7 @@
     "dev": "bun --watch src/api/server.ts",
     "start": "bun src/api/server.ts",
     "demo": "bun scripts/demo.ts",
+    "golden:record": "bun scripts/record-golden.ts",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",

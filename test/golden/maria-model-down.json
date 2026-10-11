@@ -1,0 +1,332 @@
+{
+  "name": "maria-model-down",
+  "note": "Model unreachable: chart prefill still works, every question is asked, a navigator triages, the medic preps every device.",
+  "patient": "maria",
+  "reason": "my ear hurts",
+  "model": "down",
+  "today": "2026-10-08T12:00:00Z",
+  "summary": {
+    "ageBand": "adult",
+    "sex": "female",
+    "problems": ["Hypertension"],
+    "medications": ["lisinopril 10 MG Oral Tablet"],
+    "allergies": ["Penicillin"]
+  },
+  "decisions": null,
+  "plan": {
+    "mode": "degraded",
+    "model": null,
+    "fields": [
+      {
+        "id": "name",
+        "section": "registration",
+        "ask": "Full legal name",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Maria Synthetic"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "birth_date",
+        "section": "registration",
+        "ask": "Date of birth",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "1974-03-12"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "sex",
+        "section": "registration",
+        "ask": "Sex",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "female"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "address",
+        "section": "registration",
+        "ask": "Home address",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "12 Elm St, Clayton, NC, 27520"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "phone",
+        "section": "registration",
+        "ask": "Phone number",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "555-0142"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "email",
+        "section": "registration",
+        "ask": "Email",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "maria@example.com"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "language",
+        "section": "registration",
+        "ask": "Preferred language",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "English"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "emergency_contact",
+        "section": "registration",
+        "ask": "Emergency contact: name, relationship, phone",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Luis Synthetic, Spouse, 555-0143"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "employer",
+        "section": "registration",
+        "ask": "Employer",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Example Manufacturing Co"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "member_id",
+        "section": "registration",
+        "ask": "Member ID",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "RZ-100234"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "pharmacy",
+        "section": "registration",
+        "ask": "Preferred pharmacy",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_treatment",
+        "section": "consent",
+        "ask": "Consent to treatment",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_telehealth",
+        "section": "consent",
+        "ask": "Consent to telehealth",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "privacy_notice",
+        "section": "consent",
+        "ask": "Notice of privacy practices",
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "medications",
+        "section": "history",
+        "ask": "Medications you take now",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "lisinopril 10 MG Oral Tablet",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "allergies",
+        "section": "history",
+        "ask": "Allergies",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Penicillin",
+            "recordedAt": "2019-09-10"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "conditions",
+        "section": "history",
+        "ask": "Ongoing health conditions",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Hypertension",
+            "recordedAt": "2021-06-01"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "surgeries",
+        "section": "history",
+        "ask": "Past surgeries",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Appendectomy",
+            "recordedAt": "1998-07-21"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "family_history",
+        "section": "history",
+        "ask": "Family medical history",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Mother: Type 2 diabetes",
+            "recordedAt": "2024-02-14"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "tobacco",
+        "section": "history",
+        "ask": "Do you smoke, vape or use tobacco?",
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Never smoker",
+            "recordedAt": "2024-02-14"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "alcohol",
+        "section": "history",
+        "ask": "How often do you drink alcohol?",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Occasional, 1-2 drinks per week",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "pregnancy",
+        "section": "history",
+        "ask": "Is there any chance you could be pregnant?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "phq2",
+        "section": "screening",
+        "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "0",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "onset",
+        "section": "visit",
+        "ask": "When did this start?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "severity",
+        "section": "visit",
+        "ask": "On a scale of 0 to 10, how bad is it?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "tried",
+        "section": "visit",
+        "ask": "What have you tried so far?",
+        "status": "ask",
+        "values": [],
+        "why": null
+      }
+    ],
+    "counts": {
+      "prefilled": 12,
+      "confirm": 6,
+      "sign": 3,
+      "answered": 0,
+      "ask": 5,
+      "total": 26
+    },
+    "card": {
+      "escalations": [],
+      "setting": {
+        "value": "navigator_review",
+        "why": null
+      },
+      "complaints": [],
+      "medicPrep": {
+        "devices": ["otoscope", "stethoscope", "exam_camera", "pulse_oximeter"],
+        "vitals": ["blood_pressure", "heart_rate", "temperature", "spo2", "respiratory_rate"],
+        "tests": []
+      }
+    },
+    "usage": null
+  }
+}
