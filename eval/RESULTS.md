@@ -96,6 +96,31 @@ Difference in paperwork accuracy from Jev, with 95% paired-bootstrap intervals (
 
 Synthetic labels are known by construction: code chooses which facts each message states, a model that isn't competing writes the message, and a second one checks it. The pre-registration also calls for a person to hand-check 30 cases with `bun run eval:review`. That check hasn't been done carefully enough to report, so there's no human-measured label error rate yet. It's listed as an open item.
 
+## Extraction: Clairic (added 2026-10-20)
+
+When a patient already answered a question, the plan skips it, but it records only *that* they answered, not *what* they said (`values: []` in [`src/core/plan.ts`](../src/core/plan.ts)). Cloudflare's Clairic, a System One *extraction* model released 2026-10-19, returns the value itself: a span of the patient's words, a typed number or duration, or `null`, each with `p_null` and `confidence`. It was run once on the 179 synthetic cases, with the patient's words as input and one text field per in-scope question ([`extract.ts`](extract.ts), `bun --env-file=.env eval/extract.ts`). Ground truth is the fact phrase each case's spec had to state. Jev's answers come from the arena run. The value gate is tuned on dev; numbers are from test (450 labeled fields).
+
+**Clairic can't replace Jev for "did they answer it?"** It returns a span for nearly every field, including ones the patient never mentioned:
+
+| Deciding "skip this question" | Accuracy | Precision | Unanswered questions skipped |
+|---|---|---|---|
+| Jev, `p(answered) ≥ 0.7` (shipped) | 98.7% | 99.5% | 1 |
+| Clairic, any non-null value | 72.0% | 61.9% | 126 |
+| Clairic, best `confidence` + `p_null` gates tuned on dev | 87.3% | 82.5% | 40 |
+
+**Paired with Jev, it fills in the answer.** Jev decides the skip and Clairic supplies the value when its `confidence ≥ 0.5`:
+
+| | Test |
+|---|---|
+| Questions Jev skipped | 201 |
+| Got a value from Clairic | 130 (64.7%) |
+| Value matches the stated fact | 126 of 130 by the automatic matcher (any shared content word). The 4 misses were all correct on review (patient typos such as "gettng biger", or synonyms such as "mucus" for "phlegm"). A random 15 of the matches checked out too |
+| Typed values | `onset_days`: "this morning" → 0, "about a week" → 7, "last month" → 30 |
+| Latency | p50 305 ms, p95 630 ms |
+| Cost | ~1,085 input tokens per intake at $0.10/M: $10.85 per 100k intakes, about the same as Jev |
+
+**What this would change.** It's the pattern Cloudflare describes: extract, then decide. It also matches the POC's rule that the decision model decides and code acts. In the product it would turn ~65% of silent skips into "You said: about a week" for the patient to confirm, and put typed values on the provider's prep card. The costs: two model calls instead of one (run in parallel, since Clairic's p95 alone is over Jev's 400 ms timeout but inside the 1 s SLO), a second vendor with no stated BAA (open weights are planned, which would allow self-hosting), and a failure path where values are simply missing. Not wired into the product yet. Images (insurance cards, device displays) weren't tested.
+
 ## Spend
 
 $3.80 in arena model calls, summed from the cost recorded on every call in the result files: $2.24 for one pass over the 224 cases and the rest for the consistency repeats. The runner enforced a $50 cap. Case generation was budgeted separately.

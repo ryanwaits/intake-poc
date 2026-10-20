@@ -1,0 +1,79 @@
+{
+  "model": "@cf/cloudflare/clairic",
+  "cases": {
+    "run": 179,
+    "ok": 179,
+    "errors": 0
+  },
+  "test": {
+    "detection": {
+      "jev": {
+        "accuracy": 98.7,
+        "precision": 99.5,
+        "recall": 97.6,
+        "falseSkips": 1,
+        "fields": 450
+      },
+      "clairicNonNull": {
+        "accuracy": 72,
+        "precision": 61.9,
+        "recall": 100,
+        "falseSkips": 126,
+        "fields": 450
+      },
+      "clairicAtGate": {
+        "accuracy": 73.1,
+        "precision": 73.1,
+        "recall": 64.9,
+        "falseSkips": 49,
+        "fields": 450
+      }
+    },
+    "valueCorrectWhenStated": 92.7,
+    "pipeline": {
+      "gate": 0.5,
+      "jevSkips": 201,
+      "withValue": 130,
+      "coverage": 64.7,
+      "valueCorrect": 96.9
+    }
+  },
+  "latencyMs": {
+    "p50": 305,
+    "p95": 630
+  },
+  "inputTokensMean": 1085,
+  "usdPer100kIntakes": 10.85,
+  "onsetDaysExamples": [
+    {
+      "caseId": "syn-007",
+      "said": "this morning",
+      "days": 0
+    },
+    {
+      "caseId": "syn-001",
+      "said": "about a week",
+      "days": 7
+    },
+    {
+      "caseId": "syn-005",
+      "said": "this mornign",
+      "days": 0
+    },
+    {
+      "caseId": "syn-003",
+      "said": "about a week",
+      "days": 7
+    },
+    {
+      "caseId": "syn-010",
+      "said": "about a week",
+      "days": 7
+    },
+    {
+      "caseId": "syn-011",
+      "said": "last month",
+      "days": 30
+    }
+  ]
+}
