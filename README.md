@@ -96,7 +96,7 @@ bun install
 export TYPESAFE_API_KEY=...
 export CLOUDFLARE_ACCOUNT_ID=... CLOUDFLARE_API_TOKEN=...   # Clairic; or INTAKE_EXTRACTOR=none
 bun run demo walter "chest feels tight when I walk up stairs"
-bun run dev        # POST /v1/intake { reason, bundle }   GET /healthz
+bun run dev        # POST /v1/intake { reason, bundle, variant? }   GET /healthz
 bun test           # calls the real model; without a key, e2e and integration skip
 bun run golden:record   # after an intended plan change; review the diff
 ```

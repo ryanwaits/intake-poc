@@ -91,6 +91,22 @@ describe.skipIf(!hasModel)('intake service, end to end', () => {
     expect(onset.said.why.rule).toContain('show back to confirm');
   }, 10_000);
 
+  test('no_said variant: the same skips, without "You said", and recorded', async () => {
+    const res = await intake(svc, {
+      reason: "ear's been killing me 3 days",
+      bundle: maria,
+      variant: 'no_said',
+    });
+    expect(res.status).toBe(200);
+    const plan = await res.json();
+    expect(plan.mode).toBe('live');
+    expect(plan.fields.find((f: { id: string }) => f.id === 'onset').status).toBe('answered');
+    expect(plan.fields.every((f: { said: unknown }) => f.said === null)).toBe(true);
+    const text = await (await fetch(`${svc.url}/metrics`)).text();
+    expect(text).toContain('intake_plans_total{mode="live",variant="no_said"}');
+    if (!remote) expect(svc.output()).toContain('"variant":"no_said"');
+  }, 10_000);
+
   test('chest tightness escalates to a provider, never to the patient form', async () => {
     const res = await intake(svc, {
       reason: 'chest feels tight when I walk up stairs',
@@ -111,13 +127,16 @@ describe.skipIf(!hasModel)('intake service, end to end', () => {
     expect(
       (await intake(svc, { reason: 'x', bundle: { resourceType: 'Bundle', entry: [] } })).status,
     ).toBe(400);
+    expect((await intake(svc, { reason: 'x', bundle: maria, variant: 'gates_off' })).status).toBe(
+      400,
+    );
   });
 
   test('metrics count intakes and never carry patient data', async () => {
     await intake(svc, { reason: 'SECRET-COMPLAINT my ear hurts', bundle: maria });
     const text = await (await fetch(`${svc.url}/metrics`)).text();
-    expect(text).toContain('intake_plans_total{mode="live"}');
-    expect(text).toContain('intake_fields_total{status="prefilled"}');
+    expect(text).toContain('intake_plans_total{mode="live",variant="control"}');
+    expect(text).toContain('intake_fields_total{status="prefilled",variant="control"}');
     expect(text).not.toContain('SECRET-COMPLAINT');
     expect(text).not.toContain('Maria');
   }, 10_000);

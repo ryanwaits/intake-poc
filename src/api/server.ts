@@ -21,6 +21,14 @@ import {
 
 const MAX_REASON_CHARS = 2_000;
 
+/**
+ * Experiment arms. The app's flag service assigns them; this service only applies and records
+ * one. A variant changes presentation only: it never reaches `plan()`, so it can't move a gate.
+ */
+export const VARIANTS = ['control', 'no_said'] as const;
+export type Variant = (typeof VARIANTS)[number];
+const isVariant = (v: unknown): v is Variant => VARIANTS.includes(v as Variant);
+
 type Env = { Variables: { reqId: string } };
 
 type Shadow = { decide: Decide; model: string; sample: number };
@@ -86,23 +94,30 @@ export function createApp({
     if (bundle?.resourceType !== 'Bundle') {
       return c.json({ error: 'bundle must be a FHIR R4 Bundle' }, 400);
     }
+    const variant = body?.variant ?? 'control';
+    if (!isVariant(variant)) {
+      return c.json({ error: `variant must be one of ${VARIANTS.join(', ')}` }, 400);
+    }
 
+    // no_said: the same skips without "You said" values, to test whether show-back helps.
+    const extractFor = variant === 'no_said' ? null : extract;
     let result: Awaited<ReturnType<typeof run>>;
     try {
-      result = await run(bundle, reason, { decide, extract });
+      result = await run(bundle, reason, { decide, extract: extractFor });
     } catch {
       return c.json({ error: 'bundle must contain a Patient with a birthDate' }, 400);
     }
 
     const { plan, error, extractError, extraction } = result;
-    extractions.inc({ outcome: !extract ? 'off' : extractError ? 'error' : 'ok' });
-    intakes.inc({ mode: plan.mode });
+    extractions.inc({ outcome: !extractFor ? 'off' : extractError ? 'error' : 'ok' });
+    intakes.inc({ mode: plan.mode, variant });
     if (plan.usage) decideDuration.observe({ model, outcome: 'ok' }, plan.usage.latencyMs / 1000);
     else decideDuration.observe({ model, outcome: 'error' }, 0);
-    for (const f of plan.fields) fields.inc({ status: f.status });
+    for (const f of plan.fields) fields.inc({ status: f.status, variant });
     if (plan.card.setting.value === 'provider_now') escalations.inc();
     log(plan.mode === 'live' ? 'info' : 'warn', 'intake', {
       reqId: c.get('reqId'),
+      variant,
       mode: plan.mode,
       model: plan.model ?? undefined,
       modelMs: plan.usage?.latencyMs,

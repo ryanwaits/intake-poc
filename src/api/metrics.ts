@@ -2,7 +2,7 @@ import { Counter, collectDefaultMetrics, Gauge, Histogram, Registry } from 'prom
 
 /**
  * Prometheus metrics. Labels are low-cardinality and never carry patient data:
- * routes, status codes, model ids, modes and decision kinds only.
+ * routes, status codes, model ids, modes, experiment variants and decision kinds only.
  */
 export const registry = new Registry();
 collectDefaultMetrics({ register: registry });
@@ -24,8 +24,8 @@ export const httpDuration = new Histogram({
 
 export const intakes = new Counter({
   name: 'intake_plans_total',
-  help: 'Intake plans served, by mode. The live SLO counts mode="live".',
-  labelNames: ['mode'] as const,
+  help: 'Intake plans served, by mode and experiment variant. The live SLO counts mode="live".',
+  labelNames: ['mode', 'variant'] as const,
   registers: [registry],
 });
 
@@ -46,8 +46,8 @@ export const extractions = new Counter({
 
 export const fields = new Counter({
   name: 'intake_fields_total',
-  help: 'Form fields by how they were filled: the paperwork the patient was spared.',
-  labelNames: ['status'] as const,
+  help: 'Form fields by how they were filled, per experiment variant: the paperwork the patient was spared.',
+  labelNames: ['status', 'variant'] as const,
   registers: [registry],
 });
 

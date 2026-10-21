@@ -2,6 +2,8 @@
  * Structured JSON logs with an allowlist of fields.
  * Patient data can't reach the logs by accident: anything not named here doesn't compile.
  */
+import type { Variant } from './server';
+
 type Fields = Partial<{
   reqId: string;
   method: string;
@@ -9,6 +11,7 @@ type Fields = Partial<{
   status: number;
   ms: number;
   mode: 'live' | 'degraded';
+  variant: Variant;
   model: string;
   modelMs: number;
   inputTokens: number;
