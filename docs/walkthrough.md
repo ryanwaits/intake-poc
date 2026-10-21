@@ -36,17 +36,18 @@ The remote provider's minutes are the scarce resource. Every history question th
 
 ## How it works
 
-**One model call, with every rule kept in code.** The model answers narrow questions with probabilities. Code decides what to do with them, which makes the result testable, auditable and swappable.
+**Two narrow model calls in parallel, with every rule kept in code.** A decision model answers narrow questions with probabilities, and an extraction model pulls the patient's own words for the questions they already answered. Code decides what to do with both, which makes the result testable, auditable and swappable.
 
 | Step | What happens | Where |
 |---|---|---|
 | 1. Read the chart | FHIR R4 bundle → `parseChart()` | [`src/core/chart.ts`](../src/core/chart.ts) |
 | 2. Strip it down for the model | `toSummary()`: age band, sex, problems, meds, allergies. No names, IDs, contact details or dates. The model also sees the patient's own words | [`src/core/chart.ts`](../src/core/chart.ts) |
 | 3. Ask about 30 typed questions at once | One Jev call: setting, 6 red flags, 6 complaints, "already answered?" per field. About 180 ms p95 | [`src/core/run.ts`](../src/core/run.ts) |
-| 4. Apply the gates | `plan()`: escalate at p ≥ 0.2, skip a question only at p(answered) ≥ 0.7 | [`src/core/plan.ts`](../src/core/plan.ts) |
+| 3b. Pull their own words, in parallel | One Clairic call (Cloudflare): a span of the patient's words per question, with a confidence. Values only: it never decides a skip, because on the eval set it would have skipped 126 unanswered questions to Jev's 1 | [`src/core/extract.ts`](../src/core/extract.ts), [`eval/RESULTS.md`](../eval/RESULTS.md#extraction-clairic-added-2026-10-20) |
+| 4. Apply the gates | `plan()`: escalate at p ≥ 0.2, skip a question only at p(answered) ≥ 0.7, show the patient's words back at confidence ≥ 0.5 | [`src/core/plan.ts`](../src/core/plan.ts) |
 | 5. Return the form and the prep card | `POST /v1/intake`. Every model-driven item carries its question, probability and rule | [`src/api/server.ts`](../src/api/server.ts) |
 
-- **Safe when the model fails.** Prefill still works, every question is asked, and a navigator triages. The patient never sees an error.
+- **Safe when the model fails.** Prefill still works, every question is asked, and a navigator triages. The patient never sees an error. If only the extraction model fails, the plan is unchanged except for the "You said" values.
 - **No patient data in logs.** Log fields are an allowlist checked by the compiler, and a test fails if the complaint or a name ever appears ([`src/api/log.ts`](../src/api/log.ts)).
 - **Dates and math stay in code.** Ages, stale-record checks and thresholds never go to the model.
 

@@ -68,14 +68,19 @@ FHIR R4 bundle ─► parseChart ─► Chart (code only, holds identifiers)
                                   ├─► prefill / confirm-if-stale / sign      (rules in code, dates in code)
                                   └─► toSummary ─► { ageBand, sex, problems, meds, allergies }
                                                          │
-reason (patient's words) ────────────────────────────────┤
-                                                         ▼
-                                   Decide: one model call, ~30 typed questions
-                                     setting, red flags ×6, complaints ×6,
-                                     "already answered?" per coverable field
-                                                         │
+reason (patient's words) ──────────────┬─────────────────┤
+                                       │                 ▼
+                                       │   Decide (Jev): ~30 typed questions
+                                       │     setting, red flags ×6, complaints ×6,
+                                       │     "already answered?" per coverable field
+                                       ▼                 │
+                       Extract (Clairic, in parallel):   │
+                       their own words per question      │
+                                       └────────┬────────┘
                                    plan(): confidence gates in code (GATES)
-                                                         ▼
+                                     Jev decides every skip; Clairic only
+                                     supplies "You said: 3 days" to confirm
+                                                ▼
                                        patient form + prep card
 ```
 
@@ -89,6 +94,7 @@ reason (patient's words) ──────────────────�
 ```sh
 bun install
 export TYPESAFE_API_KEY=...
+export CLOUDFLARE_ACCOUNT_ID=... CLOUDFLARE_API_TOKEN=...   # Clairic; or INTAKE_EXTRACTOR=none
 bun run demo walter "chest feels tight when I walk up stairs"
 bun run dev        # POST /v1/intake { reason, bundle }   GET /healthz
 bun test           # calls the real model; without a key, e2e and integration skip
