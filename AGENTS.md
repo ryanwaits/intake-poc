@@ -7,7 +7,7 @@ Less paperwork for a hybrid clinic (remote provider, on-site medic). FHIR chart 
 - Dates, ages, staleness: code only. Models see the patient's words plus `toSummary`: no names, IDs, contact details or dates.
 - Pinned model `jev-1.13.0`. Re-run the arena before changing it.
 - Model failure → degraded plan (`plan(..., null)`). Never throw to the caller.
-- Extraction (`Extract`, `src/core/extract.ts`) supplies values only. It never decides a skip, an escalation or a route; its failure only drops `said`. It sees the patient's words and nothing else.
+- Extraction (`Extract`, `src/core/extract.ts`) supplies values only. It never decides a skip, an escalation or a route; its failure only drops `said`. One exception, in the safe direction: for a `typed` field (onset), no value of that type in the words turns a skip back into a question. It sees the patient's words and nothing else.
 - Experiments: `variant` (`VARIANTS`, `src/api/server.ts`) changes presentation only. It never reaches `plan()` or `GATES`; safety gates are never an arm.
 - Logs: allowlisted fields only (`src/api/log.ts`). Never log `reason` or chart data.
 - Synthetic data only. TypeSafe has no BAA.

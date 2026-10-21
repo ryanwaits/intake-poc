@@ -121,6 +121,19 @@ When a patient already answered a question, the plan skips it, but it records on
 
 **What this would change.** It's the pattern Cloudflare describes: extract, then decide. It also matches the POC's rule that the decision model decides and code acts. In the product it would turn ~65% of silent skips into "You said: about a week" for the patient to confirm, and put typed values on the provider's prep card. The costs: two model calls instead of one (run in parallel, since Clairic's p95 alone is over Jev's 400 ms timeout but inside the 1 s SLO), a second vendor with no stated BAA (open weights are planned, which would allow self-hosting), and a failure path where values are simply missing. Wired into the product on 2026-10-20 ([`src/core/extract.ts`](../src/core/extract.ts)): both calls run in parallel, the value gate is `GATES.saidAt = 0.5`, and an extraction failure leaves the plan as it was. Images (insurance cards, device displays) weren't tested.
 
+### A false skip found by hand, and the typed check (added 2026-10-21)
+
+"Worst headache of my life, came on suddenly" escalated correctly, but Jev also skipped onset (p 0.87) and the form showed back `You said: "suddenly"`. That says how it started, not when. The eval set has no phrasings like this: on its 170 onset cases there were zero false skips, so it couldn't catch the gap.
+
+Clairic's typed `duration` field separates the two cleanly, on a 10-phrase probe:
+
+| Words | Text value | Duration found |
+|---|---|---|
+| "came on suddenly", "gradually", "out of nowhere", "started slowly", "after I went hiking", "for a while" | yes | no (p_null 0.95 to 1.00) |
+| "3 days", "about a week", "since last tuesday", "this morning" | yes | yes |
+
+The rule now: onset is skipped only when Jev says answered **and** Clairic finds a duration. The check can only add a question. If extraction is down, Jev decides alone, as before. The duration itself isn't kept: dates stay code's job. Guarded by the `walter-sudden-headache` golden, an integration check and an e2e journey. Next step: add manner-of-onset phrasings to the eval set so the over-ask cost is measured, not just probed.
+
 ## Skip gate sweep (added 2026-10-21)
 
 `bun run eval:sweep`: Jev's recorded decisions on the test split, re-planned as `answeredAt` moves from 0.05 to 0.95. The escalation gate stays fixed; red-flag recall is 100% at every point. Questions saved counts labeled questions the form didn't ask.
