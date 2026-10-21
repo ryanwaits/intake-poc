@@ -206,7 +206,7 @@ Over-the-air updates need a written policy, since they're the easiest way to shi
 - Never for sign-in, token handling, PHI storage, analytics schemas, or a new use of a native module.
 - Signed, rolled out by percentage, revertible in minutes, and inside the App Store's rules for interpreted code.
 
-The POC does the server-side version of this. Every alert is tied to an error budget ([`ops/slo`](../ops/slo)), and a deliberate model outage turned up a real timeout bug, written up in [`ops/postmortems`](../ops/postmortems).
+The POC does the server-side version of this: a deliberate model outage turned up a real timeout bug, now fixed and run as an e2e test on every change ([`docs/postmortems`](postmortems)).
 
 ### Testing: end to end first
 

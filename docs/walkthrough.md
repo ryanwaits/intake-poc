@@ -82,21 +82,20 @@ Test split, amended rule. Five arms are statistically tied on accuracy; the pre-
 
 | Piece | What it does | Where |
 |---|---|---|
-| Uptime targets | Answered without a server error 99.9%, under 1 second 99%, planned by the model rather than the fallback 99%. Sloth generates 51 Prometheus rules with fast and slow burn-rate alerts. Each SLI also has a no-data alert, and a black-box probe alerts when the service stops answering from outside | [`ops/slo/intake.sloth.yaml`](../ops/slo/intake.sloth.yaml), [`ops/prometheus/rules/`](../ops/prometheus/rules/) |
-| Observability | Prometheus metrics with no patient data in any label, a Grafana dashboard, and runbooks linked from every alert | [`src/api/metrics.ts`](../src/api/metrics.ts), [`ops/grafana/`](../ops/grafana/), [`ops/runbooks/`](../ops/runbooks/) |
+| Metrics and logs | Standard Prometheus-format metrics (intakes by mode and variant, paperwork saved, latency, escalations, model outcomes) and JSON logs from an allowlist. No patient data in either, and a test fails if any leaks. Plugging them into the clinic's monitoring is configuration | [`src/api/metrics.ts`](../src/api/metrics.ts), [`src/api/log.ts`](../src/api/log.ts) |
+| Experiments | A `variant` per intake, recorded in metrics and logs. It changes presentation only, never a safety gate | [`src/api/server.ts`](../src/api/server.ts) |
 | Shadow mode | A candidate model sees a sample of real traffic after each response and never affects a patient. Agreement is tracked per decision, so a model upgrade is a measured change | [`src/core/shadow.ts`](../src/core/shadow.ts), `INTAKE_SHADOW_DECIDER=jev:jev-latest` |
 | Circuit breaker | After 5 straight model failures, skip the model for 30 seconds and serve the safe plan in milliseconds. One trial call closes it again | [`src/core/breaker.ts`](../src/core/breaker.ts), `intake_breaker_open` |
 | Tests | End to end with nothing mocked: the service as a process, the real pinned model, a real outage (a rejected key) that opens the breaker, and a real SIGTERM. Integration at the model boundary, golden intakes recorded from the model, and two unit tests for silent bugs no flow reaches | [`test/`](../test/) |
-| CI | Tests, lint, types, rule drift, rule unit tests, and Trivy scans of config and image on every change | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) |
+| CI | Real-model tests, lint, types, and Trivy scans of config and image on every change | [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) |
 
 ## Game day
 
-**We cut the model off on purpose. No intake failed, and it found a real bug.** Two intakes per second of synthetic traffic, then the model endpoint pointed at an address that never answers. Full write-up: [`ops/postmortems/2026-10-09-game-day-jev-outage.md`](../ops/postmortems/2026-10-09-game-day-jev-outage.md).
+**We cut the model off on purpose. No intake failed, and it found a real bug.** Two intakes per second of synthetic traffic, then the model endpoint pointed at an address that never answers. Full write-up: [`docs/postmortems/2026-10-09-game-day-jev-outage.md`](postmortems/2026-10-09-game-day-jev-outage.md). It ran on a local monitoring stack, since removed to keep the POC on the product; the fixes it produced live in the code.
 
 | Time (UTC) | Event |
 |---|---|
 | 03:27 | Traffic starts. Shadow model on 20%. |
-| 03:31 | Pre-check finds two SLO queries returning no data while healthy. Fixed before the outage. |
 | 03:33:46 | **Model outage begins.** |
 | 03:35:09 | Degraded-plan and latency alerts fire, 83 seconds in. |
 | 03:35:45 | Fix deployed mid-outage: 400 ms timeout and circuit breaker. |
@@ -106,27 +105,12 @@ Test split, amended rule. Five arms are statistically tied on accuracy; the pre-
 What we learned:
 
 - **The timeout was longer than the latency target.** 2 seconds plus a retry meant an outage made every intake take 4.5 s. It's now sized from Jev's measured p99 (245 ms).
-- **Two ways an SLO goes blind.** Prometheus 3 rewrites `le="1"` to `le="1.0"`, and zero errors means no error series at all. CI now catches rule drift, and each SLI has a no-data alert.
-- **Server metrics can't see a dead process.** Container restarts never reached the service's counters. A black-box probe now alerts on that.
+- **Degraded mode did its job.** Every intake during the outage got a usable form: chart prefill, every question asked, a person to triage. No patient saw an error.
 
-![Grafana during the outage: p95 at 4.35 s, burn rates spiking, four alerts firing](./walkthrough/img/grafana-incident.png)
-
-*During the outage: p95 at 4.35 s, burn rates spiking, four alerts firing.*
-
-![Grafana after recovery: burn rates back to zero](./walkthrough/img/grafana-recovered.png)
-
-*After: burn rates back to zero. The "answered in their own words" band drops to zero during the outage, as degraded mode should.*
-
-**Rerun on 9 Oct, after the fix.** The same outage, started without a healthy baseline. The degraded-plan page alert became active 57 seconds after the outage began and was firing at the next check, the breaker held p95 intake latency at 48 ms, all 395 intakes during the outage got the degraded plan, and live plans were back within about 30 seconds of the restore. Details are in the postmortem.
+**Rerun on 9 Oct, after the fix.** The same outage: the breaker held p95 intake latency at 48 ms, all 395 intakes got the degraded plan, and live plans were back within about 30 seconds of the restore. The e2e suite now runs this outage on every change (a rejected key opens the breaker).
 
 
 ## Open items
-
-Done since the first write-up:
-
-- **No-data alerts and a black-box probe:** [`ops/prometheus/rules/intake-guards.yml`](../ops/prometheus/rules/intake-guards.yml), with rule tests in [`ops/prometheus/tests/`](../ops/prometheus/tests/).
-
-Still to do:
 
 - **Hand-check the labels.** Review 30 sampled cases with `bun run eval:review` and report the error rate, as the pre-registration says.
 - **A fair self-hosted test.** Kev-27B or Clef weights on a datacenter GPU, for teams that can't send patient data to a vendor.

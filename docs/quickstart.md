@@ -10,7 +10,7 @@ Everything you can run, roughly in the order worth trying it. Synthetic patients
 | `TYPESAFE_API_KEY` | Jev, the decision model | Export it in your shell or put it in `.env` |
 | `CLOUDFLARE_ACCOUNT_ID`, `CLOUDFLARE_API_TOKEN` | Clairic, the extraction model (token: Workers AI, Read) | `.env`. Or set `INTAKE_EXTRACTOR=none` to run without it |
 | `jq` | Building request bodies below | `brew install jq` |
-| Docker | Only for the ops stack (section 6) and promtool | Docker Desktop or OrbStack |
+| Docker | Only to run it as a container (section 6) | Docker Desktop or OrbStack |
 
 ```sh
 bun install
@@ -101,7 +101,7 @@ The product rule: a model failure degrades the plan; it never fails the patient.
 | Missing Cloudflare creds | `CLOUDFLARE_API_TOKEN= bun run dev` | Refuses to boot (or set `INTAKE_EXTRACTOR=none`) |
 | Shadow model | `INTAKE_SHADOW_DECIDER=jev:jev-latest bun run dev` | `"msg":"shadow"` logs after each response; `intake_shadow_agreement_total` in metrics. Never touches the patient's plan |
 
-The written-up version of the Jev-down drill: `ops/postmortems/2026-10-09-game-day-jev-outage.md`.
+The written-up version of the Jev-down drill: `docs/postmortems/2026-10-09-game-day-jev-outage.md`.
 
 ## 5. Tests
 
@@ -127,20 +127,15 @@ Try it: set `answeredAt: 0.95` in `GATES` (`src/core/plan.ts`), run `bun test te
 
 Without keys, e2e and integration skip locally. In CI they fail loudly instead.
 
-## 6. Ops stack (Docker)
+## 6. Run it as a container
 
 ```sh
-bun run ops:up                  # service, Prometheus, blackbox probe, Grafana
-bun run ops:traffic             # 2 req/s for 10 min; args: [rps] [minutes] [url]
+docker compose up --build       # the service on :8080, read-only filesystem, health-checked
 ```
 
-| Open | See |
-|---|---|
-| localhost:3000 | Grafana dashboard: intakes/min, live vs degraded, paperwork saved, latency, shadow agreement |
-| localhost:9090/alerts | Prometheus SLO burn-rate alerts |
-| localhost:8080 | The service, as in section 3 |
+Then use the calls in section 3. Outage drill: `TYPESAFE_BASE_URL=http://10.255.255.1 docker compose up --build`. Stop with `docker compose down`.
 
-Game day: `TYPESAFE_BASE_URL=http://10.255.255.1 bun run ops:up` with traffic running, then watch the degraded panel and the alerts. Runbooks: `ops/runbooks/`. Stop with `bun run ops:down`.
+The service exposes `/metrics` in Prometheus format and JSON logs. In production those go to whatever monitoring the clinic runs; there's no dashboard stack in this repo. Model and gate results are in section 7.
 
 ## 7. Evaluation
 

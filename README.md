@@ -27,8 +27,9 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
 | Measured model changes: pre-registered eval, shadow mode for upgrades | `eval/`, `src/core/shadow.ts` |
 | PHI-safe telemetry: logs and metrics carry only allowlisted fields, and a test fails if patient data leaks | `src/api/log.ts`, `src/api/metrics.ts`, `test/e2e.test.ts` |
 | Tests weighted to what agents get wrong: end to end with nothing mocked, the model boundary against the real pinned model, golden intakes recorded from it, and two unit tests | `test/` |
-| Release discipline: error budgets with burn-rate and no-data alerts, a black-box probe, CI that scans config and images | `ops/slo`, `ops/prometheus`, `.github/workflows/ci.yml` |
-| Learning from failure: a deliberate model outage, the bug it found, and the fix | `ops/postmortems/` |
+| Measured product changes: an experiment variant per intake, recorded in metrics and logs, never touching a safety gate | `src/api/server.ts`, `eval/sweep.ts` |
+| Learning from failure: a deliberate model outage, the bug it found, and the fix | `docs/postmortems/` |
+| CI on every change: real-model tests, types, lint, and config and image scans | `.github/workflows/ci.yml` |
 | Built with coding agents under explicit rules, tests and CI gates | `AGENTS.md` |
 
 A new patient normally fills out every field of an intake form. The POC reads what the chart already knows and what the patient already said, then asks only for the rest. Abridged output from one run; probabilities move a point or two between runs:
