@@ -18,6 +18,7 @@ Some of it is more than notes. The intake service in this repo runs the AI patte
 
 | Decision | My take |
 |---|---|
+| North star | Activation: the share of eligible members who reach a first visit, then come back. Rezilient says average employee activation is 33%. Everything below is ranked by which step of that funnel it moves. |
 | App shell | Go native with the rebrand, SwiftUI on iOS and Jetpack Compose on Android. The shell owns launch, navigation, sign-in, secure storage and deep links. Existing React Native screens keep running inside it until each one gets replaced. |
 | What goes native first | Anything where the OS is the feature. Vitals and wearables first (HealthKit, Health Connect, Apple Watch, Bluetooth devices), then biometrics and secure storage, card capture, notifications, voice input and background work. |
 | What stays shared | Screens that are mostly server-driven content and change a lot. Some of these may never move, and that's fine. |
@@ -25,6 +26,97 @@ Some of it is more than notes. The intake service in this repo runs the AI patte
 | PHI | OAuth with PKCE in the system browser, tokens in Keychain / Keystore, biometrics to unlock a session (not to identify someone), and analytics that can only send fields someone reviewed. |
 | AI | The model answers narrow questions, code makes the call. Anything clinical goes to a clinician, and every AI feature needs a plain fallback for when the model is slow or down. |
 | First slice | Pre-visit intake, with vitals right behind it. Both lean on the platform, both are easy to measure, and both save the medic and the remote provider time on every visit. |
+
+## Why activation is the job
+
+How the business works, from Rezilient's own site (October 2026). The numbers are their claims, and I haven't seen the data behind them:
+
+| What they say | What it means for the app |
+|---|---|
+| Employers pay a flat monthly fee. Members pay $0 copay and $0 deductible for CloudClinic visits, telehealth in all 50 states, 24/7 care team messaging and refills, and specialist e-consults. Dependents 7+ included. | The fee is probably per employee per month (inference). Revenue doesn't grow with visits, so a visit is a cost Rezilient chooses to pay. |
+| Rezilient carries the utilization risk and comes out ahead when people get care early and stay out of the ER and hospital. | An early, cheap visit is the product working. Hospital and surgery still bill the employer's regular plan, and avoiding those is where the employer saves. |
+| 12% average employer savings in year 1, 400+ employers, NPS 90 to 92. ER visits 32 vs 107 per 1,000 members a year (90th percentile). BP controlled 89% vs 74%. HbA1c above 9: 4% vs 20%. | Strong outcomes for members who use it. |
+| Average employee activation is 33%. | Two out of three employees never get the early care the model depends on, and they still reach the ER on the employer's bill. |
+
+My read (inference): the member app is the engine of the business. More activation means more early care, more employer savings, more renewals. So the north star is activation and repeat use, and every workstream in this doc has to say which step it moves.
+
+```
+eligible ──► registered ──► first visit ──► returning / care plan
+(employer     (account,       (booked and      (second visit, refill,
+ file)         setup done)     completed)       vitals synced, messages)
+```
+
+| Metric | Step | How it's measured |
+|---|---|---|
+| Registration rate | eligible → registered | Accounts with setup finished (card and ID from the "Finish setup" banner) over members in the employer eligibility file. Denominator is server-side, numerator is an app event. |
+| Activation rate | registered → first visit | First completed visit over eligible members. My guess is this is close to how the 33% is defined (inference, worth confirming). |
+| Time to first visit | registered → first visit | Days from registration to first completed visit. Shorter means the app caught them while the need was real. |
+| Intake completion | first visit | Appointments that flip to "Intake form completed" before check-in. An unfinished intake is a likely no-show or a slower visit. |
+| Return rate | returning | Members with a second visit, refill or care team message within 90 days of the first. |
+| Care plan engagement | care plan | For members with hypertension or diabetes on the chart: readings synced in the last 30 days. This is the in-app lead on the BP and HbA1c numbers above. |
+
+Guardrails. These have to hold while anything above moves, and a breach pauses the rollout:
+
+| Guardrail | Bar |
+|---|---|
+| Escalation safety | Every red flag reaches a provider, none are shown to a member. Red-flag recall never drops below the pinned model's measured rate. |
+| Crash-free sessions and ANR | No worse than the last release, Play thresholds as hard limits. |
+| Intake time to finish | Median no slower than the current form. Fewer questions that take longer is a loss. |
+| Forced sign-outs | Zero. A signed-out member is a deactivated member. |
+| PHI in analytics | Zero fields outside the allowlist. Funnel events carry IDs and steps, never symptoms or chart data. |
+| Degraded mode | Share of intakes served without the model stays inside its error budget. |
+
+### What each piece moves
+
+| Workstream | Funnel step | Why |
+|---|---|---|
+| Native shell | None directly | Enabler. Its job is to change nothing visible and hold crash-free sessions, so it's judged on guardrails only. |
+| Native sign-in and session | registered, returning | Fewer sign-in failures and forced sign-outs, so returning members actually get back in. |
+| Onboarding and card / ID capture | eligible → registered | "Finish setup" is the first drop-off a member can hit. A camera flow that works first try shortens it. |
+| Booking and clinic finder | registered → first visit | The step right before activation. Stays shared, but it gets funnel instrumentation first. |
+| Pre-visit intake and voice (the POC) | first visit | Fewer questions and voice input raise intake completion and cut provider time per visit. |
+| The visit (video) | first visit | A dropped call is a failed first visit. |
+| Notifications | registered → first visit, returning | First-visit nudges, refill and follow-up reminders. Also the riskiest for PHI. |
+| Messages and refills | returning | The lowest-effort repeat use. Every refill through the app is a return. |
+| Vitals, wearables, Bluetooth devices | care plan | Home readings keep chronic members engaged between visits, which is where the BP and HbA1c outcomes come from. |
+| Lab results, summaries, prescriptions | returning | Reasons to open the app after a visit. Stay shared, move only if the data says so. |
+| Accessibility | all steps | Members who can't use the app can't activate. Cheap, and visible. |
+| Review prompts | eligible → registered (indirect) | Ratings help when a new employee looks the app up. Low priority. |
+| Release engineering, PHI, testing | Guardrails | They protect every step instead of moving one. |
+| Clinic view | first visit | Helps the provider trust the intake. Probably another team's scope. |
+| Settings, account, billing | None | Deprioritized. Last to move, if ever. |
+| Apple Watch app | None yet | Cut for now. Watch data already reaches HealthKit. |
+
+### For the employer
+
+Renewals depend on the employer seeing savings. The app can feed that without exposing anyone:
+
+- **Aggregate only.** Registration and activation rate, visits per 1,000, return rate, care plan engagement, per employer and site. No member-level rows, ever.
+- **ER diversion, as reported.** One optional intake question ("Where would you have gone otherwise?") gives a self-reported diversion count. It's a lead indicator, and claims data stays the real measure (inference: I don't know what Rezilient reports today).
+- **De-identified at the source.** Computed server-side from funnel events, small cells suppressed (for example under 11 members), no symptoms, diagnoses or names. The app emits events, and reporting never reads chart data from the device.
+
+### Experiments
+
+Every test reports against the funnel metrics above and stops on any guardrail breach.
+
+| Rule | Why |
+|---|---|
+| Escalation gates, skip gates and model swaps are never live arms | Patient safety. They go offline sweep (`eval/`) → goldens → shadow → fixed rollout |
+| Randomize by member for UI tests; by clinic, switching weekly, for anything a medic sees | One medic sees every member at a clinic, so member-level arms would contaminate |
+| Measure activation by staggered employer rollout, not A/B | Inference: 33% → 38% needs ~1,430 members per arm; clustered by employer that's ~80 employers per arm |
+| Intake completion is the testable metric | Inference: +10 points from a 60% baseline needs ~350 members per arm, a few weeks |
+| Missed escalations aren't a statistic | Too rare to power. Each one is a severity review |
+
+Assignment comes from the app's flag service, hashed on member id. The server only records the variant: a closed enum in the allowlisted logs and a metric label, never passed to `plan()`. Candidates:
+
+| Test | Step | Question |
+|---|---|---|
+| "What's going on?" on home | registered → first visit | Does a free-text box that routes to booking or a navigator start more first visits than a services menu? |
+| Intake question reduction | first visit | Does the POC's shorter form raise completion and keep time to finish flat, vs the full form? |
+| "You said" show-back | first visit | Does showing the member's own words for a skipped question raise trust and completion, vs skipping silently? |
+| First-visit nudge timing | registered → first visit | When after registration does a nudge to book convert best: day 1, 3 or 7? |
+| Onboarding from the eligibility file | eligible → registered | Does a pre-verified invite (identity matched from the employer file) beat manual sign-up? |
+| Health data ask timing | care plan | Asking for Apple Health / Health Connect at the first vitals screen vs after the first visit. |
 
 ## What the App Store tells us
 
@@ -106,7 +198,7 @@ What I'm after: small changes, shipped often, with the store rollout and flags d
 | Store rollout | App Store phased release (seven days, 1% to 100%) and Play staged rollout, paused when a gate fails. |
 | Gates | Crash-free sessions and ANR vs the last release, with Google Play's bad-behavior thresholds (1.09% user-perceived crash rate, 0.47% ANR) as hard limits. |
 | Feature flags | Every new screen ships dark, rolls out by percentage, and has a server-side kill switch that works on old app versions too. |
-| Weekly report | Crash-free users and sessions, ANR, launch p50/p90, adoption by version, anything that got paused. One page, same format every week. |
+| Weekly report | Crash-free users and sessions, ANR, launch p50/p90, adoption by version, anything that got paused, and the funnel rates next to them. One page, same format every week. |
 
 Over-the-air updates need a written policy, since they're the easiest way to ship something nobody reviewed:
 
@@ -225,7 +317,7 @@ On using AI to build the app itself: I built the POC with coding agents, and the
 
 ## First slice: intake and vitals
 
-Members already see "Intake form not filled" on their upcoming appointments, so a better intake improves a step they already know instead of adding a new one. It leans on the platform (on-device dictation, Apple Health prefill), it's easy to measure (completion rate, time to finish, fields typed), and it saves the medic and the remote provider time on every visit.
+Members already see "Intake form not filled" on their upcoming appointments, so a better intake improves a step they already know instead of adding a new one. It leans on the platform (on-device dictation, Apple Health prefill), it's easy to measure (completion rate, time to finish, fields typed), and it saves the medic and the remote provider time on every visit. It also sits on the activation step itself: a member who finishes intake is a member who shows up for a first visit.
 
 On two synthetic patients, the POC turned a 29-field form into 6 questions to type, and a 27-field form into 14. How much it saves depends on how complete the chart already is.
 
@@ -248,12 +340,12 @@ I have an opinion on voice. I think speech-to-text is important to think through
 
 | By | What |
 |---|---|
-| Day 30 | Read the codebase and the crash, ANR and usage data, and fix everything in this doc that turns out wrong. Agree on the per-screen calls with product and design and write them down. Get the weekly release-health report going. |
+| Day 30 | Read the codebase and the crash, ANR and usage data, and fix everything in this doc that turns out wrong. Agree on the per-screen calls with product and design and write them down. Get the weekly release-health report going. Confirm how activation is defined today and instrument the funnel end to end, eligibility file to return visit. |
 | Day 60 | Native shell at 100% with no visible change. Release pipeline with signing in CI, rollout gates and kill switches. End-to-end suite on the critical journeys, running on every PR and in production on test accounts. Analytics allowlist in place. |
-| Day 90 | Native sign-in shipped with no forced sign-outs. First native screen (intake or vitals, whichever the data favors) rolling out behind a flag with an agreed success metric. Mobile engineering standards written down and actually used in review. |
+| Day 90 | Native sign-in shipped with no forced sign-outs. First native screen (intake or vitals, whichever the data favors) rolling out behind a flag, judged on its funnel step with guardrails held. Mobile engineering standards written down and actually used in review. |
 
 ## Disclosure
 
-Everything about Rezilient's current app here comes from public info, and the rest is assumption. The POC runs on synthetic patients only, its model provider has no BAA, and it's never been in production.
+Everything about Rezilient's current app here comes from public info, and the rest is assumption. Business numbers (activation, savings, ER visits, outcomes, NPS) are Rezilient's own published claims, and the conclusions drawn from them are marked as inference. The POC runs on synthetic patients only, its model provider has no BAA, and it's never been in production.
 
 The parts I'm least sure about are the per-screen calls and the timeline, since both depend on data I haven't seen. Those are the bits I'd most want to go through with the team, and I'd expect them to change.
