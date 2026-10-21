@@ -22,6 +22,8 @@ jobs:
         env:
           # e2e and integration call the real pinned model; synthetic patients only.
           TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
 
   platform:
     runs-on: ubuntu-24.04
