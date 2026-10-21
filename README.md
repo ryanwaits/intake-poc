@@ -91,6 +91,8 @@ reason (patient's words) ──────────────┬───�
 
 ## Run
 
+Full guide, with things to try and failure drills: [docs/quickstart.md](docs/quickstart.md).
+
 ```sh
 bun install
 export TYPESAFE_API_KEY=...
