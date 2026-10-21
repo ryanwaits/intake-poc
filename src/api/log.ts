@@ -16,6 +16,11 @@ type Fields = Partial<{
   fields: number;
   asked: number;
   error: string;
+  /** Skipped questions shown back with the patient's own words. A count, never the words. */
+  said: number;
+  extractMs: number;
+  extractError: string;
+  extractor: string;
   port: number;
   state: 'closed' | 'open' | 'half-open';
 }>;

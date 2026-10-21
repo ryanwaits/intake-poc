@@ -66,6 +66,7 @@ describe.skipIf(!hasModel)('intake service, end to end', () => {
   test.skipIf(Boolean(remote))('boots on the pinned model', () => {
     expect(svc.output()).toContain(`"msg":"listening"`);
     expect(svc.output()).toContain(`"model":"${JEV_MODEL}"`);
+    expect(svc.output()).toContain('"extractor":"@cf/cloudflare/clairic"');
   });
 
   test('health and readiness', async () => {
@@ -83,7 +84,11 @@ describe.skipIf(!hasModel)('intake service, end to end', () => {
     expect(plan.card.escalations).toEqual([]);
     expect(plan.card.complaints.map((c: { id: string }) => c.id)).toContain('ent');
     expect(plan.card.medicPrep.devices).toContain('otoscope');
-    expect(plan.fields.find((f: { id: string }) => f.id === 'onset').status).toBe('answered');
+    const onset = plan.fields.find((f: { id: string }) => f.id === 'onset');
+    expect(onset.status).toBe('answered');
+    // Shown back in the patient's own words, with where it came from.
+    expect(onset.said.value).toContain('3 days');
+    expect(onset.said.why.rule).toContain('show back to confirm');
   }, 10_000);
 
   test('chest tightness escalates to a provider, never to the patient form', async () => {
@@ -162,6 +167,25 @@ describe.skipIf(!hasModel || Boolean(remote))('outage and lifecycle, end to end'
     }
   }, 20_000);
 
+  test("extraction model unreachable: the same plan, just without the patient's words", async () => {
+    // A real failure: Cloudflare rejects the token.
+    const svc = await boot({ CLOUDFLARE_API_TOKEN: 'invalid-token' });
+    try {
+      const plan = await (
+        await intake(svc, { reason: "ear's been killing me 3 days", bundle: maria })
+      ).json();
+      expect(plan.mode).toBe('live');
+      const onset = plan.fields.find((f: { id: string }) => f.id === 'onset');
+      expect(onset.status).toBe('answered');
+      expect(onset.said).toBeNull();
+      expect(svc.output()).toContain('"extractError":"Error"');
+      const metrics = await (await fetch(`${svc.url}/metrics`)).text();
+      expect(metrics).toContain('intake_extractions_total{outcome="error"} 1');
+    } finally {
+      svc.proc?.kill();
+    }
+  }, 10_000);
+
   test('SIGTERM fails readiness first, then exits cleanly', async () => {
     const svc = await boot();
     svc.proc?.kill('SIGTERM');
@@ -170,11 +194,16 @@ describe.skipIf(!hasModel || Boolean(remote))('outage and lifecycle, end to end'
   }, 10_000);
 
   test('bad config fails the boot instead of taking traffic', async () => {
-    const proc = Bun.spawn(['bun', 'src/api/server.ts'], {
-      env: { ...process.env, INTAKE_SHADOW_SAMPLE: '2' },
-      stdout: 'ignore',
-      stderr: 'ignore',
-    });
-    expect(await proc.exited).not.toBe(0);
+    for (const bad of [
+      { INTAKE_SHADOW_SAMPLE: '2' },
+      { INTAKE_EXTRACTOR: 'clairic', CLOUDFLARE_API_TOKEN: '' },
+    ]) {
+      const proc = Bun.spawn(['bun', '--no-env-file', 'src/api/server.ts'], {
+        env: { ...process.env, ...bad },
+        stdout: 'ignore',
+        stderr: 'ignore',
+      });
+      expect(await proc.exited).not.toBe(0);
+    }
   });
 });

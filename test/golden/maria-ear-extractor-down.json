@@ -1,0 +1,506 @@
+{
+  "name": "maria-ear-extractor-down",
+  "note": "Extraction model unreachable: the same skips as maria-ear, just without \"You said\" values. Never a degraded plan.",
+  "patient": "maria",
+  "reason": "ear's been killing me 3 days, also need my lisinopril refilled",
+  "model": "live",
+  "extractor": "down",
+  "today": "2026-10-08T12:00:00Z",
+  "summary": {
+    "ageBand": "adult",
+    "sex": "female",
+    "problems": [
+      "Hypertension"
+    ],
+    "medications": [
+      "lisinopril 10 MG Oral Tablet"
+    ],
+    "allergies": [
+      "Penicillin"
+    ]
+  },
+  "decisions": {
+    "model": "jev-1.13.0",
+    "setting": {
+      "value": "clinic",
+      "confidence": 0.97
+    },
+    "flags": {
+      "chest_pain": 0.01,
+      "stroke": 0.01,
+      "breathing": 0.01,
+      "allergic_reaction": 0.01,
+      "worst_headache": 0.02,
+      "self_harm": 0.01
+    },
+    "complaints": {
+      "ent": 0.95,
+      "respiratory": 0.02,
+      "skin": 0.02,
+      "msk": 0.08,
+      "urinary": 0.02,
+      "med_refill": 0.97
+    },
+    "answered": {
+      "pregnancy": 0,
+      "onset": 1,
+      "fever": 0,
+      "side": 0,
+      "drainage_hearing": 0,
+      "cough_type": 0,
+      "short_of_breath": 0,
+      "location": 0.55,
+      "changing": 0,
+      "exposure": 0.02,
+      "mechanism": 0,
+      "function": 0,
+      "numbness": 0,
+      "flank_pain": 0,
+      "which_med": 1,
+      "side_effects": 0,
+      "severity": 0.86,
+      "tried": 0
+    },
+    "usage": {
+      "inputTokens": 2217,
+      "outputTokens": 931,
+      "latencyMs": 0
+    }
+  },
+  "extraction": null,
+  "plan": {
+    "mode": "live",
+    "model": "jev-1.13.0",
+    "fields": [
+      {
+        "id": "name",
+        "section": "registration",
+        "ask": "Full legal name",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Maria Synthetic"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "birth_date",
+        "section": "registration",
+        "ask": "Date of birth",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "1974-03-12"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "sex",
+        "section": "registration",
+        "ask": "Sex",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "female"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "address",
+        "section": "registration",
+        "ask": "Home address",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "12 Elm St, Clayton, NC, 27520"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "phone",
+        "section": "registration",
+        "ask": "Phone number",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "555-0142"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "email",
+        "section": "registration",
+        "ask": "Email",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "maria@example.com"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "language",
+        "section": "registration",
+        "ask": "Preferred language",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "English"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "emergency_contact",
+        "section": "registration",
+        "ask": "Emergency contact: name, relationship, phone",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Luis Synthetic, Spouse, 555-0143"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "employer",
+        "section": "registration",
+        "ask": "Employer",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Example Manufacturing Co"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "member_id",
+        "section": "registration",
+        "ask": "Member ID",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "RZ-100234"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "pharmacy",
+        "section": "registration",
+        "ask": "Preferred pharmacy",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_treatment",
+        "section": "consent",
+        "ask": "Consent to treatment",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_telehealth",
+        "section": "consent",
+        "ask": "Consent to telehealth",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "privacy_notice",
+        "section": "consent",
+        "ask": "Notice of privacy practices",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "medications",
+        "section": "history",
+        "ask": "Medications you take now",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "lisinopril 10 MG Oral Tablet",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "allergies",
+        "section": "history",
+        "ask": "Allergies",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Penicillin",
+            "recordedAt": "2019-09-10"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "conditions",
+        "section": "history",
+        "ask": "Ongoing health conditions",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Hypertension",
+            "recordedAt": "2021-06-01"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "surgeries",
+        "section": "history",
+        "ask": "Past surgeries",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Appendectomy",
+            "recordedAt": "1998-07-21"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "family_history",
+        "section": "history",
+        "ask": "Family medical history",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Mother: Type 2 diabetes",
+            "recordedAt": "2024-02-14"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "tobacco",
+        "section": "history",
+        "ask": "Do you smoke, vape or use tobacco?",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Never smoker",
+            "recordedAt": "2024-02-14"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "alcohol",
+        "section": "history",
+        "ask": "How often do you drink alcohol?",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Occasional, 1-2 drinks per week",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "pregnancy",
+        "section": "history",
+        "ask": "Is there any chance you could be pregnant?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us whether the patient is or could be pregnant?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "phq2",
+        "section": "screening",
+        "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "0",
+            "recordedAt": "2026-04-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "which_med",
+        "section": "visit",
+        "ask": "Which medication do you need refilled?",
+        "said": null,
+        "status": "answered",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us which medication the patient needs refilled?",
+          "p": 1,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "side_effects",
+        "section": "visit",
+        "ask": "Any side effects from it?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us whether the medication is causing side effects?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "onset",
+        "section": "visit",
+        "ask": "When did this start?",
+        "said": null,
+        "status": "answered",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us when the symptoms started or how long they have lasted?",
+          "p": 1,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "fever",
+        "section": "visit",
+        "ask": "Have you had a fever?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us whether the patient has or has not had a fever?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "side",
+        "section": "visit",
+        "ask": "Which side is it: left, right, or both?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us which ear or side of the head or throat is affected?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "drainage_hearing",
+        "section": "visit",
+        "ask": "Any fluid from the ear or change in your hearing?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us ear drainage or discharge, or a change in hearing?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      }
+    ],
+    "counts": {
+      "prefilled": 12,
+      "confirm": 6,
+      "sign": 3,
+      "answered": 2,
+      "ask": 6,
+      "total": 29
+    },
+    "card": {
+      "escalations": [],
+      "setting": {
+        "value": "clinic",
+        "why": {
+          "question": "Based on `reason` and `patient`, where should this visit happen?",
+          "p": 0.97,
+          "rule": "confidence ≥ 0.6 → route, else navigator"
+        }
+      },
+      "complaints": [
+        {
+          "id": "med_refill",
+          "label": "Medication refill",
+          "why": {
+            "question": "Does `reason` ask for a prescription refill or more of a medication?",
+            "p": 0.97,
+            "rule": "p ≥ 0.5 → load protocol"
+          }
+        },
+        {
+          "id": "ent",
+          "label": "Ear, nose & throat",
+          "why": {
+            "question": "Does `reason` describe an ear, nose, sinus or throat problem?",
+            "p": 0.95,
+            "rule": "p ≥ 0.5 → load protocol"
+          }
+        }
+      ],
+      "medicPrep": {
+        "devices": [
+          "otoscope",
+          "exam_camera"
+        ],
+        "vitals": [
+          "blood_pressure",
+          "heart_rate",
+          "temperature",
+          "spo2",
+          "respiratory_rate"
+        ],
+        "tests": [
+          "Rapid strep, if sore throat"
+        ]
+      }
+    },
+    "usage": {
+      "inputTokens": 2217,
+      "outputTokens": 931,
+      "latencyMs": 0
+    }
+  }
+}

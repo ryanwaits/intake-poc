@@ -29,7 +29,14 @@ function emptyChart(c: Case): Chart {
 
 /** A failed call gets the product's degraded plan, exactly as a patient would. */
 function planFor(c: Case, decisions: Decisions | null, gates: Gates): IntakePlan {
-  return plan(emptyChart(c), { reason: c.reason, patient: c.patient }, decisions, TODAY, gates);
+  return plan(
+    emptyChart(c),
+    { reason: c.reason, patient: c.patient },
+    decisions,
+    null,
+    TODAY,
+    gates,
+  );
 }
 
 type CaseScore = {

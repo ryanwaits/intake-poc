@@ -24,8 +24,14 @@ for (const spec of GOLDEN_SPECS) {
       if (id) expect(seen).not.toContain(id);
     }
 
-    expect(plan(chart, { reason: spec.reason, patient: summary }, golden.decisions, today)).toEqual(
-      golden.plan,
-    );
+    expect(
+      plan(
+        chart,
+        { reason: spec.reason, patient: summary },
+        golden.decisions,
+        golden.extraction,
+        today,
+      ),
+    ).toEqual(golden.plan);
   });
 }

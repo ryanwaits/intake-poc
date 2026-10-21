@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import type { PatientBundle } from '../core/chart';
+import type { Extract } from '../core/extract';
 import { type Decide, run } from '../core/run';
 import { compare } from '../core/shadow';
 import type { IntakePlan } from '../core/types';
@@ -8,6 +9,7 @@ import { log } from './log';
 import {
   decideDuration,
   escalations,
+  extractions,
   fields,
   httpDuration,
   httpRequests,
@@ -29,6 +31,8 @@ export type AppOptions = {
   model?: string;
   /** A candidate model run on a sample of traffic after the response is sent. */
   shadow?: Shadow | null;
+  /** The extraction model: the patient's own words for skipped questions. Optional. */
+  extract?: Extract | null;
   /** False while draining on shutdown, so the load balancer stops sending traffic. */
   ready?: () => boolean;
 };
@@ -37,6 +41,7 @@ export function createApp({
   decide,
   model = 'live',
   shadow = null,
+  extract = null,
   ready = () => true,
 }: AppOptions) {
   const app = new Hono<Env>();
@@ -84,12 +89,13 @@ export function createApp({
 
     let result: Awaited<ReturnType<typeof run>>;
     try {
-      result = await run(bundle, reason, decide);
+      result = await run(bundle, reason, { decide, extract });
     } catch {
       return c.json({ error: 'bundle must contain a Patient with a birthDate' }, 400);
     }
 
-    const { plan, error } = result;
+    const { plan, error, extractError, extraction } = result;
+    extractions.inc({ outcome: !extract ? 'off' : extractError ? 'error' : 'ok' });
     intakes.inc({ mode: plan.mode });
     if (plan.usage) decideDuration.observe({ model, outcome: 'ok' }, plan.usage.latencyMs / 1000);
     else decideDuration.observe({ model, outcome: 'error' }, 0);
@@ -105,6 +111,9 @@ export function createApp({
       fields: plan.counts.total,
       asked: plan.counts.ask,
       error: error ?? undefined,
+      said: plan.fields.filter((f) => f.said).length,
+      extractMs: extraction?.usage.latencyMs,
+      extractError: extractError ?? undefined,
     });
 
     // Shadow mode: after the response, never on the patient's path, only against live plans.
@@ -124,7 +133,7 @@ async function runShadow(
   livePlan: IntakePlan,
   reqId: string,
 ) {
-  const { plan, error } = await run(bundle, reason, shadow.decide);
+  const { plan, error } = await run(bundle, reason, { decide: shadow.decide });
   if (plan.mode !== 'live') {
     shadowErrors.inc({ model: shadow.model });
     log('warn', 'shadow', { reqId, model: shadow.model, error: error ?? undefined });
@@ -149,10 +158,15 @@ if (import.meta.main) {
     decide: config.live.decide,
     model: config.live.model,
     shadow: config.shadow,
+    extract: config.extractor?.extract ?? null,
     ready: () => !draining,
   });
   const server = Bun.serve({ port: config.port, fetch: app.fetch });
-  log('info', 'listening', { port: config.port, model: config.live.model });
+  log('info', 'listening', {
+    port: config.port,
+    model: config.live.model,
+    extractor: config.extractor?.model ?? 'none',
+  });
 
   // Graceful shutdown: fail readiness, let the load balancer notice, finish in-flight requests, exit.
   const shutdown = async () => {

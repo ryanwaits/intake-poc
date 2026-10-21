@@ -37,6 +37,13 @@ export const decideDuration = new Histogram({
   registers: [registry],
 });
 
+export const extractions = new Counter({
+  name: 'intake_extractions_total',
+  help: 'Extraction model calls by outcome (ok, error, off). An error only drops the "You said" values.',
+  labelNames: ['outcome'] as const,
+  registers: [registry],
+});
+
 export const fields = new Counter({
   name: 'intake_fields_total',
   help: 'Form fields by how they were filled: the paperwork the patient was spared.',

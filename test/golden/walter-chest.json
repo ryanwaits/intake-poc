@@ -8,31 +8,37 @@
   "summary": {
     "ageBand": "older_adult",
     "sex": "male",
-    "problems": ["COPD", "Coronary artery disease"],
-    "medications": ["albuterol inhaler", "atorvastatin 40 MG Oral Tablet"],
+    "problems": [
+      "COPD",
+      "Coronary artery disease"
+    ],
+    "medications": [
+      "albuterol inhaler",
+      "atorvastatin 40 MG Oral Tablet"
+    ],
     "allergies": []
   },
   "decisions": {
     "model": "jev-1.13.0",
     "setting": {
       "value": "clinic",
-      "confidence": 0.35
+      "confidence": 0.37
     },
     "flags": {
       "chest_pain": 0.99,
       "stroke": 0.01,
-      "breathing": 0.05,
+      "breathing": 0.06,
       "allergic_reaction": 0.01,
       "worst_headache": 0.01,
-      "self_harm": 0.01
+      "self_harm": 0
     },
     "complaints": {
       "ent": 0.01,
-      "respiratory": 0.32,
+      "respiratory": 0.4,
       "skin": 0.01,
       "msk": 0.05,
       "urinary": 0.01,
-      "med_refill": 0.03
+      "med_refill": 0.02
     },
     "answered": {
       "fall_risk": 0,
@@ -41,11 +47,11 @@
       "side": 0,
       "drainage_hearing": 0,
       "cough_type": 0,
-      "short_of_breath": 0.04,
-      "location": 0.24,
+      "short_of_breath": 0.06,
+      "location": 0.25,
       "changing": 0,
       "exposure": 0,
-      "mechanism": 0.18,
+      "mechanism": 0.16,
       "function": 0.13,
       "numbness": 0,
       "flank_pain": 0,
@@ -60,6 +66,143 @@
       "latencyMs": 0
     }
   },
+  "extraction": {
+    "model": "@cf/cloudflare/clairic",
+    "spans": {
+      "fall_risk": {
+        "value": "chest feels tight",
+        "span": [
+          0,
+          17
+        ],
+        "confidence": 0.3943656384944916
+      },
+      "fever": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.24510309100151062
+      },
+      "side": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.5759754776954651
+      },
+      "drainage_hearing": {
+        "value": "stairs",
+        "span": [
+          33,
+          39
+        ],
+        "confidence": 0.9137865304946899
+      },
+      "cough_type": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.33592671155929565
+      },
+      "short_of_breath": {
+        "value": "chest feels tight when I walk up stairs",
+        "span": [
+          0,
+          39
+        ],
+        "confidence": 0.47115904092788696
+      },
+      "location": {
+        "value": "chest",
+        "span": [
+          0,
+          5
+        ],
+        "confidence": 0.9984655380249023
+      },
+      "changing": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.3198202848434448
+      },
+      "exposure": {
+        "value": "stairs",
+        "span": [
+          33,
+          39
+        ],
+        "confidence": 0.7696176171302795
+      },
+      "mechanism": {
+        "value": "walk up stairs",
+        "span": [
+          25,
+          39
+        ],
+        "confidence": 0.47990792989730835
+      },
+      "function": {
+        "value": "walk",
+        "span": [
+          25,
+          29
+        ],
+        "confidence": 0.41645556688308716
+      },
+      "numbness": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.13580909371376038
+      },
+      "flank_pain": {
+        "value": "chest",
+        "span": [
+          0,
+          5
+        ],
+        "confidence": 0.26674091815948486
+      },
+      "which_med": {
+        "value": "chest",
+        "span": [
+          0,
+          5
+        ],
+        "confidence": 0.3863535225391388
+      },
+      "side_effects": {
+        "value": "chest feels tight when I walk up stairs",
+        "span": [
+          0,
+          39
+        ],
+        "confidence": 0.5268163084983826
+      },
+      "severity": {
+        "value": "tight",
+        "span": [
+          12,
+          17
+        ],
+        "confidence": 0.28404873609542847
+      }
+    },
+    "usage": {
+      "inputTokens": 2502,
+      "latencyMs": 0
+    }
+  },
   "plan": {
     "mode": "live",
     "model": "jev-1.13.0",
@@ -68,6 +211,7 @@
         "id": "name",
         "section": "registration",
         "ask": "Full legal name",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -80,6 +224,7 @@
         "id": "birth_date",
         "section": "registration",
         "ask": "Date of birth",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -92,6 +237,7 @@
         "id": "sex",
         "section": "registration",
         "ask": "Sex",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -104,6 +250,7 @@
         "id": "address",
         "section": "registration",
         "ask": "Home address",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -116,6 +263,7 @@
         "id": "phone",
         "section": "registration",
         "ask": "Phone number",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -128,6 +276,7 @@
         "id": "email",
         "section": "registration",
         "ask": "Email",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -136,6 +285,7 @@
         "id": "language",
         "section": "registration",
         "ask": "Preferred language",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -144,6 +294,7 @@
         "id": "emergency_contact",
         "section": "registration",
         "ask": "Emergency contact: name, relationship, phone",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -152,6 +303,7 @@
         "id": "employer",
         "section": "registration",
         "ask": "Employer",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -160,6 +312,7 @@
         "id": "member_id",
         "section": "registration",
         "ask": "Member ID",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -168,6 +321,7 @@
         "id": "pharmacy",
         "section": "registration",
         "ask": "Preferred pharmacy",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -176,6 +330,7 @@
         "id": "consent_treatment",
         "section": "consent",
         "ask": "Consent to treatment",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -184,6 +339,7 @@
         "id": "consent_telehealth",
         "section": "consent",
         "ask": "Consent to telehealth",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -192,6 +348,7 @@
         "id": "privacy_notice",
         "section": "consent",
         "ask": "Notice of privacy practices",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -200,6 +357,7 @@
         "id": "medications",
         "section": "history",
         "ask": "Medications you take now",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -215,6 +373,7 @@
         "id": "allergies",
         "section": "history",
         "ask": "Allergies",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -223,6 +382,7 @@
         "id": "conditions",
         "section": "history",
         "ask": "Ongoing health conditions",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -238,6 +398,7 @@
         "id": "surgeries",
         "section": "history",
         "ask": "Past surgeries",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -251,6 +412,7 @@
         "id": "family_history",
         "section": "history",
         "ask": "Family medical history",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -259,6 +421,7 @@
         "id": "tobacco",
         "section": "history",
         "ask": "Do you smoke, vape or use tobacco?",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -272,6 +435,7 @@
         "id": "alcohol",
         "section": "history",
         "ask": "How often do you drink alcohol?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -280,6 +444,7 @@
         "id": "phq2",
         "section": "screening",
         "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -288,6 +453,7 @@
         "id": "fall_risk",
         "section": "screening",
         "ask": "Have you fallen in the past year?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -300,6 +466,7 @@
         "id": "onset",
         "section": "visit",
         "ask": "When did this start?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -312,6 +479,7 @@
         "id": "severity",
         "section": "visit",
         "ask": "On a scale of 0 to 10, how bad is it?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -324,6 +492,7 @@
         "id": "tried",
         "section": "visit",
         "ask": "What have you tried so far?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -364,7 +533,13 @@
       "complaints": [],
       "medicPrep": {
         "devices": [],
-        "vitals": ["blood_pressure", "heart_rate", "temperature", "spo2", "respiratory_rate"],
+        "vitals": [
+          "blood_pressure",
+          "heart_rate",
+          "temperature",
+          "spo2",
+          "respiratory_rate"
+        ],
         "tests": []
       }
     },

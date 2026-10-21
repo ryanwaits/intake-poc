@@ -1,4 +1,5 @@
 import { withBreaker } from '../core/breaker';
+import { CLAIRIC_MODEL, liveExtract } from '../core/extract';
 import { JEV_MODEL, liveEvaluate } from '../core/jev';
 import { type Decide, typedDecide } from '../core/run';
 import { log } from './log';
@@ -23,6 +24,21 @@ export function decider(spec: string, apiKey?: string): { model: string; decide:
   return { model, decide };
 }
 
+/** `clairic` (default) or `none`. Clairic needs Cloudflare credentials, or the boot fails. */
+export function extractor(env: Record<string, string | undefined>) {
+  const spec = env.INTAKE_EXTRACTOR ?? 'clairic';
+  if (spec === 'none') return null;
+  if (spec !== 'clairic') throw new Error(`Unknown extractor "${spec}": use clairic or none`);
+  const accountId = env.CLOUDFLARE_ACCOUNT_ID;
+  const apiToken = env.CLOUDFLARE_API_TOKEN;
+  if (!accountId || !apiToken) {
+    throw new Error(
+      'INTAKE_EXTRACTOR=clairic needs CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN',
+    );
+  }
+  return { model: CLAIRIC_MODEL, extract: liveExtract({ accountId, apiToken }) };
+}
+
 export function loadConfig(env: Record<string, string | undefined> = process.env) {
   const port = Number(env.PORT ?? 8080);
   if (!Number.isInteger(port) || port <= 0)
@@ -38,6 +54,7 @@ export function loadConfig(env: Record<string, string | undefined> = process.env
     /** Seconds to keep serving after SIGTERM so load balancers stop routing here first. */
     drainSeconds: Number(env.INTAKE_DRAIN_SECONDS ?? 5),
     live: decider(env.INTAKE_DECIDER ?? 'jev', env.TYPESAFE_API_KEY),
+    extractor: extractor(env),
     /** A candidate model that sees a sample of real traffic but never affects a patient. */
     shadow: env.INTAKE_SHADOW_DECIDER
       ? { ...decider(env.INTAKE_SHADOW_DECIDER, env.TYPESAFE_API_KEY), sample: shadowSample }

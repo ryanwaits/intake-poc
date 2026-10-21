@@ -13,8 +13,14 @@
   "summary": {
     "ageBand": "older_adult",
     "sex": "male",
-    "problems": ["COPD", "Coronary artery disease"],
-    "medications": ["albuterol inhaler", "atorvastatin 40 MG Oral Tablet"],
+    "problems": [
+      "COPD",
+      "Coronary artery disease"
+    ],
+    "medications": [
+      "albuterol inhaler",
+      "atorvastatin 40 MG Oral Tablet"
+    ],
     "allergies": []
   },
   "decisions": {
@@ -28,16 +34,16 @@
       "stroke": 0.01,
       "breathing": 0.02,
       "allergic_reaction": 0.01,
-      "worst_headache": 0.01,
-      "self_harm": 0.01
+      "worst_headache": 0,
+      "self_harm": 0
     },
     "complaints": {
-      "ent": 0.43,
-      "respiratory": 0.99,
+      "ent": 0.38,
+      "respiratory": 0.98,
       "skin": 0.01,
       "msk": 0.01,
       "urinary": 0.01,
-      "med_refill": 0.04
+      "med_refill": 0.05
     },
     "answered": {
       "fall_risk": 0,
@@ -56,12 +62,133 @@
       "flank_pain": 0,
       "which_med": 0,
       "side_effects": 0,
-      "severity": 0.04,
+      "severity": 0.03,
       "tried": 0
     },
     "usage": {
       "inputTokens": 2219,
       "outputTokens": 940,
+      "latencyMs": 0
+    }
+  },
+  "extraction": {
+    "model": "@cf/cloudflare/clairic",
+    "spans": {
+      "onset": {
+        "value": "about a week",
+        "span": [
+          16,
+          28
+        ],
+        "confidence": 0.8158270716667175
+      },
+      "side": {
+        "value": "night",
+        "span": [
+          40,
+          45
+        ],
+        "confidence": 0.29133620858192444
+      },
+      "drainage_hearing": {
+        "value": "week",
+        "span": [
+          24,
+          28
+        ],
+        "confidence": 0.6802328824996948
+      },
+      "cough_type": {
+        "value": "mostly",
+        "span": [
+          30,
+          36
+        ],
+        "confidence": 0.4380587637424469
+      },
+      "short_of_breath": {
+        "value": "mostly at night",
+        "span": [
+          30,
+          45
+        ],
+        "confidence": 0.3281385004520416
+      },
+      "location": {
+        "value": "cough",
+        "span": [
+          6,
+          11
+        ],
+        "confidence": 0.39802953600883484
+      },
+      "changing": {
+        "value": "mostly",
+        "span": [
+          30,
+          36
+        ],
+        "confidence": 0.2754329442977905
+      },
+      "mechanism": {
+        "value": "cough",
+        "span": [
+          6,
+          11
+        ],
+        "confidence": 0.5395019054412842
+      },
+      "function": {
+        "value": "night",
+        "span": [
+          40,
+          45
+        ],
+        "confidence": 0.1596093773841858
+      },
+      "numbness": {
+        "value": "night",
+        "span": [
+          40,
+          45
+        ],
+        "confidence": 0.2766457200050354
+      },
+      "flank_pain": {
+        "value": "cough",
+        "span": [
+          6,
+          11
+        ],
+        "confidence": 0.40504854917526245
+      },
+      "which_med": {
+        "value": "cough",
+        "span": [
+          6,
+          11
+        ],
+        "confidence": 0.8534864783287048
+      },
+      "side_effects": {
+        "value": "had a cough",
+        "span": [
+          0,
+          11
+        ],
+        "confidence": 0.4379388689994812
+      },
+      "severity": {
+        "value": "mostly at night",
+        "span": [
+          30,
+          45
+        ],
+        "confidence": 0.6459354758262634
+      }
+    },
+    "usage": {
+      "inputTokens": 2556,
       "latencyMs": 0
     }
   },
@@ -73,6 +200,7 @@
         "id": "name",
         "section": "registration",
         "ask": "Full legal name",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -85,6 +213,7 @@
         "id": "birth_date",
         "section": "registration",
         "ask": "Date of birth",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -97,6 +226,7 @@
         "id": "sex",
         "section": "registration",
         "ask": "Sex",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -109,6 +239,7 @@
         "id": "address",
         "section": "registration",
         "ask": "Home address",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -121,6 +252,7 @@
         "id": "phone",
         "section": "registration",
         "ask": "Phone number",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -133,6 +265,7 @@
         "id": "email",
         "section": "registration",
         "ask": "Email",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -141,6 +274,7 @@
         "id": "language",
         "section": "registration",
         "ask": "Preferred language",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -149,6 +283,7 @@
         "id": "emergency_contact",
         "section": "registration",
         "ask": "Emergency contact: name, relationship, phone",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -157,6 +292,7 @@
         "id": "employer",
         "section": "registration",
         "ask": "Employer",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -165,6 +301,7 @@
         "id": "member_id",
         "section": "registration",
         "ask": "Member ID",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -173,6 +310,7 @@
         "id": "pharmacy",
         "section": "registration",
         "ask": "Preferred pharmacy",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -181,6 +319,7 @@
         "id": "consent_treatment",
         "section": "consent",
         "ask": "Consent to treatment",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -189,6 +328,7 @@
         "id": "consent_telehealth",
         "section": "consent",
         "ask": "Consent to telehealth",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -197,6 +337,7 @@
         "id": "privacy_notice",
         "section": "consent",
         "ask": "Notice of privacy practices",
+        "said": null,
         "status": "sign",
         "values": [],
         "why": null
@@ -205,6 +346,7 @@
         "id": "medications",
         "section": "history",
         "ask": "Medications you take now",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -220,6 +362,7 @@
         "id": "allergies",
         "section": "history",
         "ask": "Allergies",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -228,6 +371,7 @@
         "id": "conditions",
         "section": "history",
         "ask": "Ongoing health conditions",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -243,6 +387,7 @@
         "id": "surgeries",
         "section": "history",
         "ask": "Past surgeries",
+        "said": null,
         "status": "confirm",
         "values": [
           {
@@ -256,6 +401,7 @@
         "id": "family_history",
         "section": "history",
         "ask": "Family medical history",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -264,6 +410,7 @@
         "id": "tobacco",
         "section": "history",
         "ask": "Do you smoke, vape or use tobacco?",
+        "said": null,
         "status": "prefilled",
         "values": [
           {
@@ -277,6 +424,7 @@
         "id": "alcohol",
         "section": "history",
         "ask": "How often do you drink alcohol?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -285,6 +433,7 @@
         "id": "phq2",
         "section": "screening",
         "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": null
@@ -293,6 +442,7 @@
         "id": "fall_risk",
         "section": "screening",
         "ask": "Have you fallen in the past year?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -305,6 +455,18 @@
         "id": "onset",
         "section": "visit",
         "ask": "When did this start?",
+        "said": {
+          "value": "about a week",
+          "span": [
+            16,
+            28
+          ],
+          "why": {
+            "question": "What did the patient say about when the symptoms started or how long they have lasted?",
+            "p": 0.8158270716667175,
+            "rule": "confidence ≥ 0.5 → show back to confirm"
+          }
+        },
         "status": "answered",
         "values": [],
         "why": {
@@ -317,6 +479,7 @@
         "id": "fever",
         "section": "visit",
         "ask": "Have you had a fever?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -329,6 +492,7 @@
         "id": "cough_type",
         "section": "visit",
         "ask": "Is your cough dry, or are you coughing anything up?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -341,6 +505,7 @@
         "id": "short_of_breath",
         "section": "visit",
         "ask": "Do you get short of breath? When?",
+        "said": null,
         "status": "ask",
         "values": [],
         "why": {
@@ -384,15 +549,26 @@
           "label": "Respiratory",
           "why": {
             "question": "Does `reason` describe a cough, congestion, wheezing or other breathing complaint?",
-            "p": 0.99,
+            "p": 0.98,
             "rule": "p ≥ 0.5 → load protocol"
           }
         }
       ],
       "medicPrep": {
-        "devices": ["stethoscope", "pulse_oximeter"],
-        "vitals": ["blood_pressure", "heart_rate", "temperature", "spo2", "respiratory_rate"],
-        "tests": ["COVID / flu swab"]
+        "devices": [
+          "stethoscope",
+          "pulse_oximeter"
+        ],
+        "vitals": [
+          "blood_pressure",
+          "heart_rate",
+          "temperature",
+          "spo2",
+          "respiratory_rate"
+        ],
+        "tests": [
+          "COVID / flu swab"
+        ]
       }
     },
     "usage": {

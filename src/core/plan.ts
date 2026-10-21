@@ -1,5 +1,6 @@
 import type { Chart } from './chart';
 import type { Decisions } from './decisions';
+import type { Extraction } from './extract';
 import { type Field, type FieldStatus, fromChart, PAPERWORK } from './form';
 import {
   BASE_VITALS,
@@ -25,6 +26,8 @@ export const GATES = {
   settingConfidenceAt: 0.6,
   /** Skip a question only when the patient has clearly answered it already. */
   answeredAt: 0.7,
+  /** Show the patient's own answer back. Tuned on dev: shown values ≥ 95% correct (eval/extract.ts). */
+  saidAt: 0.5,
 };
 
 const ALL_DEVICES: Device[] = ['otoscope', 'stethoscope', 'exam_camera', 'pulse_oximeter'];
@@ -95,10 +98,11 @@ function fieldPlan(
   field: Field,
   chart: Chart,
   decisions: Decisions | null,
+  extraction: Extraction | null,
   today: Date,
   gates: Gates,
 ): FieldPlan {
-  const base = { id: field.id, section: field.section, ask: field.ask };
+  const base = { id: field.id, section: field.section, ask: field.ask, said: null };
   const known = fromChart(field, chart, today);
   if (known) return { ...base, ...known, why: null };
 
@@ -110,7 +114,23 @@ function fieldPlan(
     p,
     rule: `p(answered) ≥ ${gates.answeredAt} → skip, else ask`,
   };
-  return { ...base, status: answered ? 'answered' : 'ask', values: [], why };
+  if (!answered) return { ...base, status: 'ask', values: [], why };
+
+  // The decision model decided the skip; the extraction model only supplies the words.
+  const span = extraction?.spans[field.id];
+  const said =
+    span && span.confidence >= gates.saidAt
+      ? {
+          value: span.value,
+          span: span.span,
+          why: {
+            question: `What did the patient say about ${field.covers}?`,
+            p: span.confidence,
+            rule: `confidence ≥ ${gates.saidAt} → show back to confirm`,
+          },
+        }
+      : null;
+  return { ...base, status: 'answered', values: [], why, said };
 }
 
 /**
@@ -121,6 +141,7 @@ export function plan(
   chart: Chart,
   intake: Intake,
   decisions: Decisions | null,
+  extraction: Extraction | null = null,
   today = new Date(),
   gates: Gates = GATES,
 ): IntakePlan {
@@ -130,7 +151,9 @@ export function plan(
       ? prep.complaints.flatMap((c) => PROTOCOLS[c.id as keyof typeof PROTOCOLS].history)
       : GENERAL_HISTORY;
   const fields = [...new Map([...PAPERWORK, ...visit].map((f) => [f.id, f])).values()];
-  const plans = inScope(fields, intake).map((f) => fieldPlan(f, chart, decisions, today, gates));
+  const plans = inScope(fields, intake).map((f) =>
+    fieldPlan(f, chart, decisions, extraction, today, gates),
+  );
 
   const counts = { prefilled: 0, confirm: 0, sign: 0, answered: 0, ask: 0, total: plans.length };
   for (const f of plans) counts[f.status satisfies FieldStatus] += 1;

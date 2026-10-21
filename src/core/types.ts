@@ -39,7 +39,15 @@ export type FieldPlan = {
   /** Chart values shown for prefill or confirm. */
   values: Known[];
   why: Why | null;
+  /**
+   * For a question skipped because the patient already answered it: their own words, shown back
+   * as "You said: …" to confirm. Null when there's no confident extraction.
+   */
+  said: Said | null;
 };
+
+/** A span of the patient's words from the extraction model, with its own `why`. */
+export type Said = { value: string; span: [number, number]; why: Why };
 
 export type PrepCard = {
   /** Red flags for the provider. Never shown to the patient. */
