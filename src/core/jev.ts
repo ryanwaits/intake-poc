@@ -21,7 +21,7 @@ export function liveEvaluate(model = JEV_MODEL, apiKey?: string): Evaluate {
     apiKey,
     defaultModel: model,
     // The intake form's latency SLO is 1 s. Jev's p99 is ~250 ms, so one 400 ms attempt plus one
-    // quick retry fits inside it. (Was 2 s + retry: an outage blew the SLO, see ops/postmortems.)
+    // quick retry fits inside it. (Was 2 s + retry: an outage blew the SLO, see docs/postmortems.)
     timeout: 400,
     retry: { maxRetries: 1, backoffInitialMs: 50, backoffMaxMs: 50 },
     // `debug` would log request bodies, which hold patient data.

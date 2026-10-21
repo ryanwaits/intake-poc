@@ -1,6 +1,8 @@
 # Postmortem: game day, decision model outage
 
-**Date:** 2026-10-09 · **Type:** planned game day (local stack: `compose.yaml`) · **Format:** blameless
+**Date:** 2026-10-09 · **Type:** planned game day (local stack: service, Prometheus, Grafana) · **Format:** blameless
+
+> **2026-10-21:** the monitoring stack (Prometheus rules, Grafana, the probe) was removed from the repo to keep the POC on the product. Items 1 and 2, the fixes that changed what patients get, stay in the code and run as e2e tests. Items 3, 4 and 6 belong to whatever monitoring the clinic runs.
 
 ## Summary
 
@@ -50,10 +52,10 @@ We cut the intake service off from the decision model (Jev) for 8m 39s under 2 i
 |---|---|---|
 | 1 | Timeout 400 ms + one 50 ms-backoff retry, sized from Jev's measured p99 (245 ms, n=384) to fit inside 1 s | Done, `src/core/jev.ts` |
 | 2 | Circuit breaker on the live model: fail fast while open, one trial call to close; state as `intake_breaker_open` | Done, `src/core/breaker.ts` |
-| 3 | `or vector(0)` on error queries and `le=~"1(\.0)?"` on the latency bucket; CI regenerates rules and fails on drift | Done, `ops/slo/intake.sloth.yaml`, `.github/workflows/ci.yml` |
-| 4 | Black-box probe from outside the cluster (ingress or synthetic check) so a dead process counts against availability | Done, blackbox exporter in `compose.yaml` and `IntakeProbeFailing` in `ops/prometheus/rules/intake-guards.yml` |
+| 3 | `or vector(0)` on error queries and `le=~"1(\.0)?"` on the latency bucket; CI regenerates rules and fails on drift | Done at the time; removed with the stack |
+| 4 | Black-box probe from outside the cluster (ingress or synthetic check) so a dead process counts against availability | Done at the time; removed with the stack |
 | 5 | Kubernetes rollouts keep ≥2 ready pods (PDB, readiness drain) so a restart is never a full gap like compose's | Dropped: the Kubernetes manifests were removed from this repo |
-| 6 | Add a "no data" alert per SLI (`absent()`), so a broken query pages someone instead of hiding | Done, `ops/prometheus/rules/intake-guards.yml` |
+| 6 | Add a "no data" alert per SLI (`absent()`), so a broken query pages someone instead of hiding | Done at the time; removed with the stack |
 
 ## Rerun after the fix (2026-10-09, 16:18 UTC)
 

@@ -1,6 +1,5 @@
-# Local platform stack: the service, a black-box probe, Prometheus with the SLO rules, Grafana with the dashboard.
-#   bun run ops:up     then   bun run ops:traffic
-#   Service :8080 · Prometheus :9090 (Alerts tab) · Grafana :3000 (anonymous viewer)
+# The intake service in a container, the way it would ship.
+#   docker compose up --build     then   http://localhost:8080
 name: intake-poc
 services:
   intake:
@@ -9,10 +8,8 @@ services:
       TYPESAFE_API_KEY: ${TYPESAFE_API_KEY:?set TYPESAFE_API_KEY}
       CLOUDFLARE_ACCOUNT_ID: ${CLOUDFLARE_ACCOUNT_ID:?set CLOUDFLARE_ACCOUNT_ID}
       CLOUDFLARE_API_TOKEN: ${CLOUDFLARE_API_TOKEN:?set CLOUDFLARE_API_TOKEN}
-      # Game day: point this at an address that never answers to simulate a Jev outage.
+      # Outage drill: point this at an address that never answers.
       TYPESAFE_BASE_URL: ${TYPESAFE_BASE_URL:-https://api.typesafe.ai}
-      INTAKE_SHADOW_DECIDER: jev:jev-latest
-      INTAKE_SHADOW_SAMPLE: '0.2'
     ports: ['8080:8080']
     read_only: true
     tmpfs: [/tmp]
@@ -21,30 +18,3 @@ services:
       interval: 10s
       timeout: 2s
       retries: 3
-
-  prometheus:
-    image: prom/prometheus:v3.14.0
-    volumes:
-      - ./ops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./ops/prometheus/rules:/etc/prometheus/rules:ro
-    ports: ['9090:9090']
-    depends_on: [intake, blackbox]
-
-  blackbox:
-    image: prom/blackbox-exporter:v0.28.0
-    command: [--config.file=/etc/blackbox/blackbox.yml]
-    volumes:
-      - ./ops/prometheus/blackbox.yml:/etc/blackbox/blackbox.yml:ro
-    depends_on: [intake]
-
-  grafana:
-    image: grafana/grafana:13.1.7
-    environment:
-      GF_AUTH_ANONYMOUS_ENABLED: 'true'
-      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
-      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: /var/lib/grafana/dashboards/intake.json
-    volumes:
-      - ./ops/grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./ops/grafana/dashboards:/var/lib/grafana/dashboards:ro
-    ports: ['3000:3000']
-    depends_on: [prometheus]

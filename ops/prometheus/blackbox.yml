@@ -1,8 +1,0 @@
-# Black-box probe modules. Prometheus scrapes blackbox:9115/probe?target=… (job intake-probe).
-modules:
-  http_ready:
-    prober: http
-    timeout: 2s
-    http:
-      valid_status_codes: [200]
-      preferred_ip_protocol: ip4

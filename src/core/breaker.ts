@@ -8,7 +8,7 @@ export class BreakerOpenError extends Error {}
  * Circuit breaker around the model call. After `failures` consecutive errors it opens and
  * fails instantly for `cooldownMs`, so an outage costs patients the degraded plan, not a
  * timeout each. Then one trial call: success closes it, failure opens it again.
- * Added after the 2026-10-09 game day (ops/postmortems).
+ * Added after the 2026-10-09 game day (docs/postmortems).
  */
 export function withBreaker(
   decide: Decide,
