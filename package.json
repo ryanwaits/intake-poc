@@ -16,6 +16,7 @@
     "eval:review": "bun eval/review.ts",
     "eval:arena": "bun eval/arena.ts",
     "eval:score": "bun eval/score.ts",
+    "eval:sweep": "bun eval/sweep.ts",
     "eval:extract": "bun --env-file=.env eval/extract.ts",
     "ops:slo": "docker run --rm -v \"$PWD/ops:/ops\" ghcr.io/slok/sloth:v0.16.0 generate -i /ops/slo/intake.sloth.yaml -o /ops/prometheus/rules/intake-slo.yml",
     "ops:up": "docker compose up -d --build",

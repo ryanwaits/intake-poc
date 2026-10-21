@@ -121,6 +121,20 @@ When a patient already answered a question, the plan skips it, but it records on
 
 **What this would change.** It's the pattern Cloudflare describes: extract, then decide. It also matches the POC's rule that the decision model decides and code acts. In the product it would turn ~65% of silent skips into "You said: about a week" for the patient to confirm, and put typed values on the provider's prep card. The costs: two model calls instead of one (run in parallel, since Clairic's p95 alone is over Jev's 400 ms timeout but inside the 1 s SLO), a second vendor with no stated BAA (open weights are planned, which would allow self-hosting), and a failure path where values are simply missing. Wired into the product on 2026-10-20 ([`src/core/extract.ts`](../src/core/extract.ts)): both calls run in parallel, the value gate is `GATES.saidAt = 0.5`, and an extraction failure leaves the plan as it was. Images (insurance cards, device displays) weren't tested.
 
+## Skip gate sweep (added 2026-10-21)
+
+`bun run eval:sweep`: Jev's recorded decisions on the test split, re-planned as `answeredAt` moves from 0.05 to 0.95. The escalation gate stays fixed; red-flag recall is 100% at every point. Questions saved counts labeled questions the form didn't ask.
+
+| `answeredAt` | Saved per intake | False skip | Over-ask |
+|---|---|---|---|
+| 0.05 | 2.38 | 4.9% | 0.0% |
+| 0.40 | 2.27 | 0.8% | 0.0% |
+| 0.50 | 2.23 | 0.4% | 1.5% |
+| **0.70 (shipped)** | **2.21** | **0.4%** | **2.4%** |
+| 0.95 | 2.07 | 0.4% | 8.8% |
+
+The curve is flat: going from the strictest gate to the loosest saves only ~0.3 questions per intake, while false skips climb more than tenfold below 0.4. Jev's probabilities sit near 0 or 1, so the gate mostly decides the few unsure cases. On this split 0.5 looks slightly better than the shipped 0.7 (same false skips, fewer over-asks). That's a test-split observation, so the gate isn't changed; a retune would go through dev, then shadow. The bigger lever for members is the presentation of skipped questions, which the `no_said` variant tests online.
+
 ## Spend
 
 $3.80 in arena model calls, summed from the cost recorded on every call in the result files: $2.24 for one pass over the 224 cases and the rest for the consistency repeats. The runner enforced a $50 cap. Case generation was budgeted separately.

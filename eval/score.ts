@@ -98,7 +98,7 @@ type Scored = { c: Case; s: CaseScore };
 export const VIEWS = ['preregistered', 'amended'] as const;
 type View = (typeof VIEWS)[number];
 
-function metrics(rows: Scored[]) {
+export function metrics(rows: Scored[]) {
   const syn = rows.filter((r) => r.c.source === 'synthetic');
   const flagged = syn.filter((r) => r.c.labels.escalate);
   const clean = syn.filter((r) => !r.c.labels.escalate);
@@ -130,7 +130,7 @@ function metrics(rows: Scored[]) {
   };
 }
 
-function scoreAll(cases: Case[], byCase: Map<string, Record>, gates: Gates): Scored[] {
+export function scoreAll(cases: Case[], byCase: Map<string, Record>, gates: Gates): Scored[] {
   return cases.flatMap((c) => {
     const r = byCase.get(c.id);
     if (!r) return [];

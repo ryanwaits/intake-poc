@@ -1,0 +1,140 @@
+{
+  "arm": "jev",
+  "split": "test",
+  "shipped": 0.7,
+  "curve": [
+    {
+      "answeredAt": 0.05,
+      "savedPerIntake": 2.3846153846153846,
+      "falseSkipRate": 0.04897959183673469,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.1,
+      "savedPerIntake": 2.3736263736263736,
+      "falseSkipRate": 0.044897959183673466,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.15,
+      "savedPerIntake": 2.3516483516483517,
+      "falseSkipRate": 0.036734693877551024,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.2,
+      "savedPerIntake": 2.3516483516483517,
+      "falseSkipRate": 0.036734693877551024,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.25,
+      "savedPerIntake": 2.318681318681319,
+      "falseSkipRate": 0.024489795918367346,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.3,
+      "savedPerIntake": 2.318681318681319,
+      "falseSkipRate": 0.024489795918367346,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.35,
+      "savedPerIntake": 2.3076923076923075,
+      "falseSkipRate": 0.02040816326530612,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.4,
+      "savedPerIntake": 2.2747252747252746,
+      "falseSkipRate": 0.00816326530612245,
+      "overAskRate": 0,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.45,
+      "savedPerIntake": 2.2637362637362637,
+      "falseSkipRate": 0.00816326530612245,
+      "overAskRate": 0.004878048780487805,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.5,
+      "savedPerIntake": 2.230769230769231,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.014634146341463415,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.55,
+      "savedPerIntake": 2.230769230769231,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.014634146341463415,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.6,
+      "savedPerIntake": 2.230769230769231,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.014634146341463415,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.65,
+      "savedPerIntake": 2.230769230769231,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.014634146341463415,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.7,
+      "savedPerIntake": 2.208791208791209,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.024390243902439025,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.75,
+      "savedPerIntake": 2.208791208791209,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.024390243902439025,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.8,
+      "savedPerIntake": 2.1758241758241756,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.03902439024390244,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.85,
+      "savedPerIntake": 2.1538461538461537,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.04878048780487805,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.9,
+      "savedPerIntake": 2.10989010989011,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.06829268292682927,
+      "redFlagRecall": 1
+    },
+    {
+      "answeredAt": 0.95,
+      "savedPerIntake": 2.065934065934066,
+      "falseSkipRate": 0.004081632653061225,
+      "overAskRate": 0.08780487804878048,
+      "redFlagRecall": 1
+    }
+  ]
+}
