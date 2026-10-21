@@ -27,19 +27,19 @@
     "model": "jev-1.13.0",
     "setting": {
       "value": "clinic",
-      "confidence": 0.93
+      "confidence": 0.95
     },
     "flags": {
       "chest_pain": 0.2,
       "stroke": 0.01,
       "breathing": 0.02,
       "allergic_reaction": 0.01,
-      "worst_headache": 0,
+      "worst_headache": 0.01,
       "self_harm": 0
     },
     "complaints": {
-      "ent": 0.38,
-      "respiratory": 0.98,
+      "ent": 0.37,
+      "respiratory": 0.99,
       "skin": 0.01,
       "msk": 0.01,
       "urinary": 0.01,
@@ -187,8 +187,11 @@
         "confidence": 0.6459354758262634
       }
     },
+    "typed": {
+      "onset": true
+    },
     "usage": {
-      "inputTokens": 2556,
+      "inputTokens": 2702,
       "latencyMs": 0
     }
   },
@@ -549,7 +552,7 @@
           "label": "Respiratory",
           "why": {
             "question": "Does `reason` describe a cough, congestion, wheezing or other breathing complaint?",
-            "p": 0.98,
+            "p": 0.99,
             "rule": "p ≥ 0.5 → load protocol"
           }
         }

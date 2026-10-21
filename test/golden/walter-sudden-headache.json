@@ -1,0 +1,574 @@
+{
+  "name": "walter-sudden-headache",
+  "note": "A thunderclap headache escalates to a provider now. \"Came on suddenly\" says how it started, not when: onset is still asked, because no duration is in the words.",
+  "patient": "walter",
+  "reason": "worst headache of my life, came on suddenly",
+  "model": "live",
+  "today": "2026-10-08T12:00:00Z",
+  "summary": {
+    "ageBand": "older_adult",
+    "sex": "male",
+    "problems": [
+      "COPD",
+      "Coronary artery disease"
+    ],
+    "medications": [
+      "albuterol inhaler",
+      "atorvastatin 40 MG Oral Tablet"
+    ],
+    "allergies": []
+  },
+  "decisions": {
+    "model": "jev-1.13.0",
+    "setting": {
+      "value": "emergency",
+      "confidence": 1
+    },
+    "flags": {
+      "chest_pain": 0.01,
+      "stroke": 0.02,
+      "breathing": 0.01,
+      "allergic_reaction": 0.01,
+      "worst_headache": 0.99,
+      "self_harm": 0.01
+    },
+    "complaints": {
+      "ent": 0.04,
+      "respiratory": 0.01,
+      "skin": 0.01,
+      "msk": 0.02,
+      "urinary": 0.01,
+      "med_refill": 0.01
+    },
+    "answered": {
+      "fall_risk": 0,
+      "onset": 0.89,
+      "fever": 0,
+      "side": 0,
+      "drainage_hearing": 0,
+      "cough_type": 0,
+      "short_of_breath": 0,
+      "location": 0.02,
+      "changing": 0,
+      "exposure": 0,
+      "mechanism": 0.54,
+      "function": 0,
+      "numbness": 0,
+      "flank_pain": 0,
+      "which_med": 0,
+      "side_effects": 0,
+      "severity": 1,
+      "tried": 0
+    },
+    "usage": {
+      "inputTokens": 2218,
+      "outputTokens": 936,
+      "latencyMs": 0
+    }
+  },
+  "extraction": {
+    "model": "@cf/cloudflare/clairic",
+    "spans": {
+      "fall_risk": {
+        "value": "came on suddenly",
+        "span": [
+          27,
+          43
+        ],
+        "confidence": 0.5670905709266663
+      },
+      "onset": {
+        "value": "suddenly",
+        "span": [
+          35,
+          43
+        ],
+        "confidence": 0.7883097529411316
+      },
+      "fever": {
+        "value": "worst headache",
+        "span": [
+          0,
+          14
+        ],
+        "confidence": 0.1681969314813614
+      },
+      "side": {
+        "value": "life",
+        "span": [
+          21,
+          25
+        ],
+        "confidence": 0.36278265714645386
+      },
+      "drainage_hearing": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.4239562153816223
+      },
+      "cough_type": {
+        "value": "worst",
+        "span": [
+          0,
+          5
+        ],
+        "confidence": 0.28012776374816895
+      },
+      "short_of_breath": {
+        "value": "suddenly",
+        "span": [
+          35,
+          43
+        ],
+        "confidence": 0.3754271864891052
+      },
+      "location": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.6705872416496277
+      },
+      "changing": {
+        "value": "suddenly",
+        "span": [
+          35,
+          43
+        ],
+        "confidence": 0.5856428146362305
+      },
+      "exposure": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.5225153565406799
+      },
+      "mechanism": {
+        "value": "suddenly",
+        "span": [
+          35,
+          43
+        ],
+        "confidence": 0.555935800075531
+      },
+      "function": {
+        "value": "headache of my life",
+        "span": [
+          6,
+          25
+        ],
+        "confidence": 0.15180963277816772
+      },
+      "numbness": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.4163488447666168
+      },
+      "flank_pain": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.5845531821250916
+      },
+      "which_med": {
+        "value": "headache",
+        "span": [
+          6,
+          14
+        ],
+        "confidence": 0.6120421886444092
+      },
+      "side_effects": {
+        "value": "worst headache of my life",
+        "span": [
+          0,
+          25
+        ],
+        "confidence": 0.41771718859672546
+      },
+      "severity": {
+        "value": "worst headache of my life",
+        "span": [
+          0,
+          25
+        ],
+        "confidence": 0.5951308608055115
+      }
+    },
+    "typed": {
+      "onset": false
+    },
+    "usage": {
+      "inputTokens": 2683,
+      "latencyMs": 0
+    }
+  },
+  "plan": {
+    "mode": "live",
+    "model": "jev-1.13.0",
+    "fields": [
+      {
+        "id": "name",
+        "section": "registration",
+        "ask": "Full legal name",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Walter Synthetic"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "birth_date",
+        "section": "registration",
+        "ask": "Date of birth",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "1953-11-02"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "sex",
+        "section": "registration",
+        "ask": "Sex",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "male"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "address",
+        "section": "registration",
+        "ask": "Home address",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "400 Oak Ave, Stillwater, OK, 74074"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "phone",
+        "section": "registration",
+        "ask": "Phone number",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "555-0187"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "email",
+        "section": "registration",
+        "ask": "Email",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "language",
+        "section": "registration",
+        "ask": "Preferred language",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "emergency_contact",
+        "section": "registration",
+        "ask": "Emergency contact: name, relationship, phone",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "employer",
+        "section": "registration",
+        "ask": "Employer",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "member_id",
+        "section": "registration",
+        "ask": "Member ID",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "pharmacy",
+        "section": "registration",
+        "ask": "Preferred pharmacy",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_treatment",
+        "section": "consent",
+        "ask": "Consent to treatment",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "consent_telehealth",
+        "section": "consent",
+        "ask": "Consent to telehealth",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "privacy_notice",
+        "section": "consent",
+        "ask": "Notice of privacy practices",
+        "said": null,
+        "status": "sign",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "medications",
+        "section": "history",
+        "ask": "Medications you take now",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "albuterol inhaler"
+          },
+          {
+            "value": "atorvastatin 40 MG Oral Tablet"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "allergies",
+        "section": "history",
+        "ask": "Allergies",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "conditions",
+        "section": "history",
+        "ask": "Ongoing health conditions",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "COPD"
+          },
+          {
+            "value": "Coronary artery disease"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "surgeries",
+        "section": "history",
+        "ask": "Past surgeries",
+        "said": null,
+        "status": "confirm",
+        "values": [
+          {
+            "value": "Coronary artery bypass graft",
+            "recordedAt": "2019-05-08"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "family_history",
+        "section": "history",
+        "ask": "Family medical history",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "tobacco",
+        "section": "history",
+        "ask": "Do you smoke, vape or use tobacco?",
+        "said": null,
+        "status": "prefilled",
+        "values": [
+          {
+            "value": "Former smoker, quit 2019",
+            "recordedAt": "2026-05-20"
+          }
+        ],
+        "why": null
+      },
+      {
+        "id": "alcohol",
+        "section": "history",
+        "ask": "How often do you drink alcohol?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "phq2",
+        "section": "screening",
+        "ask": "Over the last 2 weeks, how often have you felt down, or had little interest in things?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": null
+      },
+      {
+        "id": "fall_risk",
+        "section": "screening",
+        "ask": "Have you fallen in the past year?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us whether the patient has fallen recently?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "onset",
+        "section": "visit",
+        "ask": "When did this start?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us when the symptoms started or how long they have lasted?",
+          "p": 0.89,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask; no duration in the patient's words → ask"
+        }
+      },
+      {
+        "id": "severity",
+        "section": "visit",
+        "ask": "On a scale of 0 to 10, how bad is it?",
+        "said": {
+          "value": "worst headache of my life",
+          "span": [
+            0,
+            25
+          ],
+          "why": {
+            "question": "What did the patient say about how severe the problem is?",
+            "p": 0.5951308608055115,
+            "rule": "confidence ≥ 0.5 → show back to confirm"
+          }
+        },
+        "status": "answered",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us how severe the problem is?",
+          "p": 1,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      },
+      {
+        "id": "tried",
+        "section": "visit",
+        "ask": "What have you tried so far?",
+        "said": null,
+        "status": "ask",
+        "values": [],
+        "why": {
+          "question": "Does `reason` already tell us treatments or medicines the patient has already tried?",
+          "p": 0,
+          "rule": "p(answered) ≥ 0.7 → skip, else ask"
+        }
+      }
+    ],
+    "counts": {
+      "prefilled": 6,
+      "confirm": 3,
+      "sign": 3,
+      "answered": 1,
+      "ask": 13,
+      "total": 26
+    },
+    "card": {
+      "escalations": [
+        {
+          "id": "worst_headache",
+          "label": "Sudden severe headache",
+          "why": {
+            "question": "Does `reason` describe a sudden, severe or \"worst ever\" headache?",
+            "p": 0.99,
+            "rule": "p ≥ 0.2 → escalate"
+          }
+        }
+      ],
+      "setting": {
+        "value": "provider_now",
+        "why": {
+          "question": "Does `reason` describe a sudden, severe or \"worst ever\" headache?",
+          "p": 0.99,
+          "rule": "p ≥ 0.2 → escalate"
+        }
+      },
+      "complaints": [],
+      "medicPrep": {
+        "devices": [],
+        "vitals": [
+          "blood_pressure",
+          "heart_rate",
+          "temperature",
+          "spo2",
+          "respiratory_rate"
+        ],
+        "tests": []
+      }
+    },
+    "usage": {
+      "inputTokens": 2218,
+      "outputTokens": 936,
+      "latencyMs": 0
+    }
+  }
+}

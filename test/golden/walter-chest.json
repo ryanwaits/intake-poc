@@ -22,19 +22,19 @@
     "model": "jev-1.13.0",
     "setting": {
       "value": "clinic",
-      "confidence": 0.37
+      "confidence": 0.45
     },
     "flags": {
       "chest_pain": 0.99,
       "stroke": 0.01,
-      "breathing": 0.06,
+      "breathing": 0.05,
       "allergic_reaction": 0.01,
       "worst_headache": 0.01,
-      "self_harm": 0
+      "self_harm": 0.01
     },
     "complaints": {
       "ent": 0.01,
-      "respiratory": 0.4,
+      "respiratory": 0.36,
       "skin": 0.01,
       "msk": 0.05,
       "urinary": 0.01,
@@ -47,17 +47,17 @@
       "side": 0,
       "drainage_hearing": 0,
       "cough_type": 0,
-      "short_of_breath": 0.06,
-      "location": 0.25,
+      "short_of_breath": 0.05,
+      "location": 0.22,
       "changing": 0,
       "exposure": 0,
       "mechanism": 0.16,
-      "function": 0.13,
+      "function": 0.12,
       "numbness": 0,
       "flank_pain": 0,
       "which_med": 0,
       "side_effects": 0,
-      "severity": 0.2,
+      "severity": 0.19,
       "tried": 0
     },
     "usage": {
@@ -75,7 +75,7 @@
           0,
           17
         ],
-        "confidence": 0.3943656384944916
+        "confidence": 0.3920961320400238
       },
       "fever": {
         "value": "tight",
@@ -198,8 +198,11 @@
         "confidence": 0.28404873609542847
       }
     },
+    "typed": {
+      "onset": false
+    },
     "usage": {
-      "inputTokens": 2502,
+      "inputTokens": 2645,
       "latencyMs": 0
     }
   },
@@ -484,7 +487,7 @@
         "values": [],
         "why": {
           "question": "Does `reason` already tell us how severe the problem is?",
-          "p": 0.2,
+          "p": 0.19,
           "rule": "p(answered) ≥ 0.7 → skip, else ask"
         }
       },

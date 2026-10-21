@@ -22,6 +22,11 @@ const onset: Field = {
   section: 'visit',
   ask: 'When did this start?',
   covers: 'when the symptoms started or how long they have lasted',
+  typed: {
+    type: 'duration',
+    unit: 'days',
+    instructions: 'How long the symptoms have lasted so far',
+  },
 };
 
 const fever: Field = {

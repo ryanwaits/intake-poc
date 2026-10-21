@@ -51,7 +51,8 @@ describe.skipIf(!hasModel)('model boundary', () => {
 
 /**
  * The extraction boundary, against the real Clairic: it still answers every coverable question
- * in the shape `liveExtract` reads, and still finds the words the goldens recorded.
+ * in the shape `liveExtract` reads, still finds the words the goldens recorded, and still tells
+ * a duration ("3 days") from a manner ("came on suddenly").
  */
 describe.skipIf(!hasModel)('extraction boundary', () => {
   const extract = extractor(process.env)?.extract;
@@ -70,6 +71,8 @@ describe.skipIf(!hasModel)('extraction boundary', () => {
       for (const f of golden.plan.fields.filter((f) => f.said)) {
         expect(extraction.spans[f.id]?.value).toBe(f.said?.value);
       }
+      // Whether a duration is in the words: decides if onset can be skipped at all.
+      expect(extraction.typed).toEqual(golden.extraction?.typed ?? {});
     }, 10_000);
   }
 });

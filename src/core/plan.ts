@@ -115,6 +115,16 @@ function fieldPlan(
     rule: `p(answered) ≥ ${gates.answeredAt} → skip, else ask`,
   };
   if (!answered) return { ...base, status: 'ask', values: [], why };
+  // A second check that can only add a question: Jev says answered, but no value of the right type
+  // is in the words ("came on suddenly" says how, not when). Extraction down → Jev alone, as before.
+  if (field.typed && extraction?.typed[field.id] === false) {
+    return {
+      ...base,
+      status: 'ask',
+      values: [],
+      why: { ...why, rule: `${why.rule}; no ${field.typed.type} in the patient's words → ask` },
+    };
+  }
 
   // The decision model decided the skip; the extraction model only supplies the words.
   const span = extraction?.spans[field.id];

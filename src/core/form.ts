@@ -20,6 +20,11 @@ export type Field = {
   freshDays?: number;
   /** What counts as answered in the patient's own words. A model judges this. */
   covers?: string;
+  /**
+   * The shape a real answer has. A skip also needs the extraction model to find a value of this
+   * type, so "came on suddenly" (how) doesn't pass for when. Can only add a question, never skip one.
+   */
+  typed?: { type: 'duration'; unit: 'days'; instructions: string };
   /** Legal: always signed, never skipped. */
   consent?: true;
   /** Only part of the form when this holds. */

@@ -119,6 +119,19 @@ describe.skipIf(!hasModel)('intake service, end to end', () => {
     expect(JSON.stringify(plan.fields)).not.toContain('chest_pain');
   }, 10_000);
 
+  test('sudden headache escalates, and "came on suddenly" doesn\'t pass for when', async () => {
+    const res = await intake(svc, {
+      reason: 'worst headache of my life, came on suddenly',
+      bundle: walter,
+    });
+    const plan = await res.json();
+    expect(plan.mode).toBe('live');
+    expect(plan.card.setting.value).toBe('provider_now');
+    const onset = plan.fields.find((f: { id: string }) => f.id === 'onset');
+    expect(onset.status).toBe('ask');
+    expect(onset.why.rule).toContain('no duration');
+  }, 10_000);
+
   test('bad input is rejected', async () => {
     expect((await intake(svc, { reason: '', bundle: maria })).status).toBe(400);
     expect((await intake(svc, { reason: 'x', bundle: { resourceType: 'Patient' } })).status).toBe(

@@ -61,6 +61,13 @@ export const GOLDEN_SPECS: GoldenSpec[] = [
     edit: { flags: { chest_pain: GATES.escalateAt } },
   },
   {
+    name: 'walter-sudden-headache',
+    note: 'A thunderclap headache escalates to a provider now. "Came on suddenly" says how it started, not when: onset is still asked, because no duration is in the words.',
+    patient: 'walter',
+    reason: 'worst headache of my life, came on suddenly',
+    model: 'live',
+  },
+  {
     name: 'maria-ear-extractor-down',
     note: 'Extraction model unreachable: the same skips as maria-ear, just without "You said" values. Never a degraded plan.',
     patient: 'maria',

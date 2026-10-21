@@ -23,7 +23,7 @@
     "model": "jev-1.13.0",
     "setting": {
       "value": "clinic",
-      "confidence": 0.97
+      "confidence": 0.99
     },
     "flags": {
       "chest_pain": 0.01,
@@ -49,7 +49,7 @@
       "drainage_hearing": 0,
       "cough_type": 0,
       "short_of_breath": 0,
-      "location": 0.55,
+      "location": 0.51,
       "changing": 0,
       "exposure": 0.02,
       "mechanism": 0,
@@ -58,8 +58,8 @@
       "flank_pain": 0,
       "which_med": 1,
       "side_effects": 0,
-      "severity": 0.86,
-      "tried": 0
+      "severity": 0.9,
+      "tried": 0.01
     },
     "usage": {
       "inputTokens": 2217,
@@ -456,7 +456,7 @@
         "value": "clinic",
         "why": {
           "question": "Based on `reason` and `patient`, where should this visit happen?",
-          "p": 0.97,
+          "p": 0.99,
           "rule": "confidence ≥ 0.6 → route, else navigator"
         }
       },
