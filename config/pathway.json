@@ -1,0 +1,19 @@
+{
+  "version": "2026-10-22.1",
+  "crisis": { "systolic": 180, "diastolic": 120 },
+  "historyScan": { "lookbackDays": 30, "minDays": 2, "systolic": 130, "diastolic": 80 },
+  "protocol": {
+    "days": 7,
+    "discardFirstDay": false,
+    "minReadings": 12,
+    "amHours": [4, 12],
+    "pmHours": [16, 24],
+    "duplicateWindowSec": 120
+  },
+  "cuffs": [
+    { "appId": "com.example.cuffapp", "model": "HEM-7155T" },
+    { "appId": "dev.waits.bppathway", "model": "HEM-7155T" }
+  ],
+  "stalledAfterHours": 72,
+  "firstReadingWithinHours": 168
+}

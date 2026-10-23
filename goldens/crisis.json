@@ -1,0 +1,12 @@
+{
+  "about": "Shared by server (TS), iOS (Swift) and Android (Kotlin). Any reading at or above either threshold is a crisis, whatever its source.",
+  "config": { "systolic": 180, "diastolic": 120 },
+  "cases": [
+    { "name": "normal", "reading": { "systolic": 124, "diastolic": 78 }, "expect": false },
+    { "name": "stage 2, not crisis", "reading": { "systolic": 162, "diastolic": 104 }, "expect": false },
+    { "name": "systolic at threshold", "reading": { "systolic": 180, "diastolic": 96 }, "expect": true },
+    { "name": "diastolic at threshold", "reading": { "systolic": 150, "diastolic": 120 }, "expect": true },
+    { "name": "just under both", "reading": { "systolic": 179, "diastolic": 119 }, "expect": false },
+    { "name": "both over", "reading": { "systolic": 212, "diastolic": 128 }, "expect": true }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "about": "Shared by iOS (Swift) and Android (Kotlin); runs on the device, nothing uploads. Invite when elevated readings fall on at least minDays different local days inside the lookback. Any source counts: it is an invitation, not a diagnosis.",
+  "config": { "lookbackDays": 30, "minDays": 2, "systolic": 130, "diastolic": 80 },
+  "now": "2026-10-22T15:00:00Z",
+  "cases": [
+    {
+      "name": "no readings",
+      "readings": [],
+      "expect": { "invite": false, "days": 0 }
+    },
+    {
+      "name": "two elevated readings, same day",
+      "readings": [
+        { "systolic": 142, "diastolic": 88, "measuredAt": "2026-10-01T13:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 138, "diastolic": 86, "measuredAt": "2026-10-01T23:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": false, "days": 1 }
+    },
+    {
+      "name": "two elevated readings, two days",
+      "readings": [
+        { "systolic": 142, "diastolic": 88, "measuredAt": "2026-10-01T13:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 128, "diastolic": 84, "measuredAt": "2026-10-03T13:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": true, "days": 2 }
+    },
+    {
+      "name": "same UTC day, different local days",
+      "readings": [
+        { "systolic": 140, "diastolic": 90, "measuredAt": "2026-10-02T03:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 140, "diastolic": 90, "measuredAt": "2026-10-02T06:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": true, "days": 2 }
+    },
+    {
+      "name": "diastolic alone is elevated",
+      "readings": [
+        { "systolic": 122, "diastolic": 82, "measuredAt": "2026-10-10T13:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 118, "diastolic": 84, "measuredAt": "2026-10-12T13:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": true, "days": 2 }
+    },
+    {
+      "name": "below both thresholds",
+      "readings": [
+        { "systolic": 129, "diastolic": 79, "measuredAt": "2026-10-01T13:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 126, "diastolic": 74, "measuredAt": "2026-10-02T13:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": false, "days": 0 }
+    },
+    {
+      "name": "one elevated day too old",
+      "readings": [
+        { "systolic": 150, "diastolic": 95, "measuredAt": "2026-09-15T13:00:00Z", "tzOffsetMin": -300 },
+        { "systolic": 150, "diastolic": 95, "measuredAt": "2026-10-01T13:00:00Z", "tzOffsetMin": -300 }
+      ],
+      "expect": { "invite": false, "days": 1 }
+    }
+  ]
+}
