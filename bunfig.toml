@@ -1,0 +1,3 @@
+[test]
+# bp-pathway/ has its own server and check.sh; keep root tests to the intake service.
+root = "test"
