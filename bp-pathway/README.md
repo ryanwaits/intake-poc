@@ -2,6 +2,20 @@
 
 A member's blood pressure week, from the health store on the phone to a care-team review. One data type, one pipeline, both platforms, no model in the loop. Synthetic data only.
 
+| | |
+|---|---|
+| [Showcase](docs/showcase.html) | The 10-minute read: the bar every idea had to clear, the pathway, a member's week, the decisions and what was cut. Open it locally. |
+| [Strategy](docs/strategy.md) | The full engineering plan: contract, HealthKit and Health Connect details, backend, privacy, failure modes, testing, rollout |
+
+<p>
+  <img src="docs/img/ios-invite.jpg" alt="iPhone, day 0: invite card, your readings were above 130/80 on 7 days in the last 30 days" width="24%">
+  <img src="docs/img/ios-crisis.jpg" alt="iPhone, day 3: 186/112 from a band, marked very high and not in the average" width="24%">
+  <img src="docs/img/ios-ready.jpg" alt="iPhone, day 7: 137/87 average from 13 cuff readings, care team reviews within 1 business day" width="24%">
+  <img src="docs/img/android-ready.jpg" alt="Android, day 7: the same week read from Health Connect" width="24%">
+</p>
+
+Screens from the iOS end-to-end test on a fresh simulator and an Android emulator reading Health Connect. Nothing mocked.
+
 ```
 cuff app ─► HealthKit / Health Connect ─► HealthModule (Swift / Kotlin) ─► POST /v1/health/changes
                                             on-device: crisis check,          │

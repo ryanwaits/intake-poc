@@ -8,7 +8,7 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
 |---|---|
 | [Member app plan](docs/member-app-plan.md) | How I'd take a React Native member app native: per-screen calls, migration, release engineering, PHI on device, health data, AI safety |
 | [Intake prototypes](docs/prototypes/) | One visit through the member app: home, intake in the member's own words, vitals with their sources, and the provider's view. Open `index.html` locally. |
-| [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. |
+| [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. [Showcase](bp-pathway/docs/showcase.html) · [strategy](bp-pathway/docs/strategy.md) |
 | [Walkthrough](docs/walkthrough.md) | The product, the model choice and the reliability work |
 | [Model evaluation](eval/RESULTS.md) | Ten model setups on 224 cases, pre-registered in [`eval/PREREGISTRATION.md`](eval/PREREGISTRATION.md) |
 
@@ -18,6 +18,13 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
   <img src="docs/prototypes/img/vitals.png" alt="Vitals: each reading shows its source and age" width="24%">
 </p>
 <img src="docs/prototypes/img/clinic.png" alt="Clinic view: the prep card with home vitals, and every decision the intake assistant made" width="74%">
+
+<p>
+  <img src="bp-pathway/docs/img/ios-invite.jpg" alt="BP pathway on iPhone, day 0: an invite from 7 high days in the last 30" width="18%">
+  <img src="bp-pathway/docs/img/ios-crisis.jpg" alt="BP pathway on iPhone, day 3: a very high band reading, kept out of the average" width="18%">
+  <img src="bp-pathway/docs/img/ios-ready.jpg" alt="BP pathway on iPhone, day 7: the week's average from 13 cuff readings" width="18%">
+  <img src="bp-pathway/docs/img/android-ready.jpg" alt="BP pathway on Android, day 7: the same week from Health Connect" width="18%">
+</p>
 
 ## What it demonstrates
 
