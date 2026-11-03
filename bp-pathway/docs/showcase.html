@@ -295,7 +295,7 @@ section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
         <li><a href="#considered">Considered</a></li>
         <li><a href="#proof">The spike</a></li>
         <li><a href="#rollout">Rollout</a></li>
-        <li><a href="#questions">Questions</a></li>
+        <li><a href="#questions">Open questions</a></li>
       </ul>
     </nav>
   </div>
@@ -303,7 +303,7 @@ section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
 
 <main>
   <div class="wrap hero">
-    <p class="label">Wearables concept · Staff Mobile Engineer, Rezilient Health · Ryan Waits · October 2026</p>
+    <p class="label">Wearables concept · Rezilient Health member app · Ryan Waits · October 2026</p>
     <h1>
       <span class="line"><span>The <span class="verb">watch</span> notices.</span><span class="sub">Apple Watch hypertension notification · HKCategoryType(.hypertensionEvent) · iOS 26.2+</span></span>
       <span class="line"><span>The <span class="verb">cuff</span> measures.</span><span class="sub">7 days, morning and evening · validated cuffs only · HealthKit and Health Connect</span></span>
@@ -346,7 +346,6 @@ section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
         <p class="big">A pathway starts only from a signal that names one condition and has a test that confirms it.</p>
         <p class="small">The first kind is a "something's off" light: real, and for the member to act on. The second is a screening test for one condition, so it can route to one clinical action. The same line is why the app asks to read two things only: blood pressure and hypertension notifications.</p>
       </div>
-      <p class="muted small">I've built this kind of integration before: a native iOS nutrition app for student athletes that read Apple Watch, Fitbit and Whoop data.</p>
     </div>
   </section>
 
@@ -676,7 +675,7 @@ section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
             <tr><td>"0 of 12" right after "7 high days"</td><td><span class="chip yes">Fixed</span></td><td>Read as "you ignored my readings." With no readings yet, the app now says "Your check starts with your next cuff reading." True on every day, even while a mailed cuff is on its way, and it matches how the week counts</td><td>—</td></tr>
             <tr class="group"><td colspan="4">Getting readings in</td></tr>
             <tr><td>Read a photo of the cuff's screen</td><td><span class="chip no">No</span></td><td>Puts a model in a clinical loop. Typed entry plus a clinical call is simpler</td><td>—</td></tr>
-            <tr><td>Count typed readings, cleared cuffless devices, a shorter week</td><td><span class="chip call">Clinical calls</span></td><td>Each is one config change. I'd bring each to the clinical lead with data</td><td>The clinical lead says yes</td></tr>
+            <tr><td>Count typed readings, cleared cuffless devices, a shorter week</td><td><span class="chip call">Clinical calls</span></td><td>Each is one config change, taken to the clinical lead with data</td><td>The clinical lead says yes</td></tr>
           </tbody>
         </table>
       </div>
@@ -775,14 +774,14 @@ section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
     <div class="wrap">
       <div class="head">
         <p class="label">Open questions</p>
-        <h2>What I'd ask Rezilient, and what I'd do with either answer</h2>
-        <p class="lede">I don't have member access. This is what I know, what I'd check first, and how each answer would change the plan.</p>
+        <h2>What the plan rests on, and how each answer changes it</h2>
+        <p class="lede">The plan is built from public information, without member data. These are the facts it starts from, the unknowns to settle first, and what each answer would change.</p>
       </div>
       <div class="table-wrap">
         <table class="wide">
-          <thead><tr><th>What I know</th><th>Source</th><th>So</th></tr></thead>
+          <thead><tr><th>Known</th><th>Source</th><th>So</th></tr></thead>
           <tbody>
-            <tr><td class="plain">The app is React Native today. The role decides where it stays cross-platform and where it goes native</td><td>Job posting</td><td>The pathway's data layer is native either way (decision 6). Only the bridge to React Native differs</td></tr>
+            <tr><td class="plain">The app is React Native today, and moving to native. Where it stays cross-platform is still open</td><td>Rezilient's job postings</td><td>The pathway's data layer is native either way (decision 6). Only the bridge to React Native differs</td></tr>
             <tr><td class="plain">Home has a Vitals tile, and the privacy label lists Health data</td><td>App Store listing and screenshots</td><td>Some health data reaches the app. The listing never mentions Apple Health or wearables, so it may be vitals from visits</td></tr>
             <tr><td class="plain">CloudClinics pair Rezilient's own on-site paramedics with Rezilient's own doctors, NPs and PAs, who join remotely. Health-system partners like WakeMed credential those clinicians and supply the wider network</td><td>Rezilient job postings, WakeMed</td><td>Clinical rules belong to Rezilient's clinicians. A cuff hand-out is Rezilient's own workflow to change</td></tr>
             <tr><td class="plain">Clinicians need licenses in 20+ states (40+ ideal), build their own patient panels, and co-manage with internal specialty program teams</td><td>Rezilient job postings</td><td>A finished week goes to the member's own clinician, or, for a first visit, to one licensed in the member's state</td></tr>

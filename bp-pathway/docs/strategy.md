@@ -1,6 +1,6 @@
 # BP pathway: implementation strategy
 
-October 2026. Written as the Staff Mobile Engineer who owns the member app, from public information and the [spike](../). The short version, with screens and charts, is the [showcase](showcase.html). *(inference)* = my reasoning. *(guess)* = an estimate to replace with real numbers.
+October 2026. A plan for the member app's mobile team, built from public information and the [spike](../). The short version, with screens and charts, is the [showcase](showcase.html). *(inference)* = my reasoning. *(guess)* = an estimate to replace with real numbers.
 
 ## 0. One paragraph
 
@@ -309,7 +309,7 @@ Order: build the end of the loop first. Data without a clinician acting on it do
 
 | Phase | Ships | Gate to next |
 |---|---|---|
-| 0, ~2 wks | Baselines and answers to §13. Instrument today's funnel. Pick the cuff and the clinical owner | Protocol signed off, review SLA agreed |
+| 0, ~2 wks | Baselines and answers to §12. Instrument today's funnel. Pick the cuff and the clinical owner | Protocol signed off, review SLA agreed |
 | 1 | Pipeline + entry C, both platforms, a few clinics, behind a flag | Completion and review-to-action meet targets. Crisis path drilled |
 | 2 | Entry B (history scan), staggered by employer | First visits from B tracked against the staggered control |
 | 3 | Entry A (iOS 26.2+), plus the generic device-event route if clinical agrees | Volume and conversion reported, descriptive only (too rare for an A/B) |
@@ -320,32 +320,19 @@ Order: build the end of the loop first. Data without a clinician acting on it do
 
 Sizing *(guess, to replace with team reality)*: phase 1 ≈ 6–8 weeks with one iOS, one Android, one backend engineer and a part-time clinical lead. Phase 2 +3–4 weeks. Phase 3 +2 weeks iOS.
 
-## 12. How this maps to the posting
+## 12. Open questions
 
-| Posting says | Where it shows here |
-|---|---|
-| Multi-quarter decisions, where RN stays vs goes native | §4: data layer native regardless, screens follow the migration |
-| Standards: state/offline, performance, a11y, testing | OS store as outbox, energy budget, a11y rules, e2e + shared goldens |
-| Release engineering, flags, phased rollouts | Flag and kill switch per entry, staggered employers, crash/ANR gates, store-review notes |
-| PHI on device, HIPAA-aligned analytics | Nothing stored, nothing on the lock screen, funnel server-side |
-| HealthKit, Health Connect, third-party wearables, trustworthy in clinical workflows | The whole thing. Third-party wearables through the OS stores. Provenance and the cuff-only rule for trust |
-| De-risk AI in members' hands and in development | No model in a clinical loop. Agents build adapters against goldens |
-| Triad, analytics, experimentation | Arms are presentation-only. Safety and clinical rules never are |
-| FDA wellness vs SaMD, App Store health policy | §8 |
-
-## 13. Questions for Rezilient
-
-What I know without member access:
+The plan is built from public information, without member data. What it starts from:
 
 | Known | Source | So |
 |---|---|---|
-| The app is React Native today. The role decides where it stays cross-platform and where it goes native. New Architecture (Fabric, TurboModules) is listed as preferred experience | Job posting | Doesn't change the pathway: the data layer is native either way (decision 6). TurboModule if they're on the New Architecture, a legacy native module if not, same Swift/Kotlin underneath |
+| The app is React Native today, and moving to native. Where it stays cross-platform is still open. New Architecture (Fabric, TurboModules) is listed as preferred experience | Rezilient's job postings | Doesn't change the pathway: the data layer is native either way (decision 6). TurboModule if they're on the New Architecture, a legacy native module if not, same Swift/Kotlin underneath |
 | Home has a Vitals tile. The privacy label lists Health data, used for app functionality | App Store screenshots and listing | Some health data reaches the app. The listing never mentions Apple Health or wearables, so it may be clinic-measured vitals |
 | CloudClinics pair Rezilient's own on-site paramedics with Rezilient's own physicians, NPs and PAs, who join remotely. Health-system partners like WakeMed credential those clinicians ("independent of WakeMed") and supply the wider network | [Rezilient job postings](https://jobs.techstars.com/companies/rezilient-health/jobs/68585044-virtual-primary-care-physician-md-do), [WakeMed](https://wakemed.org/news/rezilient-wakemed-cloudclinic-opens-clayton) | Clinical rules belong to Rezilient's clinicians. A CloudClinic cuff hand-out is Rezilient's own workflow to change |
 | Clinicians need licenses in 20+ states (40+ ideal; MO, CA, SC, GA required), build their own patient panels, and co-manage with internal specialty program teams. Malpractice and extra-state licensing are covered | [Physician posting](https://jobs.techstars.com/companies/rezilient-health/jobs/68585044-virtual-primary-care-physician-md-do) (closed, 6+ months old) | A finished week goes to the member's own clinician, or, for a first visit, to one licensed in the member's state. Ask whether a specialty team already runs BP care |
 | Members' dependents aged 7+ are covered | rezilienthealth.com | Children are members, and their BP isn't read against 130/80 |
 
-Questions, each with what I'd do on either answer:
+The unknowns to settle first, and what each answer changes:
 
 | # | Question | Why it matters | If yes | If no |
 |---|---|---|---|---|
@@ -370,7 +357,7 @@ Clinical calls: decisions for Rezilient's doctors, not engineering. Engineering 
 | Adults only? | Yes | Dependents 7+ are members, and children's BP is read against percentiles, not 130/80. Apple's notification is 22+ | A pediatric protocol is its own pathway |
 | Pregnancy | Excluded: route to the care team | Different thresholds and urgency. Apple excludes it too | A pregnancy protocol is its own pathway |
 
-## 14. What the spike changed or taught
+## 13. What the spike changed or taught
 
 Built and tested on Xcode 27.1 with the iOS 27.0 simulator and an Android 16 emulator (Health Connect built in). `bp-pathway/check.sh` runs it all. Not yet tested: background delivery, which needs a physical iPhone.
 
