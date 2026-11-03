@@ -8,6 +8,7 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
 |---|---|
 | [Member app plan](docs/member-app-plan.md) | How I'd take a React Native member app native: per-screen calls, migration, release engineering, PHI on device, health data, AI safety |
 | [Intake prototypes](docs/prototypes/) | One visit through the member app: home, intake in the member's own words, vitals with their sources, and the provider's view. Open `index.html` locally. |
+| [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. |
 | [Walkthrough](docs/walkthrough.md) | The product, the model choice and the reliability work |
 | [Model evaluation](eval/RESULTS.md) | Ten model setups on 224 cases, pre-registered in [`eval/PREREGISTRATION.md`](eval/PREREGISTRATION.md) |
 

@@ -14,5 +14,8 @@ Less paperwork for a hybrid clinic (remote provider, on-site medic). FHIR chart 
 - Model-driven items carry a `why` (question, p, rule). Escalations go to providers, never to patients.
 - Tests, in priority order: e2e with nothing mocked, integration at boundaries, goldens. No fake models. Unit tests only for silent bugs no flow reaches. A changed golden is a changed product: re-record and review the diff.
 
+## bp-pathway/
+Separate spike (Swift, Kotlin, TS server); root commands, tests and lint skip it. Run `bp-pathway/check.sh` (needs Xcode, JDK 21, Android SDK) or `cd bp-pathway/server && bun test`.
+
 ## Commands
 `bun test` (real model, needs `TYPESAFE_API_KEY`) · `bun run golden:record` · `bun run eval:sweep` · `bun run typecheck` · `bun run lint` · `bun run demo <patient> "<reason>"` · `bun run dev`
