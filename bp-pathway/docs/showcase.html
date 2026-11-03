@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The BP Pathway</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap">
+<style>
+/* Layout: one reading column on a quiet page, in the intake POC's look (styled after Rezilient's
+   member app). Tables, the pathway and the screens break out wider. Navy carries the page; coral
+   is kept for safety, as in the app. */
+:root {
+  --page: #f7f7f7;
+  --surface: #ffffff;
+  --line: #dcdfe3;
+  --line-2: #ecedf0;
+  --ink: #1f2328;
+  --ink-2: #4a4f55;
+  --muted: #6a6f75;
+  --primary: #0d2240;
+  --on-primary: #ffffff;
+  --coral: #f45b66;
+  --coral-ink: #a3212c;
+  --coral-soft: #fdf0f1;
+  --rose: #f6efef;
+  --blue: #eef2f7;
+  --green-bg: #d9f0dc;
+  --green: #1e6b2e;
+  --chart: #2f5d9b;
+  --chart-empty: #dfe5ed;
+  --shadow: 0 14px 36px rgba(13, 34, 64, 0.14);
+  --title: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --body: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --read: 44rem;
+  --wide: 68rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #0b1524; --surface: #111e31; --line: #26364d; --line-2: #1a2940;
+    --ink: #e8ecf2; --ink-2: #b9c2ce; --muted: #8e99a8;
+    --primary: #c9d8ee; --on-primary: #0b1524;
+    --coral: #f45b66; --coral-ink: #ff8c95; --coral-soft: #2b1820;
+    --rose: #1f1b26; --blue: #15243a; --green-bg: #13301d; --green: #86d49a;
+    --chart: #5e8fd6; --chart-empty: #22324a;
+    --shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #0b1524; --surface: #111e31; --line: #26364d; --line-2: #1a2940;
+  --ink: #e8ecf2; --ink-2: #b9c2ce; --muted: #8e99a8;
+  --primary: #c9d8ee; --on-primary: #0b1524;
+  --coral: #f45b66; --coral-ink: #ff8c95; --coral-soft: #2b1820;
+  --rose: #1f1b26; --blue: #15243a; --green-bg: #13301d; --green: #86d49a;
+  --chart: #5e8fd6; --chart-empty: #22324a;
+  --shadow: 0 14px 36px rgba(0, 0, 0, 0.45);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--page);
+  color: var(--ink);
+  font: 400 1rem/1.65 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  z-index: 10;
+  background: var(--surface);
+}
+a { color: var(--primary); text-underline-offset: 3px; }
+a:focus-visible, [tabindex]:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--chart);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+code {
+  font: 0.86em/1.4 var(--mono);
+  color: var(--ink-2);
+  background: var(--line-2);
+  padding: 0.08em 0.36em;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+h1, h2, h3 { font-family: var(--title); text-wrap: balance; margin: 0; }
+h2 { font-weight: 300; font-size: clamp(1.7rem, 3.6vw, 2.35rem); line-height: 1.2; letter-spacing: -0.01em; }
+h3 { font-weight: 500; font-size: 1.12rem; line-height: 1.35; }
+p { margin: 0; max-width: var(--read); }
+ul, ol { margin: 0; padding-left: 1.2rem; max-width: var(--read); }
+li + li { margin-top: 0.4rem; }
+strong { font-weight: 600; }
+
+.wrap {
+  max-width: var(--wide);
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.label {
+  font: 600 0.72rem/1.3 var(--body);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.lede { font-size: 1.08rem; color: var(--ink-2); }
+.muted { color: var(--muted); }
+.small { font-size: 0.86rem; }
+
+/* Top bar: the POC's white bar with a hairline, holding the section links. */
+.bar {
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 5;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line-2);
+}
+.bar .wrap { display: flex; align-items: center; gap: 1.25rem; min-height: 52px; }
+.bar .name { font: 500 0.95rem/1 var(--title); color: var(--ink); white-space: nowrap; }
+.bar nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.bar nav::-webkit-scrollbar { display: none; }
+.bar nav ul { display: flex; gap: 1.1rem; list-style: none; padding: 0; margin: 0; max-width: none; }
+.bar nav li + li { margin: 0; }
+.bar nav a { font-size: 0.84rem; color: var(--ink-2); text-decoration: none; white-space: nowrap; padding-block: 0.9rem; display: block; }
+.bar nav a:hover { color: var(--primary); }
+
+/* Hero */
+.hero { padding-block: clamp(2.5rem, 7vw, 5rem) clamp(2rem, 5vw, 3.5rem); display: grid; gap: 1.6rem; }
+.hero h1 { font-weight: 300; font-size: clamp(2.3rem, 7vw, 4.4rem); line-height: 1.04; letter-spacing: -0.02em; display: grid; gap: 0.9rem; }
+.hero h1 .line { display: grid; gap: 0.35rem; }
+.hero h1 .sub { font: 400 0.82rem/1.4 var(--mono); letter-spacing: 0; color: var(--muted); }
+.hero h1 .verb { font-weight: 400; color: var(--primary); }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1rem; margin-top: 0.6rem; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.1rem; display: grid; gap: 0.3rem; align-content: start; }
+.stat .num { font: 400 2.2rem/1 var(--title); color: var(--ink); font-variant-numeric: tabular-nums; }
+.stat p { font-size: 0.9rem; color: var(--ink-2); }
+.stat .src { font-size: 0.75rem; color: var(--muted); }
+
+/* Sections */
+section { padding-block: clamp(2.5rem, 6vw, 4rem); border-top: 1px solid var(--line-2); }
+section > .wrap { display: grid; gap: 1.4rem; }
+.head { display: grid; gap: 0.7rem; }
+
+.box { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.25rem; display: grid; gap: 0.6rem; max-width: var(--read); }
+.box.rule { background: var(--blue); border-color: transparent; }
+.box.rule p.big { font: 300 clamp(1.25rem, 2.6vw, 1.55rem)/1.35 var(--title); color: var(--ink); }
+.box.safety { background: var(--coral-soft); border-color: var(--coral); }
+.box.safety strong { color: var(--coral-ink); }
+.story { display: grid; gap: 0.9rem; max-width: var(--read); }
+.story p:first-child { font: 300 clamp(1.15rem, 2.4vw, 1.35rem)/1.5 var(--title); color: var(--ink); }
+
+/* Tables */
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table { border-collapse: collapse; width: 100%; font-size: 0.9rem; line-height: 1.5; }
+th, td { text-align: left; vertical-align: top; padding: 0.7rem 0.9rem; }
+th { font: 600 0.72rem/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); white-space: nowrap; }
+td { border-bottom: 1px solid var(--line-2); color: var(--ink-2); }
+tr:last-child td { border-bottom: 0; }
+td:first-child { color: var(--ink); font-weight: 600; }
+td.plain { font-weight: 400; }
+table.wide { min-width: 46rem; }
+table.mid { min-width: 36rem; }
+tr.group td { background: var(--page); font: 600 0.72rem/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding-block: 0.5rem; }
+
+/* Verdict chips: label always carries the meaning, color only reinforces it. */
+.chip { display: inline-block; font: 600 0.74rem/1 var(--body); padding: 0.32rem 0.55rem; border-radius: 999px; white-space: nowrap; vertical-align: 0.08em; }
+.chip.yes { background: var(--green-bg); color: var(--green); }
+.chip.later { background: var(--blue); color: var(--primary); }
+.chip.no { background: var(--line-2); color: var(--ink-2); }
+.chip.call { background: var(--rose); color: var(--ink); }
+.chip.planned { background: transparent; color: var(--muted); border: 1px dashed var(--line); }
+.chip.built { background: var(--blue); color: var(--primary); }
+
+/* The pathway */
+.entries { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+.entry { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1rem 1.1rem; display: grid; gap: 0.45rem; align-content: start; }
+.entry .tag { font: 500 0.8rem/1 var(--title); color: var(--muted); }
+.entry h3 { font-size: 1.05rem; }
+.entry p { font-size: 0.9rem; color: var(--ink-2); }
+.merge { display: grid; justify-items: center; color: var(--muted); font-size: 0.85rem; gap: 0.2rem; }
+.merge svg { display: block; }
+.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.75rem; max-width: none; counter-reset: step; }
+.steps li { margin: 0; display: grid; grid-template-columns: 2.4rem minmax(0, 1fr); gap: 0.9rem; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0.95rem 1.1rem; counter-increment: step; }
+.steps li::before { content: counter(step); font: 400 1.6rem/1 var(--title); color: var(--primary); padding-top: 0.1rem; }
+.steps li > div { display: grid; gap: 0.3rem; min-width: 0; }
+.steps p { font-size: 0.92rem; color: var(--ink-2); }
+
+/* Screens from the spike */
+.toggle { display: inline-flex; gap: 0; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); width: max-content; }
+.toggle button { font: 600 0.84rem/1 var(--body); color: var(--ink-2); background: transparent; border: 0; border-radius: 999px; padding: 0 1rem; min-height: 38px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--primary); color: var(--on-primary); }
+.toggle button:focus-visible { outline: 2px solid var(--chart); outline-offset: 2px; }
+/* Care team side: phone → service → web app → chart */
+.system { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.4rem; }
+.system .arrow { justify-self: center; color: var(--muted); font-size: 1.1rem; line-height: 1; transform: rotate(90deg); }
+@media (min-width: 62rem) {
+  .system { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); align-items: stretch; gap: 0.6rem; }
+  .system .arrow { align-self: center; transform: none; }
+}
+.sys { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0.95rem 1rem; display: grid; gap: 0.4rem; align-content: start; }
+.sys.edge { background: var(--blue); border-color: transparent; }
+.sys h3 { font-size: 1rem; }
+.sys p { font-size: 0.86rem; color: var(--ink-2); }
+.who { font: 600 0.7rem/1.3 var(--body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+.screens { display: grid; grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr)); gap: 1.5rem; }
+.screen { display: grid; gap: 0.75rem; align-content: start; justify-items: center; }
+.shot { width: 100%; max-width: 15rem; aspect-ratio: 1206 / 2622; border-radius: 26px; border: 1px solid var(--line); box-shadow: var(--shadow); background: var(--surface) center top / cover no-repeat; }
+.screen figcaption { font-size: 0.86rem; color: var(--ink-2); max-width: 17rem; display: grid; gap: 0.2rem; }
+.screen figcaption b { font: 500 0.95rem/1.3 var(--title); color: var(--ink); }
+figure { margin: 0; }
+
+/* Charts */
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem 1.25rem 1rem; display: grid; gap: 1rem; }
+.chart h3 { font-weight: 500; }
+.bars { display: grid; gap: 1.1rem; }
+.bar-row { display: grid; gap: 0.4rem; }
+.bar-row .what { display: flex; flex-wrap: wrap; gap: 0.2rem 0.6rem; align-items: baseline; font-size: 0.9rem; color: var(--ink-2); }
+.bar-row .what b { color: var(--ink); font-weight: 600; }
+.bar-row .val { font: 400 1.05rem/1 var(--title); color: var(--ink); font-variant-numeric: tabular-nums; }
+.track { position: relative; height: 26px; }
+.track .zero { position: absolute; top: -4px; bottom: -4px; width: 1px; background: var(--muted); left: 16.667%; }
+.track .fill { position: absolute; top: 3px; height: 20px; background: var(--chart); border-radius: 0 4px 4px 0; display: block; }
+.track .ci { position: absolute; top: 12px; height: 2px; background: var(--ink-2); display: block; }
+.track .ci::before, .track .ci::after { content: ""; position: absolute; top: -5px; width: 2px; height: 12px; background: var(--ink-2); }
+.track .ci::before { left: 0; }
+.track .ci::after { right: 0; }
+.axis { position: relative; height: 1.2rem; font-size: 0.75rem; color: var(--muted); font-variant-numeric: tabular-nums; border-top: 1px solid var(--line-2); }
+.axis span { position: absolute; top: 0.2rem; transform: translateX(-50%); }
+.axis span:last-child { transform: translateX(-100%); }
+.chart .note { font-size: 0.8rem; color: var(--muted); }
+.dots-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1.5rem; }
+.dots-card { display: grid; gap: 0.6rem; justify-items: start; }
+.dots { display: grid; grid-template-columns: repeat(10, 14px); gap: 5px; }
+.dots i { display: block; width: 14px; height: 14px; border-radius: 50%; background: var(--chart-empty); }
+.dots i.on { background: var(--chart); }
+.dots-card p { font-size: 0.92rem; color: var(--ink-2); }
+.dots-card .val { font: 400 2rem/1 var(--title); color: var(--ink); }
+details.data { font-size: 0.82rem; color: var(--muted); }
+details.data summary { cursor: pointer; width: max-content; }
+details.data table { margin-top: 0.5rem; font-size: 0.82rem; }
+.tip {
+  position: fixed; z-index: 20; pointer-events: none; max-width: 17rem;
+  background: var(--ink); color: var(--page); font-size: 0.8rem; line-height: 1.45;
+  padding: 0.5rem 0.65rem; border-radius: 6px; box-shadow: var(--shadow);
+}
+
+/* Visit-first flow */
+.flow { display: grid; gap: 0.6rem; max-width: var(--read); }
+.flow .node { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0.7rem 0.95rem; font-size: 0.92rem; color: var(--ink-2); }
+.flow .node b { color: var(--ink); }
+.flow .ask { background: var(--primary); color: var(--on-primary); border-color: var(--primary); font-weight: 600; }
+.flow .split { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.6rem; }
+.flow .arrow { color: var(--muted); font-size: 0.85rem; padding-left: 1rem; }
+
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 1.4rem; align-items: start; }
+.two > * { min-width: 0; }
+.cmd { font: 0.88rem/1.5 var(--mono); background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 0.8rem 1rem; overflow-x: auto; white-space: pre; color: var(--ink); }
+.counts { display: flex; flex-wrap: wrap; gap: 0.6rem 1.6rem; }
+.counts div { display: grid; }
+.counts .num { font: 400 1.9rem/1.1 var(--title); font-variant-numeric: tabular-nums; }
+.counts .what { font-size: 0.82rem; color: var(--muted); }
+ol.questions li { padding-left: 0.3rem; }
+footer { padding-block: 2.5rem 3.5rem; border-top: 1px solid var(--line-2); font-size: 0.82rem; color: var(--muted); }
+footer .wrap { display: grid; gap: 1rem; }
+footer ul { columns: 2 18rem; column-gap: 2rem; max-width: none; }
+footer li { break-inside: avoid; }
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+section { scroll-margin-top: calc(52px + env(safe-area-inset-top, 0px)); }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <span class="name">The BP Pathway</span>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#origin">Origin</a></li>
+        <li><a href="#bar">The bar</a></li>
+        <li><a href="#pathway">Pathway</a></li>
+        <li><a href="#week">A member's week</a></li>
+        <li><a href="#care">Care team side</a></li>
+        <li><a href="#signal">Watch signal</a></li>
+        <li><a href="#lanes">Lanes and cuffs</a></li>
+        <li><a href="#decisions">Decisions</a></li>
+        <li><a href="#considered">Considered</a></li>
+        <li><a href="#proof">The spike</a></li>
+        <li><a href="#rollout">Rollout</a></li>
+        <li><a href="#questions">Questions</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap hero">
+    <p class="label">Wearables concept · Staff Mobile Engineer, Rezilient Health · Ryan Waits · October 2026</p>
+    <h1>
+      <span class="line"><span>The <span class="verb">watch</span> notices.</span><span class="sub">Apple Watch hypertension notification · HKCategoryType(.hypertensionEvent) · iOS 26.2+</span></span>
+      <span class="line"><span>The <span class="verb">cuff</span> measures.</span><span class="sub">7 days, morning and evening · validated cuffs only · HealthKit and Health Connect</span></span>
+      <span class="line"><span>The <span class="verb">care team</span> treats.</span><span class="sub">review within 1 business day · a visit or a dose change by message</span></span>
+    </h1>
+    <p class="lede">A blood pressure pathway for the member app. One data type, one pipeline, iOS and Android, three ways in, and a clinician closes the loop. Code decides what counts. No model is in the loop.</p>
+    <p class="small muted">A concept built from public information and a runnable spike with synthetic data. Not Rezilient's product. The look follows Rezilient's member app as it appears in its App Store screenshots.</p>
+    <div class="stats">
+      <div class="stat"><span class="num">89%</span><p>of Rezilient members with high blood pressure have it controlled. The 90th-percentile benchmark is 74%.</p><span class="src">rezilienthealth.com</span></div>
+      <div class="stat"><span class="num">33%</span><p>activation. The care works for members who show up. Two-thirds haven't yet.</p><span class="src">rezilienthealth.com</span></div>
+      <div class="stat"><span class="num">18%</span><p>of US adults aged 40 to 59 with hypertension have it controlled. 4.5% at 18 to 39.</p><span class="src">NCHS Data Brief 511, NHANES 2021–23</span></div>
+    </div>
+  </div>
+
+  <section id="origin">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Where this started</p>
+        <h2>A Whoop, a low HRV, and the first rule</h2>
+      </div>
+      <div class="story">
+        <p>In late 2020 my Whoop showed my HRV far below my normal. I felt fine and hadn't trained any harder. Two or three days later I felt rough, and it turned out to be COVID.</p>
+        <p>The band never said "you have COVID." It said something was off, and only I could work out what. Apple's hypertension notification looks similar from the outside: indirect signals, no direct reading. It is a different kind of signal, and the difference decides what this pathway is allowed to start from.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="mid">
+          <thead><tr><th></th><th>My Whoop HRV dip</th><th>Apple hypertension notification</th></tr></thead>
+          <tbody>
+            <tr><td>Compared with</td><td><strong>Me</strong>: my own recent normal</td><td><strong>Other people</strong>: trained on 100,000+ people with known cuff readings</td></tr>
+            <tr><td>Asks</td><td>"Are you different from usual?"</td><td>"Does your pulse look like the pulse of people with high blood pressure?"</td></tr>
+            <tr><td>Window</td><td>Days</td><td>30-day windows of how blood vessels respond to each heartbeat</td></tr>
+            <tr><td>Points to</td><td>Nothing specific: illness, stress, alcohol, sleep</td><td>One condition</td></tr>
+            <tr><td>Checked against the real thing</td><td>No. A wellness feature</td><td>Yes. A 2,000-person study against cuffs, FDA-cleared</td></tr>
+            <tr><td>Next step</td><td>Rest, and see how you feel</td><td>Confirm with a cuff, and see a clinician</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="box rule">
+        <p class="label">Decision 9 · the first rule</p>
+        <p class="big">A pathway starts only from a signal that names one condition and has a test that confirms it.</p>
+        <p class="small">The first kind is a "something's off" light: real, and for the member to act on. The second is a screening test for one condition, so it can route to one clinical action. The same line is why the app asks to read two things only: blood pressure and hypertension notifications.</p>
+      </div>
+      <p class="muted small">I've built this kind of integration before: a native iOS nutrition app for student athletes that read Apple Watch, Fitbit and Whoop data.</p>
+    </div>
+  </section>
+
+  <section id="bar">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">The bar every idea had to clear</p>
+        <h2>Cause a care event, or make one cheaper</h2>
+        <p class="lede">Rezilient is paid a flat fee, so time in the app is a cost, not the product. A health-data integration earns its place only if it causes a care event, like a first visit, or makes one cheaper, like a dose change by message instead of a visit.</p>
+      </div>
+      <figure class="chart" aria-labelledby="c1-title">
+        <h3 id="c1-title">Home monitoring lowers blood pressure only when someone acts on it</h3>
+        <div class="bars">
+          <div class="bar-row" tabindex="0" data-tip="Self-monitoring alone: −1.0 mmHg systolic at 12 months. 95% CI −3.3 to +1.2: crosses zero, not significant.">
+            <div class="what"><b>Member checks at home, alone</b><span class="val">−1.0 mmHg</span><span>not significant</span></div>
+            <div class="track"><span class="zero"></span><span class="ci" style="left:6.667%;width:37.5%"></span><span class="fill" style="left:16.667%;width:8.333%"></span></div>
+          </div>
+          <div class="bar-row" tabindex="0" data-tip="Self-monitoring with intensive support: −6.1 mmHg systolic at 12 months. 95% CI −9.0 to −3.2.">
+            <div class="what"><b>Member checks, and a clinician acts on it</b><span class="val">−6.1 mmHg</span></div>
+            <div class="track"><span class="zero"></span><span class="ci" style="left:43.333%;width:48.333%"></span><span class="fill" style="left:16.667%;width:50.833%"></span></div>
+          </div>
+          <div class="axis" aria-hidden="true"><span style="left:16.667%">0</span><span style="left:33.333%">2</span><span style="left:50%">4</span><span style="left:66.667%">6</span><span style="left:83.333%">8</span><span style="left:100%">10</span></div>
+        </div>
+        <p class="note">How much lower systolic blood pressure was at 12 months, in mmHg, with 95% confidence intervals. Tucker et al., PLoS Medicine 2017: individual-patient meta-analysis, 15 trials, 7,138 people at 12 months.</p>
+        <details class="data"><summary>Show as a table</summary>
+          <table><thead><tr><th>Group</th><th>Systolic change</th><th>95% CI</th></tr></thead>
+          <tbody><tr><td class="plain">Self-monitoring alone</td><td>−1.0 mmHg</td><td>−3.3 to +1.2</td></tr><tr><td class="plain">With intensive support</td><td>−6.1 mmHg</td><td>−9.0 to −3.2</td></tr></tbody></table>
+        </details>
+      </figure>
+      <p><strong>So the data alone is a gimmick.</strong> The care team acting on it is the product, and the app's job is to get trustworthy readings in front of that team at the right moment.</p>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Idea</th><th>Verdict</th><th>Why</th><th>Flips if</th></tr></thead>
+          <tbody>
+            <tr><td>Blood pressure pathway: watch, phone history, clinician → cuff week → care team</td><td><span class="chip yes">Yes</span></td><td>Rezilient's headline outcome. Working-age adults are the least controlled group. Guideline-grade. Finishes Apple's own hand-off</td><td>—</td></tr>
+            <tr><td>Intake prefill from the same readings</td><td><span class="chip yes">Yes, free</span></td><td>Falls out of the pipeline. Only fields intake already asks for</td><td>—</td></tr>
+            <tr><td>Other watch notifications: irregular rhythm, high or low heart rate</td><td><span class="chip later">Not yet</span></td><td>No protocol behind them yet, and each is another reason to tap Don't Allow</td><td>Clinical makes one an entry, with its own protocol</td></tr>
+            <tr><td>Clinical records import (Apple Health Records, Health Connect PHR)</td><td><span class="chip later">Not yet</span></td><td>Health Connect PHR is experimental. Coverage unknown</td><td>Records exist for most new members and no partner feed covers them</td></tr>
+            <tr><td>Glucose (CGM), weight scales</td><td><span class="chip later">Not yet</span></td><td>Same pipeline later. No program to route them to today</td><td>A clinical program and protocol exist, and this loop is proven</td></tr>
+            <tr><td>Vendor cloud APIs (Whoop, Oura, Garmin, Fitbit), aggregators</td><td><span class="chip no">No</span></td><td>All of them write to HealthKit or Health Connect. Fitbit's API shuts off Oct 30, 2026. No extra BAAs</td><td>A needed data type exists only in a vendor cloud</td></tr>
+            <tr><td>Step challenges, streaks, badges, leaderboards</td><td><span class="chip no">No</span></td><td>Trials show no effect on weight, BP or spending. An employer seeing data destroys trust</td><td>—</td></tr>
+            <tr><td>A readiness score, an AI coach, HRV and sleep dashboards</td><td><span class="chip no">No</span></td><td>The OS and the wearables already do these. No clinician action. A score that implies disease is a regulated device</td><td>—</td></tr>
+            <tr><td>Our own screening algorithm, "sync everything"</td><td><span class="chip no">No</span></td><td>Apple already screens. Unsolicited data is a liability and a workload for clinicians</td><td>—</td></tr>
+            <tr><td>A watchOS app</td><td><span class="chip no">No</span></td><td>Watch data already reaches HealthKit</td><td>Members ask for check-ins on the wrist</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="pathway">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">The pathway</p>
+        <h2>Three ways in, one week, one care team</h2>
+        <p class="lede">Every way in leads to the same week. The phone reads and checks. The server decides what counts. A person reviews it.</p>
+      </div>
+      <div class="entries">
+        <div class="entry">
+          <span class="tag">Way in A</span>
+          <h3>The watch notices</h3>
+          <p>Apple Watch sends a hypertension notification. Adults 22+, undiagnosed, iOS 26.2+, Series 9 or later.</p>
+          <p><code>HKCategoryType(.hypertensionEvent)</code>, read on the phone. Only <code>{ entry, date }</code> is ever sent.</p>
+        </div>
+        <div class="entry">
+          <span class="tag">Way in B</span>
+          <h3>Readings already on the phone</h3>
+          <p>130/80 or higher on 2+ days in the last 30, from any source. An invite, not a diagnosis. Nothing leaves the phone.</p>
+          <p><code>historyScan { lookbackDays: 30, minDays: 2 }</code>, the same goldens in Swift and Kotlin.</p>
+        </div>
+        <div class="entry">
+          <span class="tag">Way in C</span>
+          <h3>A clinician starts it</h3>
+          <p>During a visit or at a CloudClinic, dated to the visit, up to 14 days back. Consent happens in the room.</p>
+          <p><code>POST /v1/care/members/:id/enroll</code></p>
+        </div>
+      </div>
+      <div class="merge" aria-hidden="true">
+        <svg width="24" height="28" viewBox="0 0 24 28"><path d="M12 2v22M5 17l7 7 7-7" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+      </div>
+      <ol class="steps">
+        <li><div><h3>The member opts in</h3><p>"Start my check." Only readings taken after this moment are sent. Everything before stays on the phone.</p><p><code>enrolledAt</code> is the phone's read floor. The server refuses <code>before_enrollment</code>.</p></div></li>
+        <li><div><h3>"Do you have a cuff?"</h3><p>Yes: the week starts now. No: pick one up at a CloudClinic (that pickup is the first visit) or have one mailed. The week starts at the first cuff reading.</p></div></li>
+        <li><div><h3>A week of readings</h3><p>Morning (4 to 12) and evening (16 to 24), local time. 12 readings from validated cuffs count. Typed and cuffless readings are shown, labeled, and kept out of the average.</p><p><code>protocol { days: 7, minReadings: 12 }</code> · cuff allowlist by app + device model</p></div></li>
+        <li><div><h3>The phone syncs</h3><p>HealthKit and Health Connect are the outbox. The phone's place in them moves forward only after the server accepts a page, so nothing is lost offline.</p><p><code>POST /v1/health/changes</code>, idempotent on (platform, id), deletions as tombstones</p></div></li>
+        <li><div><h3>Rules in code</h3><p>Sort each reading (cuff, typed, cuffless, duplicate), slot it, average it, derive the state. The same rules are checked in Swift, Kotlin and TypeScript.</p><p><code>server/src/rules.ts</code> · <code>goldens/*.json</code></p></div></li>
+        <li><div><h3>The care team reviews</h3><p>The member's own clinician, or for a first visit, one licensed in the member's state. They see the average, count, dates, sources, what was left out and why, and any very high readings. Never the raw stream. Then a visit, or a dose change by message, then a weekly check-in.</p></div></li>
+      </ol>
+      <div class="box safety">
+        <p class="label">Safety, never an experiment arm</p>
+        <p><strong>Any reading at 180/120 or above, from any source</strong>, shows a safety screen on the phone and creates exactly one task for the care team. Readings aren't watched live, and the app says so before the member connects.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="week">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">A member's week</p>
+        <h2>Jordan, 47, who has never booked a visit</h2>
+        <p class="lede">Jordan supervises a shift at a distribution center and signed up for Rezilient at open enrollment. They bought an Omron cuff after a pharmacy kiosk read 142/90, and they wear a band that estimates blood pressure.</p>
+      </div>
+      <div class="toggle" role="group" aria-label="Platform">
+        <button type="button" id="plat-ios" data-platform="ios" aria-pressed="true">iPhone</button>
+        <button type="button" id="plat-android" data-platform="android" aria-pressed="false">Android</button>
+      </div>
+      <div class="screens" id="screens" data-platform="ios">
+        <figure class="screen">
+          <div class="shot shot-invite" role="img" aria-label="Invite card: your readings were above 130/80 on 7 days in the last 30 days, with a Start my check button"></div>
+          <figcaption><b>Day 0: the invite</b>Jordan connects Apple Health (on iOS 27, picking "Past 30 Days") or Health Connect. The phone finds 7 high days in the last 30 and offers a $0 check. Nothing has left the phone.</figcaption>
+        </figure>
+        <figure class="screen">
+          <div class="shot shot-crisis" role="img" aria-label="Reading list with 186/112 from a ring marked very high and not in the average, and a typed reading marked entered by you"></div>
+          <figcaption><b>Day 3: the band reads 186/112</b>Flagged very high, kept out of the average because it isn't a validated cuff, and sent to the care team once.</figcaption>
+        </figure>
+        <figure class="screen">
+          <div class="shot shot-ready" role="img" aria-label="Progress card showing 137/87 average from 13 cuff readings with morning and evening dots for 7 days"></div>
+          <figcaption><b>Day 7: done</b>137/87 from 13 cuff readings. "Your care team will review it within 1 business day."</figcaption>
+        </figure>
+      </div>
+      <p class="small muted">Screens from the spike, nothing mocked, synthetic data. iPhone: the iOS end-to-end test on a fresh simulator. Android: a wiped emulator reading Health Connect.</p>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>When</th><th>In real life</th><th>In the app</th><th>Behind it</th></tr></thead>
+          <tbody>
+            <tr><td>Last 3 weeks</td><td>Omron readings some mornings, one typed in by hand</td><td>Not connected yet</td><td>Readings sit in Apple Health</td></tr>
+            <tr><td>Day 0, 7:45 AM</td><td>Opens the app to find clinic hours</td><td>"We read blood pressure only. Your employer never does."</td><td>iOS asks for 2 topics, then iOS 27 asks how far back. Either answer gives the same invite</td></tr>
+            <tr><td>Day 0</td><td>Taps "Start my check"</td><td>Consent, then "Do you have a cuff?" <span class="chip planned">planned</span></td><td>Enrollment recorded. The week starts at the first cuff reading</td></tr>
+            <tr><td>Days 1 to 7</td><td>Sits for 5 minutes, cuff at 7 AM and 8 PM</td><td>Morning and evening dots fill in</td><td>iOS wakes the app on a new reading. Upload, then the anchor moves</td></tr>
+            <tr><td>Day 3, 9 AM</td><td>The band reads 186/112 on a walk</td><td>Very high, not in the average</td><td>One task. The care team asks for a cuff recheck: 136/86 <span class="chip planned">planned</span></td></tr>
+            <tr><td>Quiet days</td><td>Forgets for 3 days</td><td>"No new readings lately."</td><td>Stalled after 72 quiet hours, or 7 days with no first reading (a mailed cuff takes days)</td></tr>
+            <tr><td>Day 7</td><td>Last cuff reading</td><td>"Done. Review within 1 business day."</td><td>The average exists only once 12 readings count</td></tr>
+            <tr><td>After</td><td>A visit or a message, maybe a medication start</td><td>Weekly: one number against the target <span class="chip planned">planned</span></td><td>Readings written to the chart as FHIR Observations <span class="chip planned">planned</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="care">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">The care team's side</p>
+        <h2>How a member's readings reach the people in the web app</h2>
+        <p class="lede">Rezilient's paramedics and clinicians work in a web app, not the member app. So the phone never talks to their systems. One service sits between them, and the care team hears about a member at a few moments, never as a stream.</p>
+        <p class="small"><strong>Care team</strong> means everyone on Rezilient's clinical side: on-site paramedics, remote clinicians and coordinators. <strong>Clinician</strong> means the licensed physician, NP or PA who can diagnose and prescribe; a clinician reviews the week. <strong>Paramedics</strong> do the hands-on care and office readings at a CloudClinic.</p>
+      </div>
+      <div class="system">
+        <div class="sys"><span class="who">Member</span><h3>The phone</h3><p>Cuff app → Apple Health or Health Connect → member app. Reads on the phone, checks for very high readings, uploads only after opt-in.</p><p><code>POST /v1/health/changes</code></p></div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="sys edge"><span class="who">The one boundary</span><h3>Pathway service</h3><p>Rules in code, state, the summary, tasks. The only thing clinical systems talk to. Mobile owns its data contract.</p><p><code>summary · tasks · review</code></p></div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="sys"><span class="who">Paramedics and clinicians</span><h3>The web app</h3><p>A review queue and tasks, routed to the member's own clinician, or one licensed in their state. The clinical tools team builds the screens.</p></div>
+        <span class="arrow" aria-hidden="true">→</span>
+        <div class="sys"><span class="who">The record</span><h3>The chart</h3><p>At review, the counted readings and the average go in as FHIR Observations, each with its device and app. The paramedic's office readings are already here.</p></div>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Moment</th><th>The member sees</th><th>Who on the care team, and what</th></tr></thead>
+          <tbody>
+            <tr><td>Invite or watch notification</td><td>The invite</td><td>Nothing. The member hasn't chosen to share</td></tr>
+            <tr><td>Opt in</td><td>"Your check starts with your next cuff reading."</td><td>Nothing to act on. The check's status shows in the web app</td></tr>
+            <tr><td>Each reading</td><td>A dot fills in</td><td>Nothing. No raw stream</td></tr>
+            <tr><td>A reading at 180/120 or above</td><td>The safety screen</td><td>The on-call clinician gets a task right away. Who's on call is clinical policy</td></tr>
+            <tr><td>No readings (72 hours, or 7 days before the first)</td><td>One nudge</td><td>Any care team member gets a task if the nudge doesn't work. It doesn't need a clinician</td></tr>
+            <tr><td>Week finished</td><td>"Review within 1 business day"</td><td>A clinician gets a review item: the member's own if they've had a visit. Members from an invite usually haven't, so most go to a clinician licensed in their state</td></tr>
+            <tr><td>Reviewed</td><td>"Reviewed by your care team," then the next step by message</td><td>The readings and average written to the chart</td></tr>
+            <tr><td>Next CloudClinic visit</td><td>Nothing new</td><td>The paramedic and clinician see the prep card: the home average next to the office reading</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="two">
+        <ul class="small">
+          <li><strong>Moments, not streams.</strong> Three things reach the care team: a very high reading (the on-call clinician, right away), a week that stalled after a nudge (anyone on the team), and a finished week (a clinician). Everything else waits for review.</li>
+          <li><strong>The chart gets what a clinician has seen.</strong> Readings go in at review, and a very high one with its task. Unreviewed home data in the chart is the med-legal worry physicians name most.</li>
+          <li><strong>Provenance travels.</strong> "Omron HEM-7155T via Apple Health, measured" reads the same for the member, in the web app, and in the chart (a FHIR Device and the source app).</li>
+        </ul>
+        <div class="box">
+          <p class="label">Office and home, side by side</p>
+          <p class="small">At a CloudClinic visit, the paramedic's connected cuff takes an office reading. Next to the home average, it shows white-coat hypertension (high in the office, normal at home) and masked hypertension (the reverse). An office reading alone misses both. My <a href="https://github.com/ryanwaits/intake-poc">intake POC</a> already builds a prep card for the paramedic and the remote clinician; the home average belongs on it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="signal">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">The watch signal</p>
+        <h2>What a watch notification means, and why it earns a visit</h2>
+        <p class="lede">Apple's notification is a screen, not a measurement: "your pattern looks like high blood pressure, go confirm it." Apple sends the member to a cuff and to "your healthcare professional." Many working-age members don't have one. Rezilient is $0.</p>
+      </div>
+      <figure class="chart" aria-labelledby="c2-title">
+        <h3 id="c2-title">Rare false alarms, many misses</h3>
+        <div class="dots-pair">
+          <div class="dots-card" tabindex="0" data-tip="Sensitivity 41.2%: 214 of 585 people with hypertension in the validation study got a notification.">
+            <span class="val">41 of 100</span>
+            <div class="dots" data-dots="41" role="img" aria-label="41 of 100 dots filled"></div>
+            <p>people <strong>with</strong> hypertension get a notification. It misses the other 59.</p>
+          </div>
+          <div class="dots-card" tabindex="0" data-tip="Specificity 92.3%: about 8 in 100 people without hypertension got a notification.">
+            <span class="val">8 of 100</span>
+            <div class="dots" data-dots="8" role="img" aria-label="8 of 100 dots filled"></div>
+            <p>people <strong>without</strong> hypertension get one anyway.</p>
+          </div>
+        </div>
+        <p class="note">Apple's validation study, 2,000+ participants: sensitivity 41.2%, specificity 92.3%, with more of stage 2 caught. Via AAFP.</p>
+        <details class="data"><summary>Show as a table</summary>
+          <table><thead><tr><th>Group</th><th>Notified</th></tr></thead>
+          <tbody><tr><td class="plain">With hypertension</td><td>41.2%</td></tr><tr><td class="plain">Without hypertension</td><td>7.7%</td></tr></tbody></table>
+        </details>
+      </figure>
+      <div class="two">
+        <div class="table-wrap">
+          <table>
+            <tbody>
+              <tr><td>Who can get one</td><td>Adults 22+, not pregnant, <strong>no hypertension diagnosis</strong>. Every flagged member is undiagnosed by definition</td></tr>
+              <tr><td>Which watch</td><td>Series 9 or later, Ultra 2 or later. Series 12 still has no blood pressure sensor</td></tr>
+              <tr><td>Apple's next step</td><td>A cuff for 7 days, then "discuss it with your healthcare professional"</td></tr>
+              <tr><td>My estimate</td><td>At working-age rates, roughly half to 7 in 10 flagged members have hypertension</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flow" aria-label="Visit first flow">
+          <div class="node"><b>Notification</b> → invite</div>
+          <div class="node ask">"Do you have a cuff?"</div>
+          <div class="split">
+            <div class="node"><b>Yes</b>: start the week now → review → a visit if needed</div>
+            <div class="node"><b>No</b>: a $0 visit first. CloudClinic reading + cuff in hand, or telehealth + cuff mailed → the week → review</div>
+          </div>
+        </div>
+      </div>
+      <ul>
+        <li><strong>A notification is enough to offer a visit before any cuff.</strong> It answers Apple's "talk to your doctor," removes the cuff barrier, and is the activation metric itself.</li>
+        <li><strong>The visit doesn't replace the week.</strong> A diagnosis needs readings taken outside the office, so visit first only reorders it.</li>
+        <li><strong>No notification never means normal.</strong> It misses about 6 in 10. No copy ever says "your watch says you're fine."</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="lanes">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Lanes and cuffs</p>
+        <h2>The best case, the real world, and who this can't reach</h2>
+        <p class="lede">The watch can't produce the number, so the cuff is the biggest barrier. Every lane ends with a reading on the phone and the same server rules, so a new lane is a config or screen change, never a new pipeline.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Lane</th><th>Who</th><th>Experience</th><th>What it takes</th></tr></thead>
+          <tbody>
+            <tr><td>1 · Best case</td><td>iOS 26.2+, Watch Series 9+, a cuff that writes to Apple Health</td><td>Notification → invite → a week of automatic syncs → review. No typing</td><td><span class="chip built">Built</span> Small group, likely to convert. The watch reader needs a real Watch</td></tr>
+            <tr><td>2a · No cuff</td><td>Watch-flagged, or invited from typed or band readings</td><td>Visit first: a cuff from a CloudClinic, or mailed after telehealth</td><td>The cuff screen. The stall clock waits 7 days for a first reading <span class="chip built">Built</span></td></tr>
+            <tr><td>2b · A cuff that doesn't sync</td><td>Cheap cuffs with no app, which is common</td><td>Types readings in. Shown, not averaged, today</td><td><span class="chip call">Clinical call</span> Count typed readings from a declared approved model: one rule</td></tr>
+            <tr><td>2c · Cuffless wearable</td><td>Hilo, Happy Ring, Samsung, Whoop, Oura</td><td>Readings start the invite today. Cleared ones might count</td><td><span class="chip call">Clinical call</span> One allowlist entry, no code</td></tr>
+            <tr><td>2d · Android, or iOS below 26.2</td><td>No watch trigger</td><td>Ways in B and C</td><td><span class="chip built">Built</span> Nothing extra</td></tr>
+            <tr><td>2e · A shorter week</td><td>Everyone</td><td>Fewer days to drop out of</td><td><span class="chip call">Clinical call</span> <code>protocol.days</code> and <code>minReadings</code> are config</td></tr>
+            <tr><td>3 · Out of reach</td><td>No watch, no cuff, no visit: likely the biggest group</td><td>CloudClinic screening events → way in C</td><td>Not a wearables problem, and the doc says so</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3>Getting a cuff, cheapest first</h3>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Option</th><th>Verdict</th><th>Lift</th><th>Flips if</th></tr></thead>
+          <tbody>
+            <tr><td>The member already owns one</td><td><span class="chip yes">Yes</span></td><td>None. That's way in B</td><td>—</td></tr>
+            <tr><td>A CloudClinic hands one out or lends it</td><td><span class="chip yes">Yes, first</span></td><td>Low. Rezilient's own paramedics are already there, and the AMA and Target: BP publish lending playbooks. The pickup is the first visit</td><td>—</td></tr>
+            <tr><td>Mail one free, only to members who said yes</td><td><span class="chip later">Not yet</span></td><td>Medium. An address screen and a fulfillment vendor. $50 to $150 retail</td><td>Enough invites from members without a cuff to justify a vendor</td></tr>
+            <tr><td>A vendor home-monitoring kit (e.g. Omron VitalSight)</td><td><span class="chip later">Not yet</span></td><td>High. A contract and a server-side integration, built around Medicare billing</td><td>Members who won't use the app are a measurable share of no-shows</td></tr>
+            <tr><td>The member buys their own</td><td><span class="chip no">No</span></td><td>Low for us</td><td>— It breaks the "$0" promise</td></tr>
+            <tr><td>A cuff for every member</td><td><span class="chip no">No</span></td><td>Cost with no care event</td><td>—</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small"><strong>Cuffless is moving.</strong> Two devices that give numbers are now FDA-cleared: the Hilo band (July 2025, calibrated with its own cuff, writes to Apple Health with a subscription) and the Happy Ring (2026, no calibration claimed). Counting one is a single allowlist entry. It's still a clinical call: the 2025 AHA/ACC guideline says cuffless devices aren't for clinical blood pressure.</p>
+    </div>
+  </section>
+
+  <section id="decisions">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Decisions made</p>
+        <h2>The ones that are expensive to reverse</h2>
+        <p class="lede">Each has what it costs and what would change my mind. The cheap decisions live in config and are proposals for the clinical lead.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>#</th><th>Decision</th><th>Why</th><th>Gave up</th><th>Flips if</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td class="plain"><strong>OS health stores only.</strong> No vendor APIs, no aggregator</td><td>Every target device writes to HealthKit or Health Connect. No extra BAAs, OAuth flows or webhooks</td><td>Cloud-only data</td><td>A needed type exists only in a vendor cloud</td></tr>
+            <tr><td>2</td><td class="plain"><strong>The OS store is the outbox.</strong> The anchor moves only after the server accepts. No local database of readings</td><td>Nothing lost offline, nothing to encrypt, nothing to clear at sign-out</td><td>Offline history screens</td><td>A screen needs server data offline</td></tr>
+            <tr><td>3</td><td class="plain"><strong>The member chooses when to share.</strong> Triggers and scans run on the phone</td><td>One rule covers consent, the duty to act on unsolicited data, and clinician load</td><td>Outreach to people who haven't opted in</td><td>Clinical wants outreach. Way in C already is that path</td></tr>
+            <tr><td>4</td><td class="plain"><strong>Only validated cuffs count.</strong> Allowlist by app + device model</td><td>2025 AHA/ACC. More cuffless numbers are coming into the stores</td><td>Some real typed readings</td><td>Clinical counts typed or cleared cuffless readings</td></tr>
+            <tr><td>5</td><td class="plain"><strong>Rules in code, versioned config, no model</strong></td><td>Thresholds are auditable and testable</td><td>Nothing worth having</td><td>Never for thresholds</td></tr>
+            <tr><td>6</td><td class="plain"><strong>The data layer is native on both platforms</strong>, whatever the UI is</td><td>HealthKit observers register at launch, before a React Native runtime exists. Background wakes don't wait for JS</td><td>One more bridge during the migration</td><td>None for the data layer</td></tr>
+            <tr><td>7</td><td class="plain"><strong>The server owns pathway state</strong>, derived on read</td><td>Two platforms, a care team and reinstalls need one truth</td><td>Cached state offline</td><td>—</td></tr>
+            <tr><td>8</td><td class="plain"><strong>Same rules in Swift, Kotlin and TypeScript</strong>, held to one set of goldens</td><td>On-phone checks must match the server's</td><td>Three copies of a small function</td><td>The rules grow: move the scan to the server after opt-in</td></tr>
+            <tr><td>9</td><td class="plain"><strong>Pathways start only from specific, confirmable signals</strong></td><td>A clinician can act on them</td><td>Entries from HRV, resting heart rate, readiness scores</td><td>A general signal gets a validated, condition-specific use</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="considered">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Considered, cut, deferred</p>
+        <h2>What I looked at and didn't build, and why</h2>
+        <p class="lede">Every addition had to prove itself. A deletion that removes the problem beats a feature that manages it.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Considered</th><th>Verdict</th><th>Why</th><th>Flips if</th></tr></thead>
+          <tbody>
+            <tr class="group"><td colspan="4">iOS 27 asks members how far back an app may read</td></tr>
+            <tr><td>Scan the last 30 days, on both platforms</td><td><span class="chip yes">Chosen</span></td><td>Only way in B looks back. The member's most private answer, "Past 30 Days," now costs them nothing. Android drops its history permission and its Play declaration</td><td>Clinical wants older readings to trigger the invite</td></tr>
+            <tr><td>Clamp the scan to <code>earliestAuthorizedSampleDate</code> and change the copy to match</td><td><span class="chip no">No</span></td><td>The copy was never wrong, only undercounted. An iOS 27-only branch and two copy variants on two platforms, for nothing</td><td>Copy turns out to mislead</td></tr>
+            <tr><td>A screen before the system sheet nudging "All Recorded Data"</td><td><span class="chip later">Not yet</span></td><td>Asks for more than we use, against App Store guidance and privacy</td><td>iOS 27 invites per connect drop against iOS 26, and clinical wants a longer look-back</td></tr>
+            <tr><td>Ask again later, or pull history to the server</td><td><span class="chip no">No</span></td><td>The sheet shows once. Server-side history breaks "the member chooses when to share"</td><td>—</td></tr>
+            <tr class="group"><td colspan="4">What the app asks to read</td></tr>
+            <tr><td>Read 2 topics instead of 5: blood pressure and hypertension notifications</td><td><span class="chip yes">Done</span></td><td>Irregular rhythm, high and low heart rate, and heart rate for pulse had no pathway. Each extra topic is another reason to tap Don't Allow</td><td>Clinical makes one of them an entry</td></tr>
+            <tr><td>The <code>pulse</code> field in the reading format</td><td><span class="chip yes">Deleted</span></td><td>In the contract in all three languages. Nothing ever wrote it</td><td>A clinical use for pulse</td></tr>
+            <tr class="group"><td colspan="4">Found by walking through a real member's week</td></tr>
+            <tr><td>The stall timer started at "Start my check"</td><td><span class="chip yes">Fixed</span></td><td>A mailed cuff would be "stalled" before it arrived. Now 7 days before the first reading, 72 hours after</td><td>—</td></tr>
+            <tr><td>"0 of 12" right after "7 high days"</td><td><span class="chip yes">Fixed</span></td><td>Read as "you ignored my readings." With no readings yet, the app now says "Your check starts with your next cuff reading." True on every day, even while a mailed cuff is on its way, and it matches how the week counts</td><td>—</td></tr>
+            <tr class="group"><td colspan="4">Getting readings in</td></tr>
+            <tr><td>Read a photo of the cuff's screen</td><td><span class="chip no">No</span></td><td>Puts a model in a clinical loop. Typed entry plus a clinical call is simpler</td><td>—</td></tr>
+            <tr><td>Count typed readings, cleared cuffless devices, a shorter week</td><td><span class="chip call">Clinical calls</span></td><td>Each is one config change. I'd bring each to the clinical lead with data</td><td>The clinical lead says yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Proof</p>
+        <h2>The spike runs end to end on both platforms</h2>
+        <p class="lede">One command runs everything on one Mac in about four minutes: server tests, typecheck and lint, Swift and Kotlin tests, both clients against the live server, the iOS app end to end on a fresh simulator, and the Android build.</p>
+      </div>
+      <div class="cmd">bp-pathway/check.sh   # synthetic data only</div>
+      <div class="counts">
+        <div><span class="num">29</span><span class="what">server tests, real HTTP</span></div>
+        <div><span class="num">5</span><span class="what">Swift tests</span></div>
+        <div><span class="num">5</span><span class="what">Kotlin tests</span></div>
+        <div><span class="num">1</span><span class="what">iOS end-to-end run, nothing mocked</span></div>
+      </div>
+      <div class="two">
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>It proves</th><th>Where</th></tr></thead>
+            <tbody>
+              <tr><td class="plain">The anchor moves only after the server accepts. A background wake can't move it backwards</td><td><code>SyncEngine.swift</code>, mutation-checked</td></tr>
+              <tr><td class="plain">Swift, Kotlin and the server agree on the crisis rule and the history scan</td><td><code>goldens/*.json</code></td></tr>
+              <tr><td class="plain">Only validated cuffs count. A crisis counts from any source</td><td><code>e2e.test.ts</code></td></tr>
+              <tr><td class="plain">Resent pages change nothing: no double counts, no second task</td><td><code>e2e.test.ts</code></td></tr>
+              <tr><td class="plain">Deletions in Apple Health reach the average</td><td>tombstones</td></tr>
+              <tr><td class="plain">Both clients speak the server's contract over a real socket</td><td><code>ContractTests</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Building it taught me</th><th>So</th></tr></thead>
+            <tbody>
+              <tr><td class="plain"><code>URLSession.shared</code> caches API responses on disk</td><td>Health data at rest. The client uses an ephemeral session</td></tr>
+              <tr><td class="plain">A fresh simulator's health daemon ignores calls for about 90 seconds, and they never return</td><td>The screen renders server state first, so a slow store never blocks it</td></tr>
+              <tr><td class="plain">Whole-second dates put a just-taken reading before enrollment</td><td>Millisecond dates on the wire</td></tr>
+              <tr><td class="plain">One endpoint beats separate readings and deletions endpoints</td><td>A HealthKit edit is a delete plus an add, so it can't half-apply</td></tr>
+              <tr><td class="plain">HealthKit's sheet labels change between iOS versions</td><td>UI tests match its accessibility identifiers</td></tr>
+              <tr><td class="plain">Health Connect's expired token is a flag, not an exception</td><td>A full re-read since enrollment; the server dedupes by id</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="rollout">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Rollout and measures</p>
+        <h2>Build the end of the loop first</h2>
+        <p class="lede">Data without a clinician acting on it does nothing, so way in C proves the loop before A and B send it more people.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Phase</th><th>Ships</th><th>Gate to the next</th></tr></thead>
+          <tbody>
+            <tr><td>0 · about 2 weeks</td><td>Baselines, answers to the questions below, pick the cuff and the clinical owner</td><td>Protocol signed off, review time agreed</td></tr>
+            <tr><td>1</td><td>Pipeline and way in C on both platforms, CloudClinic cuff hand-out, a few clinics, behind a flag</td><td>Completion and review-to-action meet targets. The crisis path is drilled</td></tr>
+            <tr><td>2</td><td>Way in B, staggered by employer</td><td>First visits from B tracked against the staggered control</td></tr>
+            <tr><td>3</td><td>Way in A, visit first (iOS 26.2+)</td><td>Volume and conversion, reported descriptively: too rare for an A/B test</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="two">
+        <div class="box">
+          <p class="label">What it should move</p>
+          <ul class="small">
+            <li>First visits that started from an invite</li>
+            <li>Weeks completed (12 of 14 readings)</li>
+            <li>Readings received. HealthKit hides read denials, so "permission granted" can't be measured</li>
+            <li>Hours from "ready" to "reviewed"</li>
+            <li>Blood pressure controlled at 90 and 180 days</li>
+          </ul>
+        </div>
+        <div class="box">
+          <p class="label">What must not break</p>
+          <ul class="small">
+            <li>The crisis path: never an experiment arm</li>
+            <li>Employer sees zero member-level data</li>
+            <li>Zero pathway events in third-party analytics. The funnel is computed on the server</li>
+            <li>Crash-free rate and battery no worse than the last release</li>
+          </ul>
+        </div>
+      </div>
+      <p class="small"><strong>Experiments change presentation only:</strong> invite wording, card versus card plus notification, reminder times. Thresholds, the crisis screen and what counts clinically are never an arm.</p>
+    </div>
+  </section>
+
+  <section id="questions">
+    <div class="wrap">
+      <div class="head">
+        <p class="label">Open questions</p>
+        <h2>What I'd ask Rezilient, and what I'd do with either answer</h2>
+        <p class="lede">I don't have member access. This is what I know, what I'd check first, and how each answer would change the plan.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>What I know</th><th>Source</th><th>So</th></tr></thead>
+          <tbody>
+            <tr><td class="plain">The app is React Native today. The role decides where it stays cross-platform and where it goes native</td><td>Job posting</td><td>The pathway's data layer is native either way (decision 6). Only the bridge to React Native differs</td></tr>
+            <tr><td class="plain">Home has a Vitals tile, and the privacy label lists Health data</td><td>App Store listing and screenshots</td><td>Some health data reaches the app. The listing never mentions Apple Health or wearables, so it may be vitals from visits</td></tr>
+            <tr><td class="plain">CloudClinics pair Rezilient's own on-site paramedics with Rezilient's own doctors, NPs and PAs, who join remotely. Health-system partners like WakeMed credential those clinicians and supply the wider network</td><td>Rezilient job postings, WakeMed</td><td>Clinical rules belong to Rezilient's clinicians. A cuff hand-out is Rezilient's own workflow to change</td></tr>
+            <tr><td class="plain">Clinicians need licenses in 20+ states (40+ ideal), build their own patient panels, and co-manage with internal specialty program teams</td><td>Rezilient job postings</td><td>A finished week goes to the member's own clinician, or, for a first visit, to one licensed in the member's state</td></tr>
+            <tr><td class="plain">Dependents aged 7+ are covered</td><td>rezilienthealth.com</td><td>Children are members, and their blood pressure isn't read against 130/80</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Question</th><th>Why it matters</th><th>If yes</th><th>If no</th></tr></thead>
+          <tbody>
+            <tr><td>Does the Vitals tile read Apple Health or Health Connect today?</td><td>Extending a reader, or adding the app's first device data</td><td>Reuse its permission and screen. The native module replaces that reader, so the migration never runs two</td><td>The Vitals tile becomes the pathway's home. New permission copy and App Store review notes</td></tr>
+            <tr><td>Do clinicians already ask for home readings? Is there a specialty program team for blood pressure? Do CloudClinics hand out or lend cuffs?</td><td>A new program, or native ingestion for an existing one</td><td>The allowlist is their cuffs. CloudClinic hand-out works on day one</td><td>Phase 0 picks a cuff and a clinical owner. A loaner pilot at a few clinics</td></tr>
+            <tr><td>What share of members use iPhone vs Android? How many have iOS 26.2+ and a Series 9+ watch?</td><td>Way in A is iPhone-only and needs a recent watch. This sizes it and orders the platforms</td><td>Way in A can come sooner. Android trails by a release</td><td>Ways in B and C carry the volume. Android ships with iOS in phase 1</td></tr>
+            <tr><td>How many members are registered but have never visited?</td><td>Ways in A and B only reach registered members</td><td>Lead with first visits from invites</td><td>Activation isn't the lever. Lead with way in C and blood pressure control</td></tr>
+            <tr><td>Review capacity and turnaround, who's on call for very high readings, and who follows up a stalled week? Does the clinician who reviews a new member's week take them on?</td><td>Invites only help if someone reviews within a business day</td><td>Roll way in B out across employers on schedule</td><td>Way in C first, B slowly. The crisis policy is signed before launch either way</td></tr>
+            <tr><td>Which analytics vendor, and is there a BAA?</td><td>Where funnel events can go</td><td>More options for other app events</td><td>No change: pathway events stay on the server either way</td></tr>
+            <tr><td>What does the clinician web app sit on: an EHR (which one) or Rezilient's own backend? Can we write Observations to the chart?</td><td>How the pathway reaches the web app and the record</td><td>The web app reads the pathway service. Readings and the average go to the chart as FHIR Observations at review</td><td>The pathway service stays the source. The chart gets a signed summary note at review</td></tr>
+            <tr><td>Where do readings land in the chart, and does a partner like WakeMed share it or the protocols at its sites?</td><td>Where the FHIR write goes, and who signs off the clinical calls</td><td>The partner joins protocol sign-off. The FHIR write targets the shared record</td><td>Rezilient's clinical lead signs off. The FHIR write targets Rezilient's record</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="head">
+        <h3>Clinical calls: for Rezilient's doctors, not engineering</h3>
+        <p class="small">Each one is a config value. Engineering brings the data; the clinical lead decides. My default is what the spike does today.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="wide">
+          <thead><tr><th>Call</th><th>My default</th><th>Why</th><th>If they choose otherwise</th></tr></thead>
+          <tbody>
+            <tr><td>Thresholds</td><td>Invite at 130/80, crisis at 180/120</td><td>2025 AHA/ACC stage 1 and severe ranges</td><td>Config only</td></tr>
+            <tr><td>Count typed readings?</td><td>No: shown, not averaged</td><td>Can't be verified</td><td>Count typed readings from a declared approved cuff: one rule</td></tr>
+            <tr><td>Count FDA-cleared cuffless devices?</td><td>No</td><td>2025 AHA/ACC says cuffless isn't for clinical blood pressure</td><td>One allowlist entry</td></tr>
+            <tr><td>Week length</td><td>7 days, 12 readings</td><td>A guideline-style home protocol</td><td><code>protocol.days</code>, <code>minReadings</code></td></tr>
+            <tr><td>Discard the first day?</td><td>No</td><td>Some protocols drop day 1 because first readings run high. Keeping it means fewer days to drop out of</td><td><code>discardFirstDay: true</code></td></tr>
+            <tr><td>Adults only?</td><td>Yes</td><td>Children's blood pressure is read against percentiles. Apple's notification is 22+</td><td>A pediatric protocol is its own pathway</td></tr>
+            <tr><td>Pregnancy</td><td>Excluded, routed to the care team</td><td>Different thresholds and urgency. Apple excludes it too</td><td>A pregnancy protocol is its own pathway</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Ryan Waits · October 2026. A concept for discussion, built on public information. Not Rezilient's product and not affiliated with Apple, Whoop or any device maker named here.</p>
+    <ul>
+      <li><a href="https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1002389">Tucker et al. 2017, PLoS Medicine</a></li>
+      <li><a href="https://apply.workable.com/rezilient/j/8A8CFD6768/">Staff Mobile Engineer posting</a></li>
+      <li><a href="https://apps.apple.com/us/app/rezilient-health/id6752295347">Rezilient Health on the App Store</a></li>
+      <li><a href="https://jobs.techstars.com/companies/rezilient-health/jobs/68585044-virtual-primary-care-physician-md-do">Rezilient: virtual primary care physician posting</a></li>
+      <li><a href="https://wakemed.org/news/rezilient-wakemed-cloudclinic-opens-clayton">WakeMed: Rezilient CloudClinic</a></li>
+      <li><a href="https://www.cdc.gov/nchs/products/databriefs/db511.htm">NCHS Data Brief 511 (NHANES 2021–23)</a></li>
+      <li><a href="https://www.rezilienthealth.com/for-patients/included-benefits">Rezilient included benefits</a></li>
+      <li><a href="https://support.apple.com/en-us/117296">Apple: hypertension notifications</a></li>
+      <li><a href="https://www.apple.com/in/newsroom/2025/12/hypertension-notifications-available-today-on-apple-watch/">Apple Newsroom: training and validation</a></li>
+      <li><a href="https://www.aafp.org/pubs/afp/afp-community-blog/entry/smartwatch-screening-for-hypertension.html">AAFP: smartwatch screening for hypertension</a></li>
+      <li><a href="https://www.macobserver.com/tips/round-ups/apple-watch-series-12-blood-pressure-hypertension-notifications/">Series 12 has no blood pressure sensor</a></li>
+      <li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC12379440/">2025 AHA/ACC guideline summary</a></li>
+      <li><a href="https://targetbp.org/patient-measured-bp/implementing/smbp-device-loaner-program/">Target: BP device loaner program</a></li>
+      <li><a href="https://www.ama-assn.org/public-health/prevention-wellness/what-you-need-know-about-self-measured-blood-pressure-monitoring">AMA: self-measured blood pressure</a></li>
+      <li><a href="https://omronhealthcare.com/wp-content/uploads/OMRON-VitalSight-Fact-Sheet.pdf">Omron VitalSight fact sheet</a></li>
+      <li><a href="https://hilo.com/pages/faq">Hilo FAQ</a></li>
+      <li><a href="https://medcitynews.com/2026/10/happy-healths-cuffless-bp-device-wins-fda-clearance/">Happy Ring clearance, MedCity News</a></li>
+      <li><a href="https://developers.google.com/health/about">Fitbit Web API sunset</a></li>
+      <li><a href="https://developer.apple.com/documentation/healthkit/hkcategorytypeidentifier/hypertensionevent">HealthKit hypertensionEvent</a></li>
+      <li><a href="https://developer.android.com/guide/health-and-fitness/health-connect/develop/read-data">Health Connect: reading data</a></li>
+    </ul>
+  </div>
+</footer>
+
+<div class="tip" id="tip" hidden></div>
+<script>
+  const screens = document.getElementById("screens");
+  document.querySelectorAll(".toggle button").forEach((b) => {
+    b.addEventListener("click", () => {
+      screens.dataset.platform = b.dataset.platform;
+      document.querySelectorAll(".toggle button").forEach((o) => o.setAttribute("aria-pressed", String(o === b)));
+    });
+  });
+
+  document.querySelectorAll("[data-dots]").forEach((el) => {
+    const on = Number(el.dataset.dots);
+    el.innerHTML = Array.from({ length: 100 }, (_, i) => `<i${i < on ? ' class="on"' : ""}></i>`).join("");
+  });
+
+  const tip = document.getElementById("tip");
+  const show = (el, x, y) => {
+    tip.textContent = el.dataset.tip;
+    tip.hidden = false;
+    const w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.min(Math.max(8, x + 12), innerWidth - w - 8) + "px";
+    tip.style.top = (y - h - 12 < 8 ? y + 16 : y - h - 12) + "px";
+  };
+  document.querySelectorAll("[data-tip]").forEach((el) => {
+    el.addEventListener("pointermove", (e) => show(el, e.clientX, e.clientY));
+    el.addEventListener("pointerleave", () => (tip.hidden = true));
+    el.addEventListener("focus", () => {
+      const r = el.getBoundingClientRect();
+      show(el, r.left + 8, r.top);
+    });
+    el.addEventListener("blur", () => (tip.hidden = true));
+  });
+</script>
+
+<!-- Spike screenshots (iOS e2e and Android emulator, synthetic data). -->
+<style>
+.shot-invite{background-image:url(img/ios-invite.jpg)}
+[data-platform="android"] .shot-invite{background-image:url(img/android-invite.jpg)}
+.shot-crisis{background-image:url(img/ios-crisis.jpg)}
+[data-platform="android"] .shot-crisis{background-image:url(img/android-crisis.jpg)}
+.shot-ready{background-image:url(img/ios-ready.jpg)}
+[data-platform="android"] .shot-ready{background-image:url(img/android-ready.jpg)}
+</style>
+</body>
+</html>
