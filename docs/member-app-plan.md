@@ -2,9 +2,9 @@
 
 Ryan Waits, October 2026.
 
-Notes on how I'd take Rezilient's member app from React Native to native iOS and Android. The app ships an update every week or two, and the goal is to make the move without slowing that down or disrupting anyone using it.
+A plan for taking Rezilient's member app from React Native to native iOS and Android. The app ships an update every week or two, and the goal is to make the move without slowing that down or disrupting anyone using it.
 
-Big caveat up front: I don't have a member account, and I haven't seen the codebase, the data, or anything the team has already decided. So some of this is probably wrong, and some of it is probably already handled. I wrote it anyway because most of a move like this comes down to calls that are hard to undo, and it felt more useful to work through them than to talk about them in the abstract. Each call has a note on what would change my mind, and I'd expect most of them to move after one conversation with the team.
+It's built from public information only: no member account, no codebase, no data, and no view of what the team has already decided. So some of it is probably wrong, and some is probably already handled. Most of a move like this comes down to calls that are hard to undo, so each call is worked through concretely, with a note on what would change it.
 
 Some of it is more than notes. The intake service in this repo runs the AI patterns below, and the prototypes show what they could look like in the current app:
 
@@ -16,7 +16,7 @@ Some of it is more than notes. The intake service in this repo runs the AI patte
 
 ## The short version
 
-| Decision | My take |
+| Decision | Call |
 |---|---|
 | North star | Activation: the share of eligible members who reach a first visit, then come back. Rezilient says average employee activation is 33%. Everything below is ranked by which step of that funnel it moves. |
 | App shell | Go native with the rebrand, SwiftUI on iOS and Jetpack Compose on Android. The shell owns launch, navigation, sign-in, secure storage and deep links. Existing React Native screens keep running inside it until each one gets replaced. |
@@ -174,11 +174,11 @@ Each call would get a short decision record with the evidence and the number tha
 
 Honestly it's a real option. React Native stays in charge, native modules handle health data and devices, and most screens keep one codebase. It's cheaper for the first quarter, and with the New Architecture the JS-to-native boundary costs less than it used to.
 
-I lean the other way because sign-in, navigation and the hardest integrations would live across that boundary for good, and those are exactly where native depth matters most. But if the first month's data says most of the app's value is in shared screens, keeping React Native as the host is probably the right call. It's the first thing I'd want to check with the team, and honestly I could see it going either way.
+I lean the other way because sign-in, navigation and the hardest integrations would live across that boundary for good, and those are exactly where native depth matters most. But if the first month's data says most of the app's value is in shared screens, keeping React Native as the host is probably the right call. It's the first call to settle with real data, and it could go either way.
 
 ## Moving a live app
 
-I've migrated React Native apps to Swift before. The version that works here keeps the app in the stores the whole time, with native screens replacing old ones a piece at a time. If it goes well, members notice the app getting better and never notice the move.
+The version that works here keeps the app in the stores the whole time, with native screens replacing old ones a piece at a time. If it goes well, members notice the app getting better and never notice the move.
 
 | When | What | Done when |
 |---|---|---|
@@ -189,7 +189,7 @@ I've migrated React Native apps to Swift before. The version that works here kee
 
 ## Release engineering
 
-What I'm after: small changes, shipped often, with the store rollout and flags doing the risk management instead of someone watching a dashboard on release day.
+The goal: small changes, shipped often, with the store rollout and flags doing the risk management instead of someone watching a dashboard on release day.
 
 | Piece | How |
 |---|---|
@@ -263,7 +263,7 @@ Analytics is the row I'd expect to go wrong first, because nothing breaks when i
 
 ## Wearables, and health data clinicians can trust
 
-I think this is the strongest reason to go native. The app already has a Vitals tile and collects health data, and Rezilient's public job listings mention HealthKit, Health Connect and third-party wearables by name. It's also work I've done: at Alpha School (Texas Sports Academy) I built a native iOS app in Swift for student athletes' health and diet tracking, connected to Whoop, Apple Watch, Fitbit and other wearables.
+I think this is the strongest reason to go native. The app already has a Vitals tile and collects health data, and Rezilient's public job listings mention HealthKit, Health Connect and third-party wearables by name.
 
 Device data gets to the member app two ways, and each needs different plumbing:
 
@@ -281,7 +281,7 @@ Samsung, Pixel, Fitbit ─────► Health Connect                        
 ```
 
 - **On-device first.** HealthKit and Health Connect already collect from the Apple Watch and most phones and Bluetooth devices, so one native integration per platform covers most members. Both are native-only APIs with background delivery, which is why this part can't live behind a bridge.
-- **Vendor clouds for the rest.** Whoop, Oura and Garmin have their own APIs. Those are server integrations (OAuth, webhooks), so the app handles consent and the backend handles syncing. Worth pricing a third-party aggregator against building three of these ourselves. Building gives control, an aggregator gives speed, and cost, BAAs and lock-in decide it. I don't know Rezilient's constraints there yet.
+- **Vendor clouds for the rest.** Whoop, Oura and Garmin have their own APIs. Those are server integrations (OAuth, webhooks), so the app handles consent and the backend handles syncing. Worth pricing a third-party aggregator against building three of these ourselves. Building gives control, an aggregator gives speed, and cost, BAAs and lock-in decide it. Rezilient's constraints there are unknown from the outside.
 - **Apple Watch app: later, maybe.** Watch data already lands in HealthKit. A watchOS app only makes sense for something like a check-in reminder on the wrist, and I'd wait until members ask.
 - **Clinic-issued Bluetooth devices.** Cuffs and scales for remote monitoring pair natively, from a short list of validated models.
 
@@ -334,13 +334,13 @@ Intake runs on the same "did they already say this?" questions the model answers
 
 A week after I wrote this, Cloudflare released an extraction model, Clairic, that returns the patient's actual answer ("about a week", or 7 days as a number) instead of only whether they gave one. I ran it on the eval set ([`eval/RESULTS.md`](../eval/RESULTS.md#extraction-clairic-added-2026-10-20)). It's a poor judge of *whether* someone answered: it skipped 126 unanswered questions where Jev skipped 1. But paired with Jev it filled in the answer for 65% of skipped questions, and the values I checked were right. So the POC now uses both, in parallel: Jev decides every skip, and Clairic adds "You said: about a week" for a one-tap confirm instead of skipping silently. If Clairic is down, intake behaves exactly as before. It backs up the rule: the decision model decides, and other models only supply values.
 
-I have an opinion on voice. I think speech-to-text is important to think through correctly and implement intelligently, because a lot of people can say what's wrong faster than they can type it into a form on a phone. The intake prototype is my stab at it. I'm still tinkering with how it should feel, and there's plenty I'm not sure about yet: medical words, accents and a noisy waiting room are all hard on speech recognition, on-device keeps audio private but server-side is usually more accurate, and I don't know how much members will actually want to edit the transcript.
+Voice deserves care: a lot of people can say what's wrong faster than they can type it into a form on a phone. The intake prototype is a first pass, and the hard parts are still open: medical words, accents and a noisy waiting room are all hard on speech recognition, on-device keeps audio private but server-side is usually more accurate, and it's unclear how much members will want to edit the transcript.
 
-## First 90 days
+## The first 90 days of the move
 
 | By | What |
 |---|---|
-| Day 30 | Read the codebase and the crash, ANR and usage data, and fix everything in this doc that turns out wrong. Agree on the per-screen calls with product and design and write them down. Get the weekly release-health report going. Confirm how activation is defined today and instrument the funnel end to end, eligibility file to return visit. |
+| Day 30 | Baseline crash, ANR and usage per screen, and correct every call in this doc the data contradicts. Agree on the per-screen calls with product and design and write them down. Get the weekly release-health report going. Confirm how activation is defined today and instrument the funnel end to end, eligibility file to return visit. |
 | Day 60 | Native shell at 100% with no visible change. Release pipeline with signing in CI, rollout gates and kill switches. End-to-end suite on the critical journeys, running on every PR and in production on test accounts. Analytics allowlist in place. |
 | Day 90 | Native sign-in shipped with no forced sign-outs. First native screen (intake or vitals, whichever the data favors) rolling out behind a flag, judged on its funnel step with guardrails held. Mobile engineering standards written down and actually used in review. |
 
@@ -348,4 +348,4 @@ I have an opinion on voice. I think speech-to-text is important to think through
 
 Everything about Rezilient's current app here comes from public info, and the rest is assumption. Business numbers (activation, savings, ER visits, outcomes, NPS) are Rezilient's own published claims, and the conclusions drawn from them are marked as inference. The POC runs on synthetic patients only, its model provider has no BAA, and it's never been in production.
 
-The parts I'm least sure about are the per-screen calls and the timeline, since both depend on data I haven't seen. Those are the bits I'd most want to go through with the team, and I'd expect them to change.
+The least certain parts are the per-screen calls and the timeline, since both depend on data that isn't public. They're the most likely to change once real numbers are in.

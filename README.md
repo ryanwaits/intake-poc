@@ -13,7 +13,7 @@ They meet at the clinic's prep card: the intake POC puts home vitals on it, and 
 
 | | |
 |---|---|
-| [Member app plan](docs/member-app-plan.md) | How I'd take a React Native member app native: per-screen calls, migration, release engineering, PHI on device, health data, AI safety |
+| [Member app plan](docs/member-app-plan.md) | Taking a React Native member app native: per-screen calls, migration, release engineering, PHI on device, health data, AI safety |
 | [Intake prototypes](https://ryanwaits.github.io/intake-poc/docs/prototypes/) | One visit through the member app: home, intake in the member's own words, vitals with their sources, and the provider's view. Source in [`docs/prototypes/`](docs/prototypes/) |
 | [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. [Showcase](https://ryanwaits.github.io/intake-poc/bp-pathway/docs/showcase.html) · [strategy](bp-pathway/docs/strategy.md) |
 | [Walkthrough](docs/walkthrough.md) | The product, the model choice and the reliability work |
