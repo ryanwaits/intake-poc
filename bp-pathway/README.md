@@ -4,7 +4,7 @@ A member's blood pressure week, from the health store on the phone to a care-tea
 
 | | |
 |---|---|
-| [Showcase](docs/showcase.html) | The 10-minute read: the bar every idea had to clear, the pathway, a member's week, the decisions and what was cut. Open it locally. |
+| [Showcase](https://ryanwaits.github.io/intake-poc/bp-pathway/docs/showcase.html) | The 10-minute read: the bar every idea had to clear, the pathway, a member's week, the decisions and what was cut |
 | [Strategy](docs/strategy.md) | The full engineering plan: contract, HealthKit and Health Connect details, backend, privacy, failure modes, testing, rollout |
 
 <p>

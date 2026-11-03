@@ -1,6 +1,6 @@
 # BP pathway: implementation strategy
 
-October 2026. A plan for the member app's mobile team, built from public information and the [spike](../). The short version, with screens and charts, is the [showcase](showcase.html). *(inference)* = my reasoning. *(guess)* = an estimate to replace with real numbers.
+October 2026. A plan for the member app's mobile team, built from public information and the [spike](../). The short version, with screens and charts, is the [showcase](https://ryanwaits.github.io/intake-poc/bp-pathway/docs/showcase.html). *(inference)* = my reasoning. *(guess)* = an estimate to replace with real numbers.
 
 ## 0. One paragraph
 

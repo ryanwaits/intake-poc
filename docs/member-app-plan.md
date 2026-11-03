@@ -10,7 +10,7 @@ Some of it is more than notes. The intake service in this repo runs the AI patte
 
 | To see | Open |
 |---|---|
-| The prototypes, in order | [`docs/prototypes/`](prototypes/) |
+| The prototypes, in order | [live](https://ryanwaits.github.io/intake-poc/docs/prototypes/) · [source](prototypes/) |
 | The intake service and how it's run | [`docs/walkthrough.md`](walkthrough.md) |
 | How the model was picked | [`eval/RESULTS.md`](../eval/RESULTS.md) |
 

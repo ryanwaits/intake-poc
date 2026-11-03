@@ -1,14 +1,21 @@
-# Intake POC
+# Member app proofs
 
-Less paperwork for hybrid clinics, where a remote provider examines through an on-site medic. A working proof of concept for safe AI in a patient-facing health product: the model answers narrow questions, code makes every decision, and anything clinical goes to a clinician.
+Two working proofs for a virtual-first primary care member app, both on synthetic data:
+
+| | What it proves | Built with |
+|---|---|---|
+| **Intake POC** (this directory) | Safe AI in a patient-facing product. Less paperwork for hybrid clinics, where a remote provider examines through an on-site medic: the model answers narrow questions, code makes every decision, and anything clinical goes to a clinician | TypeScript, Bun |
+| **BP pathway** ([`bp-pathway/`](bp-pathway/)) | Native health data. A blood pressure week from HealthKit and Health Connect to a care-team review, with the same rules in Swift, Kotlin and TypeScript and no model in the loop | Swift, Kotlin, TypeScript |
+
+They meet at the clinic's prep card: the intake POC puts home vitals on it, and the BP pathway is what produces them.
 
 ## Start here
 
 | | |
 |---|---|
 | [Member app plan](docs/member-app-plan.md) | How I'd take a React Native member app native: per-screen calls, migration, release engineering, PHI on device, health data, AI safety |
-| [Intake prototypes](docs/prototypes/) | One visit through the member app: home, intake in the member's own words, vitals with their sources, and the provider's view. Open `index.html` locally. |
-| [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. [Showcase](bp-pathway/docs/showcase.html) · [strategy](bp-pathway/docs/strategy.md) |
+| [Intake prototypes](https://ryanwaits.github.io/intake-poc/docs/prototypes/) | One visit through the member app: home, intake in the member's own words, vitals with their sources, and the provider's view. Source in [`docs/prototypes/`](docs/prototypes/) |
+| [BP pathway spike](bp-pathway/) | The plan's health-data piece, built: a blood pressure week from HealthKit and Health Connect to a care-team review. Swift, Kotlin and a TS server sharing golden vectors, with an iOS e2e on a simulator. [Showcase](https://ryanwaits.github.io/intake-poc/bp-pathway/docs/showcase.html) · [strategy](bp-pathway/docs/strategy.md) |
 | [Walkthrough](docs/walkthrough.md) | The product, the model choice and the reliability work |
 | [Model evaluation](eval/RESULTS.md) | Ten model setups on 224 cases, pre-registered in [`eval/PREREGISTRATION.md`](eval/PREREGISTRATION.md) |
 
@@ -26,7 +33,7 @@ Less paperwork for hybrid clinics, where a remote provider examines through an o
   <img src="bp-pathway/docs/img/android-ready.jpg" alt="BP pathway on Android, day 7: the same week from Health Connect" width="18%">
 </p>
 
-## What it demonstrates
+## What the intake POC demonstrates
 
 | | Where |
 |---|---|
@@ -70,7 +77,7 @@ Prep card
 
 What's left over becomes a prep card for the medic and provider: red flags, complaint, which devices and tests to have ready.
 
-## How it works
+## How the intake POC works
 
 ```
 FHIR R4 bundle ─► parseChart ─► Chart (code only, holds identifiers)
@@ -111,6 +118,8 @@ bun run dev        # POST /v1/intake { reason, bundle, variant? }   GET /healthz
 bun test           # calls the real model; without a key, e2e and integration skip
 bun run golden:record   # after an intended plan change; review the diff
 ```
+
+BP pathway: `bp-pathway/check.sh` runs everything (needs Xcode, JDK 21 and the Android SDK), or `cd bp-pathway/server && bun test` for the server alone. See [its README](bp-pathway/README.md#run).
 
 ## Not for clinical use
 
