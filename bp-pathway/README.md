@@ -41,7 +41,7 @@ cd ios/App && xcodegen generate                   # then run BPPathway on a simu
 
 ## Look
 
-Both apps use the intake POC's look (`docs/prototypes` in the intake repo), which is styled after Rezilient's member app as it appears in its App Store screenshots: the wordmark bar, Poppins and Open Sans (both OFL, licenses in `ios/App/Fonts`), bordered cards, navy pills, and "Measured" / "Entered by you" provenance chips. This is a concept, not Rezilient's product.
+Both apps use the intake POC's look ([`docs/prototypes`](../docs/prototypes/)), which is styled after Rezilient's member app as it appears in its App Store screenshots: the wordmark bar, Poppins and Open Sans (both OFL, licenses in `ios/App/Fonts`), bordered cards, navy pills, and "Measured" / "Entered by you" provenance chips. This is a concept, not Rezilient's product.
 
 ## Not here (yet)
 

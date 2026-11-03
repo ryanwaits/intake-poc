@@ -154,7 +154,7 @@ class MainActivity : ComponentActivity() {
   }
 }
 
-// The intake POC's tokens (docs/prototypes/prototype.css in the intake repo), the ones this screen uses.
+// The intake POC's tokens (docs/prototypes/prototype.css at the repo root), the ones this screen uses.
 private val Page = Color(0xFFF7F7F7)
 private val Ink = Color(0xFF1F2328)
 private val Ink2 = Color(0xFF4A4F55)

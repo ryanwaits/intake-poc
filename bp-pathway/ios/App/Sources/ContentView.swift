@@ -2,7 +2,7 @@ import BPCore
 import SwiftUI
 
 /// The same screen as android/app MainActivity.kt, card for card, in the intake POC's look
-/// (docs/prototypes in the intake repo, styled after Rezilient's App Store screenshots).
+/// (docs/prototypes at the repo root, styled after Rezilient's App Store screenshots).
 struct ContentView: View {
   @State private var model = Model()
   @Environment(\.scenePhase) private var phase
