@@ -1,0 +1,178 @@
+{
+  "about": "Server only. Readings in, clinical summary out. A changed expectation here is a changed clinical rule: review it with the clinical lead.",
+  "config": {
+    "version": "golden",
+    "crisis": { "systolic": 180, "diastolic": 120 },
+    "historyScan": { "lookbackDays": 30, "minDays": 2, "systolic": 130, "diastolic": 80 },
+    "protocol": {
+      "days": 3,
+      "discardFirstDay": false,
+      "minReadings": 3,
+      "amHours": [4, 12],
+      "pmHours": [16, 24],
+      "duplicateWindowSec": 120
+    },
+    "cuffs": [{ "appId": "com.example.cuffapp", "model": "HEM-7155T" }],
+    "stalledAfterHours": 72,
+    "firstReadingWithinHours": 168
+  },
+  "sources": {
+    "cuff": { "appId": "com.example.cuffapp", "appName": "Cuff App", "deviceModel": "HEM-7155T" },
+    "health": { "appId": "com.apple.Health", "appName": "Health" },
+    "ring": { "appId": "com.example.ring", "appName": "Ring", "deviceModel": "Ring 4" }
+  },
+  "cases": [
+    {
+      "name": "cuff readings count, AM and PM in local time",
+      "readings": [
+        ["a1", "cuff", "device", 132, 84, "2026-10-01T12:30:00Z"],
+        ["a2", "cuff", "device", 128, 82, "2026-10-02T01:30:00Z"],
+        ["a3", "cuff", "device", 130, 86, "2026-10-02T12:15:00Z"]
+      ],
+      "expect": {
+        "counted": 3,
+        "average": { "systolic": 130, "diastolic": 84 },
+        "days": [
+          { "day": "2026-10-01", "am": 1, "pm": 1 },
+          { "day": "2026-10-02", "am": 1, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [],
+        "crisis": []
+      }
+    },
+    {
+      "name": "manual and unverified readings are shown, not counted",
+      "readings": [
+        ["b1", "cuff", "device", 126, 80, "2026-10-01T12:30:00Z"],
+        ["b2", "health", "manual", 140, 90, "2026-10-01T13:00:00Z"],
+        ["b3", "ring", "device", 138, 88, "2026-10-02T01:00:00Z"]
+      ],
+      "expect": {
+        "counted": 1,
+        "average": null,
+        "days": [
+          { "day": "2026-10-01", "am": 1, "pm": 0 },
+          { "day": "2026-10-02", "am": 0, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [
+          { "id": "b2", "reason": "manual" },
+          { "id": "b3", "reason": "unverified_device" }
+        ],
+        "crisis": []
+      }
+    },
+    {
+      "name": "a typed copy of a cuff reading is a duplicate; the cuff copy counts",
+      "readings": [
+        ["c1", "health", "manual", 134, 86, "2026-10-01T12:29:00Z"],
+        ["c2", "cuff", "device", 134, 86, "2026-10-01T12:30:00Z"]
+      ],
+      "expect": {
+        "counted": 1,
+        "average": null,
+        "days": [
+          { "day": "2026-10-01", "am": 1, "pm": 0 },
+          { "day": "2026-10-02", "am": 0, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [{ "id": "c1", "reason": "duplicate" }],
+        "crisis": []
+      }
+    },
+    {
+      "name": "identical back-to-back readings from one cuff both count",
+      "readings": [
+        ["d1", "cuff", "device", 128, 82, "2026-10-01T12:30:00Z"],
+        ["d2", "cuff", "device", 128, 82, "2026-10-01T12:31:00Z"]
+      ],
+      "expect": {
+        "counted": 2,
+        "average": null,
+        "days": [
+          { "day": "2026-10-01", "am": 2, "pm": 0 },
+          { "day": "2026-10-02", "am": 0, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [],
+        "crisis": []
+      }
+    },
+    {
+      "name": "afternoon reading is outside the protocol windows",
+      "readings": [["e1", "cuff", "device", 130, 80, "2026-10-01T19:00:00Z"]],
+      "expect": {
+        "counted": 0,
+        "average": null,
+        "days": [],
+        "excluded": [{ "id": "e1", "reason": "outside_window" }],
+        "crisis": []
+      }
+    },
+    {
+      "name": "readings after the protocol window don't count",
+      "readings": [
+        ["f1", "cuff", "device", 130, 80, "2026-10-01T12:30:00Z"],
+        ["f2", "cuff", "device", 130, 80, "2026-10-05T12:30:00Z"]
+      ],
+      "expect": {
+        "counted": 1,
+        "average": null,
+        "days": [
+          { "day": "2026-10-01", "am": 1, "pm": 0 },
+          { "day": "2026-10-02", "am": 0, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [{ "id": "f2", "reason": "after_protocol" }],
+        "crisis": []
+      }
+    },
+    {
+      "name": "a crisis from an unverified device is still a crisis",
+      "readings": [["g1", "ring", "device", 186, 112, "2026-10-01T12:30:00Z"]],
+      "expect": {
+        "counted": 0,
+        "average": null,
+        "days": [],
+        "excluded": [{ "id": "g1", "reason": "unverified_device" }],
+        "crisis": ["g1"]
+      }
+    },
+    {
+      "name": "late evening local is the previous local day",
+      "readings": [["h1", "cuff", "device", 124, 78, "2026-10-02T03:00:00Z"]],
+      "expect": {
+        "counted": 1,
+        "average": null,
+        "days": [
+          { "day": "2026-10-01", "am": 0, "pm": 1 },
+          { "day": "2026-10-02", "am": 0, "pm": 0 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [],
+        "crisis": []
+      }
+    },
+    {
+      "name": "discard-first-day shows progress but leaves day one out of the average",
+      "protocol": { "discardFirstDay": true, "minReadings": 2 },
+      "readings": [
+        ["i1", "cuff", "device", 150, 96, "2026-10-01T12:30:00Z"],
+        ["i2", "cuff", "device", 130, 80, "2026-10-02T12:30:00Z"],
+        ["i3", "cuff", "device", 126, 84, "2026-10-03T00:30:00Z"]
+      ],
+      "expect": {
+        "counted": 2,
+        "average": { "systolic": 128, "diastolic": 82 },
+        "days": [
+          { "day": "2026-10-01", "am": 1, "pm": 0 },
+          { "day": "2026-10-02", "am": 1, "pm": 1 },
+          { "day": "2026-10-03", "am": 0, "pm": 0 }
+        ],
+        "excluded": [{ "id": "i1", "reason": "first_day" }],
+        "crisis": []
+      }
+    }
+  ]
+}

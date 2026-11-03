@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <!-- Debug only: seeds a synthetic week into Health Connect. The member app never writes. -->
+  <uses-permission android:name="android.permission.health.WRITE_BLOOD_PRESSURE" />
+
+  <!-- Debug only: the spike server on the host is plain HTTP. -->
+  <application android:usesCleartextTraffic="true" />
+</manifest>
